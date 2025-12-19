@@ -1,214 +1,109 @@
-# QattaBor Mobile App - React Native
+# Laravel Project with Tailwind CSS
 
-A beautiful mobile app for discovering places in Uzbekistan with AI-powered voice assistant.
+This is a Laravel project configured with Tailwind CSS and MySQL.
 
-## Features
+## Getting Started
 
-✅ **User Authentication** - Login/Register with phone number
-✅ **Categories** - Browse places by category (Food, Cinema, Sport, etc.)
-✅ **AI Assistant** - Voice-enabled chat with GPT-4o-mini
-✅ **Text-to-Speech** - AI responses spoken aloud
-✅ **Search** - Find places quickly
-✅ **Multi-language** - Uzbek, Russian, English support
-✅ **Beautiful UI** - Modern, clean design
+### Prerequisites
 
-## Prerequisites
+- PHP 8.2 or higher
+- Composer
+- Node.js and npm
+- MySQL
 
-- Node.js (v16 or higher)
-- npm or yarn
-- Expo CLI: `npm install -g expo-cli`
-- EAS CLI (for building): `npm install -g eas-cli`
+### Installation
 
-## Installation
+1. Install PHP dependencies:
+    ```bash
+    composer install
+    ```
 
-```bash
-cd qattabor-mobile
-npm install
-```
+2. Install Node.js dependencies:
+    ```bash
+    npm install
+    ```
 
-## Running the App
+3. Configure the environment:
+    - Copy `.env.example` to `.env` (if not already done).
+    - Update database credentials in `.env`.
 
-### Development Mode
+4. Run migrations:
+    ```bash
+    php artisan migrate
+    ```
 
-```bash
-# Start Expo development server
-npm start
+### Running the Application
 
-# Run on Android
-npm run android
+1. Start the Laravel development server:
+    ```bash
+    php artisan serve
+    ```
 
-# Run on iOS (Mac only)
-npm run ios
+2. Start the Vite development server (for Tailwind CSS):
+    ```bash
+    npm run dev
+    ```
 
-# Run on web
-npm run web
-```
+You can also use the VS Code tasks "Run Laravel Server" and "Run Vite Dev Server" to start these services.
 
-## Building for Production
+---
 
-### Setup EAS Build
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-```bash
-# Login to Expo
-eas login
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-# Configure your project
-eas build:configure
-```
+## About Laravel
 
-### Build APK (Android)
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-```bash
-# Build APK for testing
-npm run build:apk
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-# Or use EAS directly
-eas build --platform android --profile preview
-```
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-### Build for iOS
+## Learning Laravel
 
-```bash
-# Build for iOS
-npm run build:ios
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
 
-# Or use EAS directly
-eas build --platform ios --profile production
-```
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-### Build App Bundle (Google Play)
+## Laravel Sponsors
 
-```bash
-eas build --platform android --profile production
-```
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-## Configuration
+### Premium Partners
 
-### Backend API
+- **[Vehikl](https://vehikl.com)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Redberry](https://redberry.international/laravel-development)**
+- **[Active Logic](https://activelogic.com)**
 
-Update the API URL in `services/aiService.js`:
+## Contributing
 
-```javascript
-const API_BASE_URL = 'https://your-server.com';
-```
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-### App Icons & Splash Screen
+## Code of Conduct
 
-Replace the following files:
-- `assets/icon.png` - App icon (1024x1024)
-- `assets/adaptive-icon.png` - Android adaptive icon
-- `assets/splash.png` - Splash screen (1242x2688)
-- `assets/favicon.png` - Web favicon
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Project Structure
+## Security Vulnerabilities
 
-```
-qattabor-mobile/
-├── App.js                      # Main app entry point
-├── app.json                    # Expo configuration
-├── package.json                # Dependencies
-├── eas.json                    # EAS Build configuration
-├── screens/
-│   ├── LoginScreen.js          # Login/Register screen
-│   ├── HomeScreen.js           # Home with categories
-│   └── AIAssistantScreen.js    # AI chat interface
-├── services/
-│   ├── aiService.js            # AI API integration
-│   └── voiceService.js         # Text-to-speech service
-└── assets/                     # Images and icons
-```
-
-## Key Dependencies
-
-- **expo** - Development framework
-- **react-navigation** - Navigation between screens
-- **expo-speech** - Text-to-speech functionality
-- **axios** - HTTP client for API calls
-- **react-native-vector-icons** - Icon library
-- **@react-native-async-storage/async-storage** - Local storage
-
-## Permissions
-
-### Android
-- `INTERNET` - Network access
-- `RECORD_AUDIO` - Voice input (future feature)
-
-### iOS
-- `NSMicrophoneUsageDescription` - Microphone access
-- `NSSpeechRecognitionUsageDescription` - Speech recognition
-
-## Testing
-
-### Android Testing
-1. Build APK: `npm run build:apk`
-2. Download APK from Expo dashboard
-3. Install on Android device
-4. Test all features
-
-### iOS Testing (TestFlight)
-1. Build for iOS: `npm run build:ios`
-2. Download IPA from Expo dashboard
-3. Upload to App Store Connect
-4. Distribute via TestFlight
-
-## Publishing
-
-### Google Play Store
-
-1. Build app bundle:
-```bash
-eas build --platform android --profile production
-```
-
-2. Download AAB file
-3. Upload to Google Play Console
-4. Fill in app details
-5. Submit for review
-
-### Apple App Store
-
-1. Build for iOS:
-```bash
-eas build --platform ios --profile production
-```
-
-2. Download IPA
-3. Upload to App Store Connect via Transporter
-4. Fill in app details
-5. Submit for review
-
-## Troubleshooting
-
-### Build Fails
-- Check `eas.json` configuration
-- Verify all dependencies are installed
-- Check Expo SDK compatibility
-
-### App Crashes
-- Check console logs: `expo start`
-- Verify API endpoint is accessible
-- Check AsyncStorage permissions
-
-### Voice Not Working
-- Verify device audio settings
-- Check expo-speech installation
-- Test on physical device (not simulator)
-
-## Environment Variables
-
-For production, update these in your app:
-
-- API URL in `services/aiService.js`
-- Bundle identifiers in `app.json`
-- EAS project ID in `app.json`
-
-## Support
-
-For issues or questions:
-- Check Expo documentation: https://docs.expo.dev
-- React Native docs: https://reactnative.dev
-- Open an issue in the repository
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
-MIT License - Free to use and modify
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
