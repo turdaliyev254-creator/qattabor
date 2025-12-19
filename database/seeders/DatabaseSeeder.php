@@ -50,14 +50,8 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // Create Locations
-        $locations = ['Tashkent', 'Samarkand', 'Bukhara', 'Khiva', 'Fergana'];
-        foreach ($locations as $loc) {
-            Location::create([
-                'name' => $loc,
-                'slug' => Str::slug($loc),
-            ]);
-        }
+        // Create Locations - use LocationSeeder for all Uzbekistan regions
+        $this->call(LocationSeeder::class);
 
         // Create Places
         $foodCategory = Category::where('name', 'Food & Drink')->first();
