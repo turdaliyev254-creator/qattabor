@@ -57,6 +57,10 @@
                     <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-100 to-white dark:from-orange-900 dark:to-gray-800 flex items-center justify-center text-4xl shadow-inner group-hover:scale-110 transition-transform duration-300">🍔</div>
                     <span class="font-bold text-lg text-gray-800 dark:text-gray-100">Food</span>
                 </a>
+                <a href="#" class="glass-card p-6 rounded-3xl flex flex-col items-center justify-center gap-4 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all duration-300 group border border-white/40 shadow-lg hover:shadow-xl hover:-translate-y-1">
+                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-100 to-white dark:from-purple-900 dark:to-gray-800 flex items-center justify-center text-4xl shadow-inner group-hover:scale-110 transition-transform duration-300">🏋️</div>
+                    <span class="font-bold text-lg text-gray-800 dark:text-gray-100">Gym</span>
+                </a>
             @endforelse
         </div>
     </div>
