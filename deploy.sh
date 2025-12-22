@@ -41,27 +41,27 @@ fi
 # 3. INSTALL PHP DEPENDENCIES
 echo "📚 Installing PHP dependencies..."
 cd $PROJECT_DIR
-../$PHP_CMD ../composer.phar install --no-dev --optimize-autoloader
+$PHP_CMD ../composer.phar install --no-dev --optimize-autoloader
 
 # 4. SETUP ENVIRONMENT FILE
 if [ ! -f ".env" ]; then
     echo "⚠️  .env file not found! Creating from .env.example..."
     cp .env.example .env
     echo "🔑 Generating Application Key..."
-    ../$PHP_CMD artisan key:generate
+    $PHP_CMD artisan key:generate
     echo "❗ IMPORTANT: Please edit $PROJECT_DIR/.env with your database details!"
 fi
 
 # 5. RUN MIGRATIONS
 echo "🗄️  Running Database Migrations..."
-../$PHP_CMD artisan migrate --force
+$PHP_CMD artisan migrate --force
 
 # 6. OPTIMIZE & CACHE
 echo "⚡ Optimizing Laravel..."
-../$PHP_CMD artisan optimize:clear
-../$PHP_CMD artisan config:cache
-../$PHP_CMD artisan route:cache
-../$PHP_CMD artisan view:cache
+$PHP_CMD artisan optimize:clear
+$PHP_CMD artisan config:cache
+$PHP_CMD artisan route:cache
+$PHP_CMD artisan view:cache
 
 # 7. (SKIPPED) PUBLISH PUBLIC ASSETS
 # User requested to keep files in public_html and use .htaccess redirect.
