@@ -11,10 +11,16 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::take(10)->get();
         $popularPlaces = Place::where('is_popular', true)->with(['category', 'location'])->take(6)->get();
         $locations = Location::all();
 
         return view('welcome', compact('categories', 'popularPlaces', 'locations'));
+    }
+
+    public function allCategories()
+    {
+        $categories = Category::all();
+        return view('categories', compact('categories'));
     }
 }

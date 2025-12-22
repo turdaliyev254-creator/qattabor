@@ -1,30 +1,35 @@
 <x-glass-layout>
-    <!-- Beautiful Banner Slider with Auto-change -->
-    <div class="relative w-full h-80 md:h-[500px] rounded-3xl overflow-hidden mb-12 mt-0 shadow-2xl" x-data="bannerSlider()">
-        <!-- Glassmorphism Gradient Overlays -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent backdrop-blur-sm z-10"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/30 to-purple-900/30 backdrop-blur-[2px] z-10"></div>
-        
+    <!-- Modern Hero Banner -->
+    <div class="relative w-full h-96 rounded-3xl overflow-hidden mb-10 shadow-xl" x-data="bannerSlider()">
         <!-- Image Slides -->
         <template x-for="(image, index) in images" :key="index">
             <div x-show="currentSlide === index"
-                 x-transition:enter="transition ease-out duration-1000"
-                 x-transition:enter-start="opacity-0 scale-110"
-                 x-transition:enter-end="opacity-100 scale-100"
-                 x-transition:leave="transition ease-in duration-1000"
-                 x-transition:leave-start="opacity-100 scale-100"
-                 x-transition:leave-end="opacity-0 scale-105"
+                 x-transition:enter="transition ease-out duration-700"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-700"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
                  class="absolute inset-0">
-                <img :src="image" :alt="'Banner ' + (index + 1)" class="w-full h-full object-cover animate-ken-burns">
+                <img :src="image" :alt="'Banner ' + (index + 1)" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
             </div>
         </template>
         
-        <!-- Slide Indicators -->
-        <div class="absolute bottom-8 right-8 z-30 flex gap-2">
+        <!-- Content Overlay -->
+        <div class="absolute inset-0 flex items-center justify-center text-center px-4 z-10">
+            <div class="animate-fade-in">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">Discover Amazing Places</h1>
+                <p class="text-lg text-white/90">Find the best spots around you</p>
+            </div>
+        </div>
+        
+        <!-- Indicators -->
+        <div class="absolute bottom-6 right-6 z-20 flex gap-2">
             <template x-for="(image, index) in images" :key="index">
                 <button @click="currentSlide = index; resetAutoplay()" 
-                        class="relative w-3 h-3 rounded-full transition-all duration-300"
-                        :class="currentSlide === index ? 'w-8 bg-white shadow-lg' : 'bg-white/50 hover:bg-white/80'">
+                        class="h-1 rounded-full transition-all"
+                        :class="currentSlide === index ? 'w-8 bg-white' : 'w-4 bg-white/50'">
                 </button>
             </template>
         </div>
@@ -48,7 +53,7 @@
                 startAutoplay() {
                     this.autoplayInterval = setInterval(() => {
                         this.nextSlide();
-                    }, 3000);
+                    }, 4000);
                 },
                 resetAutoplay() {
                     clearInterval(this.autoplayInterval);
@@ -56,170 +61,117 @@
                 },
                 nextSlide() {
                     this.currentSlide = (this.currentSlide + 1) % this.images.length;
-                },
-                previousSlide() {
-                    this.currentSlide = (this.currentSlide - 1 + this.images.length) % this.images.length;
-                    this.resetAutoplay();
                 }
             }
         }
     </script>
-    
-    <style>
-        @keyframes ken-burns {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-        .animate-ken-burns {
-            animation: ken-burns 10s ease-out infinite alternate;
-        }
-        @keyframes fade-in-up {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .animate-fade-in-up {
-            animation: fade-in-up 0.8s ease-out forwards;
-        }
-        .animation-delay-200 {
-            animation-delay: 0.2s;
-            opacity: 0;
-        }
-    </style>
 
-    <!-- Search Bar with Glassmorphism -->
-    <div class="relative mt-8 mb-12 px-4 z-30">
-        <div class="relative max-w-2xl mx-auto">
-            <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
-            <div class="relative backdrop-blur-3xl bg-white/70 dark:bg-gray-800/70 p-2 rounded-3xl flex items-center shadow-2xl border border-white/60 dark:border-gray-700/60">
-                <div class="p-3 text-gray-500 dark:text-gray-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+    <!-- Search Bar -->
+    <div class="mb-10 px-4">
+        <div class="max-w-2xl mx-auto">
+            <div class="card">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" placeholder="{{ __('search_placeholder') }}" class="flex-1 bg-transparent border-none focus:ring-0 text-gray-900 dark:text-white placeholder-gray-400">
+                    <button class="btn btn-primary">
+                        {{ __('search') }}
+                    </button>
                 </div>
-                <input type="text" placeholder="{{ __('search_placeholder') }}" class="w-full bg-transparent border-none focus:ring-0 text-gray-800 dark:text-white placeholder-gray-500 text-lg h-12">
-                <button class="backdrop-blur-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 py-3 rounded-2xl font-medium transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:shadow-indigo-500/60 hover:scale-105">
-                    {{ __('search') }}
-                </button>
             </div>
         </div>
     </div>
 
     <!-- Categories Section -->
-    <div class="mb-12">
-        <div class="flex justify-between items-end mb-6 px-2">
+    <div class="mb-10">
+        <div class="flex justify-between items-center mb-6 px-2">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('categories') }}</h2>
-            <a href="#" class="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">{{ __('see_all') }}</a>
+            <a href="{{ route('categories.all') }}" class="text-brand-600 dark:text-brand-400 font-medium hover:text-brand-700 dark:hover:text-brand-300">{{ __('see_all') }} →</a>
         </div>
         
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
             @forelse($categories as $category)
-                <a href="#" class="relative group block">
-                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl blur-md group-hover:blur-lg transition-all duration-300"></div>
-                    <div class="relative backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 p-6 rounded-3xl flex flex-col items-center justify-center gap-4 group-hover:bg-white/70 dark:group-hover:bg-gray-900/70 transition-all duration-300 border border-white/50 dark:border-gray-700/50 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2">
-                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-100/80 to-white/80 dark:from-indigo-900/80 dark:to-gray-800/80 backdrop-blur-xl flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-white/40">
-                            {{ $category->icon ?? '📍' }}
-                        </div>
-                        <span class="font-bold text-lg text-gray-800 dark:text-gray-100">{{ $category->name }}</span>
+                <a href="#" class="card card-hover group text-center">
+                    <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900/20 dark:to-accent-900/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                        {{ $category->icon ?? '📍' }}
                     </div>
+                    <h3 class="font-semibold text-sm text-gray-900 dark:text-white">{{ $category->name }}</h3>
                 </a>
             @empty
-                <!-- Demo Categories if DB is empty -->
-                <a href="#" class="relative group block">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-3xl blur-md group-hover:blur-lg transition-all duration-300"></div>
-                    <div class="relative backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 p-6 rounded-3xl flex flex-col items-center justify-center gap-4 group-hover:bg-white/70 dark:group-hover:bg-gray-900/70 transition-all duration-300 border border-white/50 dark:border-gray-700/50 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2">
-                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-100/80 to-white/80 dark:from-blue-900/80 dark:to-gray-800/80 backdrop-blur-xl flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-white/40">🏫</div>
-                        <span class="font-bold text-lg text-gray-800 dark:text-gray-100">{{ __('school') }}</span>
+                @foreach([
+                    ['icon' => '🏫', 'name' => 'Schools'],
+                    ['icon' => '🧸', 'name' => 'Kindergarten'],
+                    ['icon' => '🏥', 'name' => 'Clinics'],
+                    ['icon' => '🍔', 'name' => 'Food'],
+                    ['icon' => '🏋️', 'name' => 'Gyms']
+                ] as $demo)
+                <a href="#" class="card card-hover group text-center">
+                    <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900/20 dark:to-accent-900/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                        {{ $demo['icon'] }}
                     </div>
+                    <h3 class="font-semibold text-sm text-gray-900 dark:text-white">{{ $demo['name'] }}</h3>
                 </a>
-                <a href="#" class="relative group block">
-                    <div class="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-3xl blur-md group-hover:blur-lg transition-all duration-300"></div>
-                    <div class="relative backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 p-6 rounded-3xl flex flex-col items-center justify-center gap-4 group-hover:bg-white/70 dark:group-hover:bg-gray-900/70 transition-all duration-300 border border-white/50 dark:border-gray-700/50 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2">
-                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-green-100/80 to-white/80 dark:from-green-900/80 dark:to-gray-800/80 backdrop-blur-xl flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-white/40">🧸</div>
-                        <span class="font-bold text-lg text-gray-800 dark:text-gray-100">{{ __('kindergarten') }}</span>
-                    </div>
-                </a>
-                <a href="#" class="relative group block">
-                    <div class="absolute inset-0 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-3xl blur-md group-hover:blur-lg transition-all duration-300"></div>
-                    <div class="relative backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 p-6 rounded-3xl flex flex-col items-center justify-center gap-4 group-hover:bg-white/70 dark:group-hover:bg-gray-900/70 transition-all duration-300 border border-white/50 dark:border-gray-700/50 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2">
-                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-100/80 to-white/80 dark:from-red-900/80 dark:to-gray-800/80 backdrop-blur-xl flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-white/40">🏥</div>
-                        <span class="font-bold text-lg text-gray-800 dark:text-gray-100">{{ __('clinic') }}</span>
-                    </div>
-                </a>
-                <a href="#" class="relative group block">
-                    <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-3xl blur-md group-hover:blur-lg transition-all duration-300"></div>
-                    <div class="relative backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 p-6 rounded-3xl flex flex-col items-center justify-center gap-4 group-hover:bg-white/70 dark:group-hover:bg-gray-900/70 transition-all duration-300 border border-white/50 dark:border-gray-700/50 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2">
-                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-100/80 to-white/80 dark:from-orange-900/80 dark:to-gray-800/80 backdrop-blur-xl flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-white/40">🍔</div>
-                        <span class="font-bold text-lg text-gray-800 dark:text-gray-100">{{ __('food') }}</span>
-                    </div>
-                </a>
-                <a href="#" class="relative group block">
-                    <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-fuchsia-500/20 rounded-3xl blur-md group-hover:blur-lg transition-all duration-300"></div>
-                    <div class="relative backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 p-6 rounded-3xl flex flex-col items-center justify-center gap-4 group-hover:bg-white/70 dark:group-hover:bg-gray-900/70 transition-all duration-300 border border-white/50 dark:border-gray-700/50 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2">
-                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-100/80 to-white/80 dark:from-purple-900/80 dark:to-gray-800/80 backdrop-blur-xl flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-white/40">🏋️</div>
-                        <span class="font-bold text-lg text-gray-800 dark:text-gray-100">{{ __('gym') }}</span>
-                    </div>
-                </a>
+                @endforeach
             @endforelse
         </div>
     </div>
 
     <!-- Popular Places Section -->
-    <div class="mb-12">
-        <div class="flex justify-between items-end mb-6">
+    <div class="mb-10">
+        <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('popular_places') }}</h2>
-            <a href="#" class="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">{{ __('see_all') }}</a>
+            <a href="#" class="text-brand-600 dark:text-brand-400 font-medium hover:text-brand-700 dark:hover:text-brand-300">{{ __('see_all') }} →</a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             @forelse($popularPlaces as $place)
-                <div class="relative group">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-3xl blur-lg group-hover:blur-xl transition-all duration-300"></div>
-                    <div class="relative backdrop-blur-2xl bg-white/70 dark:bg-gray-900/70 rounded-3xl overflow-hidden border border-white/60 dark:border-gray-700/60 shadow-2xl group-hover:shadow-3xl transition-all duration-300">
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="{{ $place->image_url ?? 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80' }}" alt="{{ $place->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                            <div class="absolute top-4 right-4 backdrop-blur-xl bg-white/40 dark:bg-gray-900/40 border border-white/40 rounded-full px-4 py-1.5 text-xs font-bold text-white shadow-lg">
+                <div class="card p-0 overflow-hidden card-hover group">
+                    <div class="relative h-48">
+                        <img src="{{ $place->image_url ?? 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80' }}" alt="{{ $place->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        <div class="absolute top-3 right-3">
+                            <span class="badge bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white">
                                 {{ $place->category->name ?? 'Restaurant' }}
-                            </div>
+                            </span>
                         </div>
-                        <div class="p-6 backdrop-blur-xl bg-white/30 dark:bg-gray-900/30">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ $place->name }}</h3>
-                            <div class="flex items-center text-gray-600 dark:text-gray-300 mb-4 text-sm">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                {{ $place->location->name ?? 'Tashkent' }}
-                            </div>
-                            <button class="w-full py-3 rounded-xl backdrop-blur-xl bg-gradient-to-r from-indigo-600/90 to-purple-600/90 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg shadow-indigo-500/40 transition-all duration-300 hover:scale-[1.02] border border-white/20">
-                                {{ __('view_details') }}
-                            </button>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ $place->name }}</h3>
+                        <div class="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-4">
+                            <svg class="w-4 h-4 mr-1.5 text-brand-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                            </svg>
+                            {{ $place->location->name ?? 'Tashkent' }}
                         </div>
+                        <button class="btn btn-primary w-full">
+                            {{ __('view_details') }}
+                        </button>
                     </div>
                 </div>
             @empty
                 <!-- Demo Place -->
-                <div class="relative group">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-3xl blur-lg group-hover:blur-xl transition-all duration-300"></div>
-                    <div class="relative backdrop-blur-2xl bg-white/70 dark:bg-gray-900/70 rounded-3xl overflow-hidden border border-white/60 dark:border-gray-700/60 shadow-2xl group-hover:shadow-3xl transition-all duration-300">
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Place" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                            <div class="absolute top-4 right-4 backdrop-blur-xl bg-white/40 dark:bg-gray-900/40 border border-white/40 rounded-full px-4 py-1.5 text-xs font-bold text-white shadow-lg">
+                <div class="card p-0 overflow-hidden card-hover group">
+                    <div class="relative h-48">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Place" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        <div class="absolute top-3 right-3">
+                            <span class="badge bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white">
                                 Restaurant
-                            </div>
+                            </span>
                         </div>
-                        <div class="p-6 backdrop-blur-xl bg-white/30 dark:bg-gray-900/30">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Osh Markazi</h3>
-                            <div class="flex items-center text-gray-600 dark:text-gray-300 mb-4 text-sm">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                Chilanzar, Tashkent
-                            </div>
-                            <button class="w-full py-3 rounded-xl backdrop-blur-xl bg-gradient-to-r from-indigo-600/90 to-purple-600/90 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg shadow-indigo-500/40 transition-all duration-300 hover:scale-[1.02] border border-white/20">
-                                {{ __('view_details') }}
-                            </button>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Osh Markazi</h3>
+                        <div class="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-4">
+                            <svg class="w-4 h-4 mr-1.5 text-brand-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Chilanzar, Tashkent
                         </div>
+                        <button class="btn btn-primary w-full">
+                            {{ __('view_details') }}
+                        </button>
                     </div>
                 </div>
             @endforelse

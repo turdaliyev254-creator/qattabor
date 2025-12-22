@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/categories', [HomeController::class, 'allCategories'])->name('categories.all');
 
 Route::post('/language/{locale}', function ($locale) {
     if (in_array($locale, config('app.available_locales'))) {
@@ -29,6 +30,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
+    Route::resource('subcategories', \App\Http\Controllers\Admin\SubcategoryController::class)->names('admin.subcategories');
     Route::resource('places', \App\Http\Controllers\Admin\PlaceController::class)->names('admin.places');
 });
 
