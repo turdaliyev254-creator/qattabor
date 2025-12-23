@@ -11,7 +11,12 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::take(10)->get();
+        // Show only categories that have subcategories
+        $categories = Category::has('subcategories')
+            ->withCount('subcategories')
+            ->take(10)
+            ->get();
+        
         $popularPlaces = Place::where('is_popular', true)->with(['category', 'location'])->take(6)->get();
         $locations = Location::all();
 
@@ -20,7 +25,11 @@ class HomeController extends Controller
 
     public function allCategories()
     {
-        $categories = Category::all();
+        // Show only categories that have subcategories
+        $categories = Category::has('subcategories')
+            ->withCount('subcategories')
+            ->get();
+        
         return view('categories', compact('categories'));
     }
 }

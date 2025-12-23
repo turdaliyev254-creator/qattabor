@@ -26,73 +26,59 @@ class FerganaPlaceSeeder extends Seeder
 
         $this->command->info('Seeding places for Fergana city...');
 
-        // Get categories and their subcategories
-        $food = Category::where('slug', 'food')->first();
-        $hotel = Category::where('slug', 'hotel')->first();
-        $medicine = Category::where('slug', 'medicine')->first();
-        $school = Category::where('slug', 'school')->first();
-        $sports = Category::where('slug', 'sports')->first();
-        $salon = Category::where('slug', 'salon')->first();
-        $supermarket = Category::where('slug', 'supermarket')->first();
-        $clothing = Category::where('slug', 'clothing')->first();
+        // Get categories (original structure)
+        $foodCategory = Category::where('name', 'Food')->first();
+        $hotelCategory = Category::where('name', 'Hotel')->first();
+        $medicineCategory = Category::where('name', 'Medicine')->first();
+        $schoolCategory = Category::where('name', 'School')->first();
+        $sportsCategory = Category::where('name', 'Sports')->first();
+        $salonCategory = Category::where('name', 'Salon')->first();
+        $supermarketCategory = Category::where('name', 'Supermarket')->first();
+        $clothingCategory = Category::where('name', 'Clothing')->first();
+        
         
         // Food Category Places
-        if ($food) {
-            $restaurants = $food->subcategories()->where('name', 'like', '%Restaurant%')->first();
-            $cafes = $food->subcategories()->where('name', 'like', '%Cafe%')->first();
-            $fastFood = $food->subcategories()->where('name', 'like', '%Fast%')->first();
+        if ($foodCategory) {
+            $restaurants = $foodCategory->subcategories()->where('name', 'Restaurants')->first();
+            $fastFood = $foodCategory->subcategories()->where('name', 'Fast Food')->first();
+            $cafes = $foodCategory->subcategories()->where('name', 'Cafes')->first();
+            $traditional = $foodCategory->subcategories()->where('name', 'Traditional')->first();
             
             $foodPlaces = [
                 [
-                    'category_id' => $food->id,
-                    'subcategory_id' => $restaurants ? $restaurants->id : null,
+                    'category_id' => $foodCategory->id,
+                    'subcategory_id' => $traditional ? $traditional->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'Samarkand Darvoza Restaurant',
                     'slug' => Str::slug('Samarkand Darvoza Restaurant'),
-                    'description' => 'Traditional Uzbek cuisine restaurant in the heart of Fergana. Famous for authentic plov, shashlik, and traditional bread baked in tandoor oven. Family-friendly atmosphere with private dining rooms available.',
-                    'image_url' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800',
-                    'address' => 'Al-Fergani Street 45, Fergana',
+                    'description' => 'Authentic Uzbek cuisine in a beautiful traditional setting. Famous for plov, shashlik, and lagman. Family-friendly atmosphere with live music on weekends.',
+                    'image_url' => 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800',
+                    'address' => 'Mustaqillik Avenue 55, Fergana',
                     'phone' => '+998 73 244 55 66',
                     'website' => null,
                     'latitude' => 40.3864,
-                    'longitude' => 71.7864,
+                    'longitude' => 71.7824,
                     'is_popular' => true,
                     'is_featured' => true,
                 ],
                 [
-                    'category_id' => $food->id,
-                    'subcategory_id' => $restaurants ? $restaurants->id : null,
+                    'category_id' => $foodCategory->id,
+                    'subcategory_id' => $cafes ? $cafes->id : null,
                     'location_id' => $fergana->id,
-                    'name' => 'Osh Markazi',
-                    'slug' => Str::slug('Osh Markazi'),
-                    'description' => 'The best plov (osh) in Fergana Valley. Prepared daily using traditional recipes passed down through generations. Open from early morning until sold out.',
-                    'image_url' => 'https://images.unsplash.com/photo-1516714819001-8ee7a13b71d7?w=800',
-                    'address' => 'Mustaqillik Avenue 123, Fergana',
-                    'phone' => '+998 73 233 44 55',
-                    'website' => null,
-                    'latitude' => 40.3784,
-                    'longitude' => 71.7944,
+                    'name' => 'Coffee Dream',
+                    'slug' => Str::slug('Coffee Dream Fergana'),
+                    'description' => 'Cozy cafe with excellent coffee and desserts. Perfect place for meetings or relaxation. Free WiFi available.',
+                    'image_url' => 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800',
+                    'address' => 'Al-Fergani Street 123, Fergana',
+                    'phone' => '+998 73 255 66 77',
+                    'website' => 'https://coffeedream.uz',
+                    'latitude' => 40.3894,
+                    'longitude' => 71.7864,
                     'is_popular' => true,
                     'is_featured' => false,
                 ],
                 [
-                    'category_id' => $food->id,
-                    'subcategory_id' => $cafes ? $cafes->id : null,
-                    'location_id' => $fergana->id,
-                    'name' => 'Coffee Boom',
-                    'slug' => Str::slug('Coffee Boom Fergana'),
-                    'description' => 'Modern coffee shop with specialty coffee, fresh pastries, and free WiFi. Perfect place for work or meetings. Offers variety of hot and cold beverages.',
-                    'image_url' => 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800',
-                    'address' => 'Fergana Mall, 2nd floor',
-                    'phone' => '+998 73 255 66 77',
-                    'website' => null,
-                    'latitude' => 40.3894,
-                    'longitude' => 71.7824,
-                    'is_popular' => false,
-                    'is_featured' => false,
-                ],
-                [
-                    'category_id' => $food->id,
+                    'category_id' => $foodCategory->id,
                     'subcategory_id' => $fastFood ? $fastFood->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'Burger House',
@@ -115,13 +101,14 @@ class FerganaPlaceSeeder extends Seeder
         }
 
         // Hotel Category Places
-        if ($hotel) {
-            $hotelSubcat = $hotel->subcategories()->first();
+        if ($hotelCategory) {
+            $luxuryHotels = $hotelCategory->subcategories()->where('name', 'Luxury Hotels')->first();
+            $budgetHotels = $hotelCategory->subcategories()->where('name', 'Budget Hotels')->first();
             
             $hotelPlaces = [
                 [
-                    'category_id' => $hotel->id,
-                    'subcategory_id' => $hotelSubcat ? $hotelSubcat->id : null,
+                    'category_id' => $hotelCategory->id,
+                    'subcategory_id' => $luxuryHotels ? $luxuryHotels->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'Club 777 Hotel',
                     'slug' => Str::slug('Club 777 Hotel'),
@@ -136,8 +123,8 @@ class FerganaPlaceSeeder extends Seeder
                     'is_featured' => true,
                 ],
                 [
-                    'category_id' => $hotel->id,
-                    'subcategory_id' => $hotelSubcat ? $hotelSubcat->id : null,
+                    'category_id' => $hotelCategory->id,
+                    'subcategory_id' => $budgetHotels ? $budgetHotels->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'Fergana Hotel',
                     'slug' => Str::slug('Fergana Hotel'),
@@ -152,8 +139,8 @@ class FerganaPlaceSeeder extends Seeder
                     'is_featured' => false,
                 ],
                 [
-                    'category_id' => $hotel->id,
-                    'subcategory_id' => $hotelSubcat ? $hotelSubcat->id : null,
+                    'category_id' => $hotelCategory->id,
+                    'subcategory_id' => $budgetHotels ? $budgetHotels->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'Asia Hotel',
                     'slug' => Str::slug('Asia Hotel Fergana'),
@@ -175,13 +162,14 @@ class FerganaPlaceSeeder extends Seeder
         }
 
         // Medicine Category Places
-        if ($medicine) {
-            $hospitals = $medicine->subcategories()->where('name', 'like', '%Hospital%')->first();
-            $clinics = $medicine->subcategories()->where('name', 'like', '%Clinic%')->first();
+        if ($medicineCategory) {
+            $hospitals = $medicineCategory->subcategories()->where('name', 'Hospitals')->first();
+            $clinics = $medicineCategory->subcategories()->where('name', 'Clinics')->first();
+            $dental = $medicineCategory->subcategories()->where('name', 'Dental')->first();
             
             $medicinePlaces = [
                 [
-                    'category_id' => $medicine->id,
+                    'category_id' => $medicineCategory->id,
                     'subcategory_id' => $hospitals ? $hospitals->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'Fergana Regional Hospital',
@@ -197,7 +185,7 @@ class FerganaPlaceSeeder extends Seeder
                     'is_featured' => false,
                 ],
                 [
-                    'category_id' => $medicine->id,
+                    'category_id' => $medicineCategory->id,
                     'subcategory_id' => $clinics ? $clinics->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'MedLife Clinic',
@@ -213,8 +201,8 @@ class FerganaPlaceSeeder extends Seeder
                     'is_featured' => false,
                 ],
                 [
-                    'category_id' => $medicine->id,
-                    'subcategory_id' => $clinics ? $clinics->id : null,
+                    'category_id' => $medicineCategory->id,
+                    'subcategory_id' => $dental ? $dental->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'Dental Plus',
                     'slug' => Str::slug('Dental Plus Fergana'),
@@ -236,55 +224,40 @@ class FerganaPlaceSeeder extends Seeder
         }
 
         // School Category Places
-        if ($school) {
-            $schoolSubcat = $school->subcategories()->first();
+        if ($schoolCategory) {
+            $privateSchool = $schoolCategory->subcategories()->where('name', 'Private School')->first();
+            $languageSchool = $schoolCategory->subcategories()->where('name', 'Language School')->first();
             
             $schoolPlaces = [
                 [
-                    'category_id' => $school->id,
-                    'subcategory_id' => $schoolSubcat ? $schoolSubcat->id : null,
+                    'category_id' => $schoolCategory->id,
+                    'subcategory_id' => $privateSchool ? $privateSchool->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'Presidential School of Fergana',
-                    'slug' => Str::slug('Presidential School Fergana'),
-                    'description' => 'Elite educational institution with advanced curriculum and modern facilities. Bilingual education with emphasis on sciences and technology.',
-                    'image_url' => 'https://images.unsplash.com/photo-1562774053-701939374585?w=800',
-                    'address' => 'Yangi Fergana District, Fergana',
-                    'phone' => '+998 73 277 88 99',
-                    'website' => 'https://pmsh.uz',
-                    'latitude' => 40.3944,
-                    'longitude' => 71.7964,
-                    'is_popular' => true,
-                    'is_featured' => false,
-                ],
-                [
-                    'category_id' => $school->id,
-                    'subcategory_id' => $schoolSubcat ? $schoolSubcat->id : null,
-                    'location_id' => $fergana->id,
-                    'name' => 'School #1',
-                    'slug' => Str::slug('School 1 Fergana'),
-                    'description' => 'One of the oldest and most respected schools in Fergana. Strong academic tradition with experienced teaching staff.',
+                    'slug' => Str::slug('Presidential School of Fergana'),
+                    'description' => 'Elite school offering advanced education programs. Modern facilities, experienced teachers, and comprehensive curriculum including foreign languages.',
                     'image_url' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800',
-                    'address' => 'Amir Temur Street 234, Fergana',
-                    'phone' => '+998 73 244 22 33',
-                    'website' => null,
-                    'latitude' => 40.3824,
-                    'longitude' => 71.7894,
-                    'is_popular' => false,
-                    'is_featured' => false,
+                    'address' => 'Mustaqillik Avenue 201, Fergana',
+                    'phone' => '+998 73 277 88 99',
+                    'website' => 'https://ps.fergana.uz',
+                    'latitude' => 40.3964,
+                    'longitude' => 71.7904,
+                    'is_popular' => true,
+                    'is_featured' => true,
                 ],
                 [
-                    'category_id' => $school->id,
-                    'subcategory_id' => $schoolSubcat ? $schoolSubcat->id : null,
+                    'category_id' => $schoolCategory->id,
+                    'subcategory_id' => $languageSchool ? $languageSchool->id : null,
                     'location_id' => $fergana->id,
-                    'name' => 'International School Fergana',
-                    'slug' => Str::slug('International School Fergana'),
-                    'description' => 'Private international school following Cambridge curriculum. Small class sizes and personalized attention for each student.',
-                    'image_url' => 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800',
-                    'address' => 'Mustaqillik Avenue 234, Fergana',
+                    'name' => 'English First Language Center',
+                    'slug' => Str::slug('English First Language Center'),
+                    'description' => 'Professional language learning center specializing in English. Experienced native speakers, interactive classes, and international certification preparation.',
+                    'image_url' => 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=800',
+                    'address' => 'Al-Fergani Street 189, Fergana',
                     'phone' => '+998 73 288 99 00',
-                    'website' => null,
-                    'latitude' => 40.3874,
-                    'longitude' => 71.7814,
+                    'website' => 'https://englishfirst.uz',
+                    'latitude' => 40.3944,
+                    'longitude' => 71.7944,
                     'is_popular' => false,
                     'is_featured' => false,
                 ],
@@ -296,57 +269,58 @@ class FerganaPlaceSeeder extends Seeder
         }
 
         // Sports Category Places
-        if ($sports) {
-            $gyms = $sports->subcategories()->where('name', 'like', '%Gym%')->orWhere('name', 'like', '%Fitness%')->first();
-            $pools = $sports->subcategories()->where('name', 'like', '%Pool%')->orWhere('name', 'like', '%Swimming%')->first();
+        if ($sportsCategory) {
+            $gym = $sportsCategory->subcategories()->where('name', 'Gym')->first();
+            $swimmingPool = $sportsCategory->subcategories()->where('name', 'Swimming Pool')->first();
+            $football = $sportsCategory->subcategories()->where('name', 'Football')->first();
             
             $sportsPlaces = [
                 [
-                    'category_id' => $sports->id,
-                    'subcategory_id' => $gyms ? $gyms->id : null,
+                    'category_id' => $sportsCategory->id,
+                    'subcategory_id' => $gym ? $gym->id : null,
                     'location_id' => $fergana->id,
-                    'name' => 'Gold Gym Fergana',
-                    'slug' => Str::slug('Gold Gym Fergana'),
-                    'description' => 'Premium fitness center with state-of-the-art equipment, personal trainers, group classes, and sauna. Open 6 AM to 11 PM.',
+                    'name' => 'Fitness Zone Gym',
+                    'slug' => Str::slug('Fitness Zone Gym'),
+                    'description' => 'Modern fitness center with latest equipment. Professional trainers, group classes, sauna, and personal training programs available.',
                     'image_url' => 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800',
-                    'address' => 'Al-Fergani Street 189, Fergana',
+                    'address' => 'Mustaqillik Avenue 178, Fergana',
                     'phone' => '+998 73 299 00 11',
-                    'website' => null,
-                    'latitude' => 40.3854,
-                    'longitude' => 71.7834,
+                    'website' => 'https://fitnesszone.uz',
+                    'latitude' => 40.3904,
+                    'longitude' => 71.7944,
                     'is_popular' => true,
                     'is_featured' => false,
                 ],
                 [
-                    'category_id' => $sports->id,
-                    'subcategory_id' => $pools ? $pools->id : null,
+                    'category_id' => $sportsCategory->id,
+                    'subcategory_id' => $swimmingPool ? $swimmingPool->id : null,
                     'location_id' => $fergana->id,
                     'name' => 'Aqua Sport Complex',
                     'slug' => Str::slug('Aqua Sport Complex'),
-                    'description' => 'Modern swimming pool complex with Olympic-size pool, children\'s pool, and swimming lessons for all ages.',
+                    'description' => 'Indoor swimming pool complex with olympic-size pool, kids pool, swimming lessons, and water aerobics classes.',
                     'image_url' => 'https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?w=800',
-                    'address' => 'Sports Complex, Fergana',
-                    'phone' => '+998 73 255 77 88',
+                    'address' => 'Navoi Street 89, Fergana',
+                    'phone' => '+998 73 244 22 33',
                     'website' => null,
-                    'latitude' => 40.3794,
-                    'longitude' => 71.7914,
+                    'latitude' => 40.3774,
+                    'longitude' => 71.7984,
                     'is_popular' => false,
                     'is_featured' => false,
                 ],
                 [
-                    'category_id' => $sports->id,
-                    'subcategory_id' => $gyms ? $gyms->id : null,
+                    'category_id' => $sportsCategory->id,
+                    'subcategory_id' => $football ? $football->id : null,
                     'location_id' => $fergana->id,
-                    'name' => 'Fitness Club 24/7',
-                    'slug' => Str::slug('Fitness Club 247'),
-                    'description' => 'Budget-friendly gym open 24 hours. Basic equipment and free weights. Monthly and annual memberships available.',
-                    'image_url' => 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800',
-                    'address' => 'Mustaqillik Avenue 276, Fergana',
-                    'phone' => '+998 73 266 88 99',
+                    'name' => 'Fergana Stadium',
+                    'slug' => Str::slug('Fergana Stadium'),
+                    'description' => 'Main city stadium for football matches and sports events. Home stadium for local football club. Open for public use during off-season.',
+                    'image_url' => 'https://images.unsplash.com/photo-1459865264687-595d652de67e?w=800',
+                    'address' => 'Sports Street 1, Fergana',
+                    'phone' => '+998 73 233 44 55',
                     'website' => null,
-                    'latitude' => 40.3904,
-                    'longitude' => 71.7794,
-                    'is_popular' => false,
+                    'latitude' => 40.3814,
+                    'longitude' => 71.7744,
+                    'is_popular' => true,
                     'is_featured' => false,
                 ],
             ];
@@ -357,55 +331,41 @@ class FerganaPlaceSeeder extends Seeder
         }
 
         // Salon Category Places
-        if ($salon) {
-            $salonSubcat = $salon->subcategories()->first();
+        if ($salonCategory) {
+            $hairSalon = $salonCategory->subcategories()->where('name', 'Hair Salon')->first();
+            $barberShop = $salonCategory->subcategories()->where('name', 'Barber Shop')->first();
+            $beautySalon = $salonCategory->subcategories()->where('name', 'Beauty Salon')->first();
             
             $salonPlaces = [
                 [
-                    'category_id' => $salon->id,
-                    'subcategory_id' => $salonSubcat ? $salonSubcat->id : null,
+                    'category_id' => $salonCategory->id,
+                    'subcategory_id' => $beautySalon ? $beautySalon->id : null,
                     'location_id' => $fergana->id,
-                    'name' => 'Beauty Studio Elite',
-                    'slug' => Str::slug('Beauty Studio Elite'),
-                    'description' => 'Premium beauty salon offering haircuts, coloring, makeup, manicure, pedicure, and spa treatments. Professional stylists with international training.',
+                    'name' => 'Luxury Beauty Salon',
+                    'slug' => Str::slug('Luxury Beauty Salon'),
+                    'description' => 'Premium beauty salon offering hair styling, makeup, manicure, pedicure, and facial treatments. Professional stylists and latest beauty trends.',
                     'image_url' => 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800',
-                    'address' => 'Fergana Mall, 3rd floor',
-                    'phone' => '+998 73 277 99 00',
-                    'website' => null,
-                    'latitude' => 40.3894,
-                    'longitude' => 71.7824,
+                    'address' => 'Mustaqillik Avenue 134, Fergana',
+                    'phone' => '+998 73 255 77 88',
+                    'website' => 'https://luxurybeauty.uz',
+                    'latitude' => 40.3874,
+                    'longitude' => 71.7834,
                     'is_popular' => true,
                     'is_featured' => false,
                 ],
                 [
-                    'category_id' => $salon->id,
-                    'subcategory_id' => $salonSubcat ? $salonSubcat->id : null,
+                    'category_id' => $salonCategory->id,
+                    'subcategory_id' => $barberShop ? $barberShop->id : null,
                     'location_id' => $fergana->id,
-                    'name' => 'Gentleman Barbershop',
-                    'slug' => Str::slug('Gentleman Barbershop'),
-                    'description' => 'Classic barbershop for men. Traditional hot towel shaves, haircuts, beard trimming, and grooming services.',
+                    'name' => 'Gentleman Barber Shop',
+                    'slug' => Str::slug('Gentleman Barber Shop'),
+                    'description' => 'Classic barber shop for men. Professional haircuts, beard styling, hot towel shaves, and grooming services in a relaxed atmosphere.',
                     'image_url' => 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800',
-                    'address' => 'Al-Fergani Street 134, Fergana',
-                    'phone' => '+998 73 288 00 11',
+                    'address' => 'Al-Fergani Street 145, Fergana',
+                    'phone' => '+998 73 266 88 99',
                     'website' => null,
-                    'latitude' => 40.3814,
-                    'longitude' => 71.7874,
-                    'is_popular' => false,
-                    'is_featured' => false,
-                ],
-                [
-                    'category_id' => $salon->id,
-                    'subcategory_id' => $salonSubcat ? $salonSubcat->id : null,
-                    'location_id' => $fergana->id,
-                    'name' => 'Nail Art Studio',
-                    'slug' => Str::slug('Nail Art Studio Fergana'),
-                    'description' => 'Specialized nail salon with creative nail art designs, gel polish, extensions, and nail care treatments.',
-                    'image_url' => 'https://images.unsplash.com/photo-1604902396830-aca29e19b067?w=800',
-                    'address' => 'Mustaqillik Avenue 198, Fergana',
-                    'phone' => '+998 73 299 11 22',
-                    'website' => null,
-                    'latitude' => 40.3934,
-                    'longitude' => 71.7754,
+                    'latitude' => 40.3924,
+                    'longitude' => 71.7794,
                     'is_popular' => false,
                     'is_featured' => false,
                 ],
@@ -417,55 +377,39 @@ class FerganaPlaceSeeder extends Seeder
         }
 
         // Supermarket Category Places
-        if ($supermarket) {
-            $supermarketSubcat = $supermarket->subcategories()->first();
+        if ($supermarketCategory) {
+            $groceries = $supermarketCategory->subcategories()->where('name', 'Groceries')->first();
             
             $supermarketPlaces = [
                 [
-                    'category_id' => $supermarket->id,
-                    'subcategory_id' => $supermarketSubcat ? $supermarketSubcat->id : null,
+                    'category_id' => $supermarketCategory->id,
+                    'subcategory_id' => $groceries ? $groceries->id : null,
                     'location_id' => $fergana->id,
-                    'name' => 'Korzinka Supermarket',
-                    'slug' => Str::slug('Korzinka Supermarket Fergana'),
-                    'description' => 'Large modern supermarket chain with wide selection of groceries, fresh produce, household items, and electronics. Open daily until midnight.',
+                    'name' => 'Makro Supermarket',
+                    'slug' => Str::slug('Makro Supermarket'),
+                    'description' => 'Large supermarket chain offering groceries, fresh produce, household items, and electronics. Competitive prices and regular promotions.',
                     'image_url' => 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800',
-                    'address' => 'Mustaqillik Avenue 100, Fergana',
-                    'phone' => '+998 73 200 00 01',
-                    'website' => 'https://korzinka.uz',
-                    'latitude' => 40.3864,
-                    'longitude' => 71.7844,
+                    'address' => 'Mustaqillik Avenue 99, Fergana',
+                    'phone' => '+998 73 244 33 44',
+                    'website' => 'https://makro.uz',
+                    'latitude' => 40.3854,
+                    'longitude' => 71.7814,
                     'is_popular' => true,
-                    'is_featured' => true,
-                ],
-                [
-                    'category_id' => $supermarket->id,
-                    'subcategory_id' => $supermarketSubcat ? $supermarketSubcat->id : null,
-                    'location_id' => $fergana->id,
-                    'name' => 'Havas Supermarket',
-                    'slug' => Str::slug('Havas Supermarket'),
-                    'description' => 'Local supermarket chain with competitive prices and fresh local products. Free delivery for orders over 100,000 sum.',
-                    'image_url' => 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800',
-                    'address' => 'Al-Fergani Street 234, Fergana',
-                    'phone' => '+998 73 211 22 33',
-                    'website' => null,
-                    'latitude' => 40.3774,
-                    'longitude' => 71.7884,
-                    'is_popular' => false,
                     'is_featured' => false,
                 ],
                 [
-                    'category_id' => $supermarket->id,
-                    'subcategory_id' => $supermarketSubcat ? $supermarketSubcat->id : null,
+                    'category_id' => $supermarketCategory->id,
+                    'subcategory_id' => $groceries ? $groceries->id : null,
                     'location_id' => $fergana->id,
-                    'name' => 'Makro Market',
-                    'slug' => Str::slug('Makro Market Fergana'),
-                    'description' => 'Wholesale and retail market with bulk buying options. Great prices for businesses and large families.',
-                    'image_url' => 'https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?w=800',
-                    'address' => 'Industrial Zone, Fergana',
-                    'phone' => '+998 73 222 33 44',
-                    'website' => null,
-                    'latitude' => 40.3954,
-                    'longitude' => 71.7734,
+                    'name' => 'Korzinka Supermarket',
+                    'slug' => Str::slug('Korzinka Supermarket'),
+                    'description' => 'Popular supermarket chain with wide selection of local and imported products. Fresh bakery, deli, and convenient location.',
+                    'image_url' => 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800',
+                    'address' => 'Al-Fergani Street 234, Fergana',
+                    'phone' => '+998 73 277 55 66',
+                    'website' => 'https://korzinka.uz',
+                    'latitude' => 40.3984,
+                    'longitude' => 71.7894,
                     'is_popular' => false,
                     'is_featured' => false,
                 ],
@@ -477,55 +421,40 @@ class FerganaPlaceSeeder extends Seeder
         }
 
         // Clothing Category Places
-        if ($clothing) {
-            $clothingSubcat = $clothing->subcategories()->first();
+        if ($clothingCategory) {
+            $menFashion = $clothingCategory->subcategories()->where('name', 'Men Fashion')->first();
+            $womenFashion = $clothingCategory->subcategories()->where('name', 'Women Fashion')->first();
             
             $clothingPlaces = [
                 [
-                    'category_id' => $clothing->id,
-                    'subcategory_id' => $clothingSubcat ? $clothingSubcat->id : null,
+                    'category_id' => $clothingCategory->id,
+                    'subcategory_id' => $womenFashion ? $womenFashion->id : null,
                     'location_id' => $fergana->id,
-                    'name' => 'Fashion House',
-                    'slug' => Str::slug('Fashion House Fergana'),
-                    'description' => 'Trendy clothing store with latest fashion for men and women. International and local brands. Regular sales and new collections.',
-                    'image_url' => 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800',
-                    'address' => 'Fergana Mall, 1st floor',
-                    'phone' => '+998 73 233 44 55',
+                    'name' => 'Fashion Boutique Elegance',
+                    'slug' => Str::slug('Fashion Boutique Elegance'),
+                    'description' => 'Upscale boutique featuring latest fashion trends for women. Designer clothes, accessories, and personalized styling service.',
+                    'image_url' => 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800',
+                    'address' => 'Mustaqillik Avenue 167, Fergana',
+                    'phone' => '+998 73 288 77 88',
                     'website' => null,
                     'latitude' => 40.3894,
+                    'longitude' => 71.7874,
+                    'is_popular' => false,
+                    'is_featured' => false,
+                ],
+                [
+                    'category_id' => $clothingCategory->id,
+                    'subcategory_id' => $menFashion ? $menFashion->id : null,
+                    'location_id' => $fergana->id,
+                    'name' => 'Men Style Outlet',
+                    'slug' => Str::slug('Men Style Outlet'),
+                    'description' => 'Men\'s clothing store with casual and formal wear. Quality brands at affordable prices. Shirts, suits, jeans, and shoes.',
+                    'image_url' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800',
+                    'address' => 'Al-Fergani Street 112, Fergana',
+                    'phone' => '+998 73 266 99 00',
+                    'website' => null,
+                    'latitude' => 40.3904,
                     'longitude' => 71.7824,
-                    'is_popular' => false,
-                    'is_featured' => false,
-                ],
-                [
-                    'category_id' => $clothing->id,
-                    'subcategory_id' => $clothingSubcat ? $clothingSubcat->id : null,
-                    'location_id' => $fergana->id,
-                    'name' => 'Kids Fashion',
-                    'slug' => Str::slug('Kids Fashion Fergana'),
-                    'description' => 'Children\'s clothing store with quality clothes for all ages from newborn to teenagers. School uniforms also available.',
-                    'image_url' => 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=800',
-                    'address' => 'Al-Fergani Street 167, Fergana',
-                    'phone' => '+998 73 244 55 66',
-                    'website' => null,
-                    'latitude' => 40.3844,
-                    'longitude' => 71.7794,
-                    'is_popular' => false,
-                    'is_featured' => false,
-                ],
-                [
-                    'category_id' => $clothing->id,
-                    'subcategory_id' => $clothingSubcat ? $clothingSubcat->id : null,
-                    'location_id' => $fergana->id,
-                    'name' => 'Sport Style',
-                    'slug' => Str::slug('Sport Style Fergana'),
-                    'description' => 'Athletic wear and sports equipment store. Brands like Nike, Adidas, Puma, and more. Shoes, clothing, and accessories.',
-                    'image_url' => 'https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800',
-                    'address' => 'Mustaqillik Avenue 167, Fergana',
-                    'phone' => '+998 73 255 66 77',
-                    'website' => null,
-                    'latitude' => 40.3914,
-                    'longitude' => 71.7864,
                     'is_popular' => false,
                     'is_featured' => false,
                 ],
@@ -536,6 +465,6 @@ class FerganaPlaceSeeder extends Seeder
             }
         }
 
-        $this->command->info('Successfully seeded ' . Place::where('location_id', $fergana->id)->count() . ' places for Fergana!');
+        $this->command->info('✅ Successfully seeded ' . Place::count() . ' places for Fergana city!');
     }
 }
