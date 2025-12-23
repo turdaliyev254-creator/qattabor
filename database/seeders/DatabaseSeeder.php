@@ -265,6 +265,10 @@ class DatabaseSeeder extends Seeder
         echo "📍 Creating locations...\n";
         $this->call(LocationSeeder::class);
 
+        // Create Fergana Places
+        echo "\n🏙️  Creating places for Fergana city...\n";
+        $this->call(FerganaPlaceSeeder::class);
+
         echo "\n🎉 Database seeding completed successfully!\n";
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
         echo "🔐 Admin Login:\n";

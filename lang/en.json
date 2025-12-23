@@ -69,6 +69,26 @@
     "Xorazm": "Khorezm",
     "Surxondaryo": "Surkhandarya",
     "Qashqadaryo": "Kashkadarya",
-    "Jizzax": "Jizzakh"
+    "Jizzax": "Jizzakh",
+    "back": "Back",
+    "all_locations": "All Locations",
+    "popular": "Popular",
+    "no_places_found": "No places found",
+    "try_different_filter": "Try a different filter",
+    "subcategories": "Subcategories",
+    "places": "places",
+    "all_places": "All Places",
+    "back_to_category": "Back to Category",
+    "no_places_in_subcategory": "No places in this subcategory yet",
+    "saved_places": "Saved Places",
+    "no_saved_places": "No saved places yet",
+    "start_saving_places": "Start saving your favorite places to see them here",
+    "explore_places": "Explore Places",
+    "contact_info": "Contact Information",
+    "phone": "Phone",
+    "website": "Website",
+    "address": "Address",
+    "location_on_map": "Location on Map",
+    "related_places": "You May Also Like"
 }
 

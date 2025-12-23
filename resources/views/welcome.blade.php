@@ -74,7 +74,7 @@
         <!-- Categories Grid -->
         <div class="grid grid-cols-5 gap-4">
             @foreach($categories as $category)
-            <div class="relative">
+            <a href="{{ route('places.by-category', $category->slug) }}" class="relative">
                 <div class="flex flex-col items-center gap-2 w-full cursor-pointer hover:opacity-80 transition-opacity">
                     <div class="w-16 h-16 flex items-center justify-center drop-shadow-lg hover:drop-shadow-xl transition-all">
                         @if($category->image)
@@ -87,7 +87,7 @@
                     </div>
                     <span class="text-sm font-medium text-gray-700 dark:text-gray-300 text-center">{{ __($category->name) }}</span>
                 </div>
-            </div>
+            </a>
             @endforeach
         </div>
     </div>
@@ -96,14 +96,14 @@
     <div class="mb-8">
         <div class="flex items-center justify-between mb-3">
             <h2 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('popular_places_title') }}</h2>
-            <a href="#" class="text-blue-600 dark:text-blue-400 text-xs font-medium hover:underline">{{ __('all') }}</a>
+            <a href="{{ route('places.popular') }}" class="text-blue-600 dark:text-blue-400 text-xs font-medium hover:underline">{{ __('all') }}</a>
         </div>
 
         <!-- Horizontal Scrollable Cards -->
         <div class="overflow-x-auto scrollbar-hide -mx-4 px-4">
             <div class="flex gap-3 pb-2">
                 @forelse($popularPlaces ?? [] as $place)
-                <a href="#" class="flex-shrink-0 w-48">
+                <a href="{{ route('places.show', $place->slug) }}" class="flex-shrink-0 w-48">
                     <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
                         <!-- Place Image -->
                         <div class="relative h-28 overflow-hidden bg-gray-200 dark:bg-gray-700">
