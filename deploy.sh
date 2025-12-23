@@ -14,6 +14,10 @@ php composer.phar install --no-dev --optimize-autoloader
 echo "🗄️  Запуск миграций..."
 php artisan migrate --force
 
+# 4.1. Заполнение категорий (если таблица пустая)
+echo "🌱 Проверка и заполнение категорий..."
+php artisan db:seed --class=CategorySeeder --force || true
+
 # 5. Очистка и кэширование
 echo "🧹 Очистка кэша и пересборка..."
 php artisan optimize:clear
