@@ -64,8 +64,8 @@
         </div>
     </div>
 
-    <!-- Categories Section with Subcategories -->
-    <div class="mb-8" x-data="{ openCategory: null }">
+    <!-- Categories Section -->
+    <div class="mb-8">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Kategoriyalar</h2>
             <a href="{{ route('categories.all') }}" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">Barchasi</a>
