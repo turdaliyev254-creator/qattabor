@@ -14,6 +14,12 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        // Skip if categories already exist
+        if (Category::count() > 0) {
+            $this->command->info('Categories already exist. Skipping seeder.');
+            return;
+        }
+
         $categories = [
             ['name' => 'Furniture', 'image' => 'sofa.png'],
             ['name' => 'Supermarket', 'image' => 'supermarket.png'],
@@ -50,5 +56,7 @@ class CategorySeeder extends Seeder
                 'image' => $category['image'],
             ]);
         }
+
+        $this->command->info('Successfully created ' . count($categories) . ' categories.');
     }
 }
