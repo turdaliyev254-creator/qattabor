@@ -336,8 +336,9 @@
 
         function changeLang(lang) {
             let locale = 'en';
-            if (lang === 'Русский') locale = 'ru';
-            else if (lang === 'O\'zbekcha') locale = 'uz';
+            if (lang === 'RUS') locale = 'ru';
+            else if (lang === 'UZB') locale = 'uz';
+            else if (lang === 'ENG') locale = 'en';
             
             // Send AJAX request to change locale
             fetch(`/language/${locale}`, {
