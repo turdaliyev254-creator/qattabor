@@ -8,9 +8,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                     </svg>
                 </a>
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Kategoriyalar</h1>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ __('categories') }}</h1>
             </div>
-            <p class="text-gray-600 dark:text-gray-400">Barcha kategoriyalarni ko'ring</p>
+            <p class="text-gray-600 dark:text-gray-400">{{ __('see_all') }} {{ __('categories') }}</p>
         </div>
 
         <!-- Categories Grid -->
@@ -26,7 +26,7 @@
                         </div>
                     @endif
                 </div>
-                <span class="text-base font-semibold text-gray-700 dark:text-gray-300 text-center">{{ $category->name }}</span>
+                <span class="text-base font-semibold text-gray-700 dark:text-gray-300 text-center">{{ __($category->name) }}</span>
             </div>
             @endforeach
         </div>

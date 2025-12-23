@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/categories', [HomeController::class, 'allCategories'])->name('categories.all');
+Route::get('/popular-places', [PlaceController::class, 'popularPlaces'])->name('places.popular');
+Route::get('/categories/{category:slug}', [PlaceController::class, 'byCategory'])->name('places.by-category');
+Route::get('/categories/{category:slug}/{subcategory:slug}', [PlaceController::class, 'bySubcategory'])->name('places.by-subcategory');
+Route::get('/places/{place:slug}', [PlaceController::class, 'show'])->name('places.show');
+Route::get('/map', [PlaceController::class, 'map'])->name('map.index');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/saved-places', [PlaceController::class, 'savedPlaces'])->name('places.saved');
+    Route::post('/places/{place}/save', [PlaceController::class, 'save'])->name('places.save');
+    Route::delete('/places/{place}/unsave', [PlaceController::class, 'unsave'])->name('places.unsave');
+});
 
 Route::post('/language/{locale}', function ($locale) {
     if (in_array($locale, config('app.available_locales'))) {

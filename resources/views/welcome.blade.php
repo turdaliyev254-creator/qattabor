@@ -3,7 +3,7 @@
     <div class="mb-8">
         <div class="relative">
             <input type="text" 
-                   placeholder="Nima qidiramiz..." 
+                   placeholder="{{ __('search_what') }}" 
                    class="w-full pl-12 pr-16 py-4 bg-white dark:bg-gray-800/90 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
             <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -67,8 +67,8 @@
     <!-- Categories Section -->
     <div class="mb-8">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Kategoriyalar</h2>
-            <a href="{{ route('categories.all') }}" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">Barchasi</a>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('categories') }}</h2>
+            <a href="{{ route('categories.all') }}" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">{{ __('all') }}</a>
         </div>
 
         <!-- Categories Grid -->
@@ -85,7 +85,7 @@
                             </div>
                         @endif
                     </div>
-                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 text-center">{{ $category->name }}</span>
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 text-center">{{ __($category->name) }}</span>
                 </div>
             </div>
             @endforeach
@@ -95,8 +95,8 @@
     <!-- Popular Places Section -->
     <div class="mb-8">
         <div class="flex items-center justify-between mb-3">
-            <h2 class="text-lg font-bold text-gray-900 dark:text-white">Mashhur joylar</h2>
-            <a href="#" class="text-blue-600 dark:text-blue-400 text-xs font-medium hover:underline">Barchasi</a>
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('popular_places_title') }}</h2>
+            <a href="#" class="text-blue-600 dark:text-blue-400 text-xs font-medium hover:underline">{{ __('all') }}</a>
         </div>
 
         <!-- Horizontal Scrollable Cards -->
@@ -127,7 +127,7 @@
                                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                                 </svg>
-                                <span class="line-clamp-1">{{ $place->location->name ?? 'Toshkent' }}</span>
+                                <span class="line-clamp-1">{{ $place->location->name ?? __('tashkent') }}</span>
                             </div>
                             <div class="flex items-center gap-0.5">
                                 <svg class="w-3.5 h-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
@@ -155,12 +155,12 @@
                         
                         <!-- Place Info -->
                         <div class="p-2">
-                            <h3 class="font-semibold text-sm text-gray-900 dark:text-white mb-1 line-clamp-1">Mashhur Joy {{ $i }}</h3>
+                            <h3 class="font-semibold text-sm text-gray-900 dark:text-white mb-1 line-clamp-1">{{ __('sample_place') }} {{ $i }}</h3>
                             <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-1">
                                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                                 </svg>
-                                <span class="line-clamp-1">Toshkent</span>
+                                <span class="line-clamp-1">{{ __('tashkent') }}</span>
                             </div>
                             <div class="flex items-center gap-0.5">
                                 <svg class="w-3.5 h-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
