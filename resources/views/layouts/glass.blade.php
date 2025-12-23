@@ -14,63 +14,71 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased h-full bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body class="font-sans antialiased h-full bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 transition-colors duration-300">
     <div x-data="{ open: false }" class="min-h-screen flex flex-col relative overflow-hidden">
-        <!-- Background Blobs -->
-        <div class="absolute top-0 left-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div class="absolute top-0 right-0 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-20 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+        <!-- Subtle Background Pattern -->
+        <div class="absolute inset-0 bg-grid-pattern opacity-[0.015] dark:opacity-[0.05]"></div>
 
         <!-- Header -->
-        <header class="fixed top-0 w-full z-50 transition-all duration-300 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border-b border-white/20 shadow-sm" id="navbar">
+        <header class="fixed top-0 w-full z-50 transition-all duration-300 bg-white/80 dark:from-gray-900/95 dark:to-gray-800/95 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50" id="navbar">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
                     <!-- Logo -->
                     <div class="flex-shrink-0">
-                        <a href="{{ route('home') }}" class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg bg-white/30 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg">
-                                <span class="text-indigo-600 dark:text-indigo-400">Q</span>
+                        <a href="{{ route('home') }}" class="flex items-center gap-2">
+                            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                                <span class="text-white font-bold text-xl">Q</span>
                             </div>
-                            QattaBor
+                            <span class="text-xl font-bold">
+                                <span class="text-gray-900 dark:text-white">Qatta</span><span class="text-blue-600 dark:text-blue-400">Bor</span>
+                            </span>
                         </a>
                     </div>
 
                     <!-- Right Side: Location & Burger Menu -->
                     <div class="flex items-center gap-3">
                         <!-- Location Selector -->
-                        <div x-data="{ locationOpen: false }">
-                            <button @click="locationOpen = !locationOpen" class="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-xl border border-white/40 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 group">
-                                <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <div x-data="{ locationOpen: false }" class="relative">
+                            <button @click="locationOpen = !locationOpen" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                                <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                                 </svg>
+                                <span id="current-location" class="font-medium">Toshkent</span>
                             </button>
                             <div x-show="locationOpen" 
                                  @click.away="locationOpen = false"
-                                 x-transition
-                                 class="absolute mt-2 w-64 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-white/20 p-3 max-h-96 overflow-y-auto z-50 right-0"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700 p-6 max-h-[500px] overflow-y-auto z-50"
                                  style="display: none;">
-                                <div class="space-y-1">
-                                    <a href="#" onclick="changeLocation('Tashkent')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Tashkent</a>
-                                    <a href="#" onclick="changeLocation('Andijan')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Andijan</a>
-                                    <a href="#" onclick="changeLocation('Bukhara')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Bukhara</a>
-                                    <a href="#" onclick="changeLocation('Fergana')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Fergana</a>
-                                    <a href="#" onclick="changeLocation('Jizzakh')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Jizzakh</a>
-                                    <a href="#" onclick="changeLocation('Namangan')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Namangan</a>
-                                    <a href="#" onclick="changeLocation('Navoiy')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Navoiy</a>
-                                    <a href="#" onclick="changeLocation('Nukus')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Nukus</a>
-                                    <a href="#" onclick="changeLocation('Qashqadaryo')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Qashqadaryo</a>
-                                    <a href="#" onclick="changeLocation('Samarkand')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Samarkand</a>
-                                    <a href="#" onclick="changeLocation('Sirdaryo')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Sirdaryo</a>
-                                    <a href="#" onclick="changeLocation('Surxondaryo')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Surxondaryo</a>
-                                    <a href="#" onclick="changeLocation('Xorazm')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">📍 Xorazm</a>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Hududni tanlang</h3>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button onclick="changeLocation('Toshkent')" class="px-4 py-3 text-sm text-center font-medium text-white bg-gray-900 dark:bg-white dark:text-gray-900 rounded-2xl hover:opacity-90 transition-opacity">Toshkent</button>
+                                    <button onclick="changeLocation('Toshkent viloyati')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Toshkent viloyati</button>
+                                    <button onclick="changeLocation('Farg\'ona')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Farg'ona</button>
+                                    <button onclick="changeLocation('Qo\'qon')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Qo'qon</button>
+                                    <button onclick="changeLocation('Namangan')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Namangan</button>
+                                    <button onclick="changeLocation('Samarqand')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Samarqand</button>
+                                    <button onclick="changeLocation('Buxoro')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Buxoro</button>
+                                    <button onclick="changeLocation('Andijon')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Andijon</button>
+                                    <button onclick="changeLocation('Navoi')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Navoi</button>
+                                    <button onclick="changeLocation('Xorazm')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Xorazm</button>
+                                    <button onclick="changeLocation('Surxondaryo')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Surxondaryo</button>
+                                    <button onclick="changeLocation('Qashqadaryo')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Qashqadaryo</button>
+                                    <button onclick="changeLocation('Jizzax')" class="px-4 py-3 text-sm text-center font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Jizzax</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Burger Menu -->
-                        <button @click="open = !open" class="p-2 rounded-xl bg-white/30 backdrop-blur-md border border-white/20 shadow-sm hover:bg-white/40 transition-all">
-                            <svg class="w-6 h-6 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        <button @click="open = !open" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all">
+                            <svg class="w-6 h-6 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -90,20 +98,28 @@
              style="display: none;">
         </div>
 
-        <!-- Side Menu (Left Side) -->
+        <!-- Side Menu (Right Side) -->
         <div x-show="open"
              x-transition:enter="transition ease-out duration-300 transform"
-             x-transition:enter-start="-translate-x-full"
+             x-transition:enter-start="translate-x-full"
              x-transition:enter-end="translate-x-0"
              x-transition:leave="transition ease-in duration-200 transform"
              x-transition:leave-start="translate-x-0"
-             x-transition:leave-end="-translate-x-full"
-             class="fixed top-0 left-0 h-full w-80 bg-white dark:bg-gray-900 shadow-2xl z-50 overflow-y-auto"
+             x-transition:leave-end="translate-x-full"
+             class="fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-900 shadow-2xl z-50 overflow-y-auto"
              style="display: none;">
             
-            <div class="p-6">
+            <div class="p-6 h-full flex flex-col">
+                <!-- Header with Logo and Close -->
                 <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('menu') }}</h2>
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                            <span class="text-white font-bold text-xl">Q</span>
+                        </div>
+                        <span class="text-xl font-bold">
+                            <span class="text-gray-900 dark:text-white">Qatta</span><span class="text-blue-600 dark:text-blue-400">Bor</span>
+                        </span>
+                    </div>
                     <button @click="open = false" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                         <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -111,73 +127,119 @@
                     </button>
                 </div>
 
-                <!-- Language Selector -->
-                <div class="mb-6" x-data="{ langOpen: false }">
-                    <button @click="langOpen = !langOpen" class="w-full flex items-center justify-between px-4 py-3 text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                @auth
+                <!-- Profile Section -->
+                <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
-                            <span id="current-lang">English</span>
                         </div>
-                        <svg class="w-4 h-4 transition-transform" :class="langOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div x-show="langOpen" 
-                         x-transition
-                         class="mt-2 space-y-1 pl-4"
-                         style="display: none;">
-                        <a href="#" onclick="changeLang('English')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                            🇬🇧 English
-                        </a>
-                        <a href="#" onclick="changeLang('Русский')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                            🇷🇺 Русский
-                        </a>
-                        <a href="#" onclick="changeLang('O\'zbekcha')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                            🇺🇿 O'zbekcha
-                        </a>
+                        <div>
+                            <div class="font-semibold text-gray-900 dark:text-white">Kabinet</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">+998 90 ...</div>
+                        </div>
+                    </div>
+                </div>
+                @endauth
+
+                <!-- Dark Mode Toggle -->
+                <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-orange-500 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                            </div>
+                            <span id="mode-text" class="font-medium text-gray-700 dark:text-gray-300">Kunduzgi</span>
+                        </div>
+                        <button onclick="toggleDarkMode()" 
+                                id="dark-mode-toggle"
+                                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors bg-gray-300 dark:bg-blue-600">
+                            <span id="toggle-slider" class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1 dark:translate-x-6"></span>
+                        </button>
                     </div>
                 </div>
 
-                <nav class="space-y-2">
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors">
-                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                <!-- Menu Items -->
+                <nav class="space-y-2 flex-1">
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            {{ __('dashboard') }}
-                        </a>
-                        <a href="{{ route('profile.edit') }}" class="flex items-center px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors">
-                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </div>
+                        <span class="font-medium">Biz haqimizda</span>
+                        <svg class="w-4 h-4 ml-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                             </svg>
-                            {{ __('profile') }}
-                        </a>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="w-full flex items-center px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">
-                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                                </svg>
-                                {{ __('logout') }}
-                            </button>
-                        </form>
-                    @else
-                        <a href="{{ route('login') }}" class="flex items-center px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors">
-                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                        </div>
+                        <span class="font-medium">Aloqa</span>
+                        <svg class="w-4 h-4 ml-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
                             </svg>
-                            {{ __('login') }}
-                        </a>
-                        <a href="{{ route('register') }}" class="flex items-center px-4 py-3 text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors">
-                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                            </svg>
-                            {{ __('register') }}
-                        </a>
-                    @endauth
+                        </div>
+                        <span class="font-medium">Yangiliklar</span>
+                        <svg class="w-4 h-4 ml-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
                 </nav>
+
+                <!-- Language Switcher at Bottom -->
+                <div class="mt-auto pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 text-center mb-2">Til: <span id="current-lang">UZB</span></p>
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <button onclick="changeLang('UZB')" class="px-6 py-2 text-sm font-semibold rounded-full bg-blue-600 text-white">
+                            UZB
+                        </button>
+                        <button onclick="changeLang('RUS')" class="px-6 py-2 text-sm font-medium rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            RUS
+                        </button>
+                        <button onclick="changeLang('ENG')" class="px-6 py-2 text-sm font-medium rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            ENG
+                        </button>
+                    </div>
+
+                    @auth
+                    <!-- Logout Button -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-600 dark:text-red-400 font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            Chiqish
+                        </button>
+                    </form>
+                    @endauth
+
+                    @guest
+                    <!-- Login Button -->
+                    <a href="{{ route('login') }}" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-blue-600 dark:text-blue-400 font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                        </svg>
+                        Kirish
+                    </a>
+                    @endguest
+                </div>
             </div>
         </div>
 
@@ -187,7 +249,7 @@
         </main>
 
         <!-- Bottom Navigation Bar -->
-        <div class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-t border-white/20 dark:border-gray-700/50 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-700/50 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
             <div class="grid grid-cols-3 h-16">
                 <!-- Home Button -->
                 <a href="{{ route('home') }}" class="flex flex-col items-center justify-center space-y-1 {{ request()->routeIs('home') ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400' }} hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
@@ -218,34 +280,60 @@
 
     <style>
         .glass-card {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.05);
         }
         .dark .glass-card {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(rgba(100, 100, 100, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 100, 100, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
-        .animate-blob {
-            animation: blob 7s infinite;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
-        .animation-delay-2000 {
-            animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-            animation-delay: 4s;
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
         }
     </style>
     
     <script>
+        // Dark Mode Toggle Function
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('mode-text').textContent = 'Kunduzgi';
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('mode-text').textContent = 'Tungi';
+            }
+        }
+
+        // Initialize dark mode on page load
+        (function() {
+            const theme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (theme === 'dark' || (!theme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                const modeText = document.getElementById('mode-text');
+                if (modeText) modeText.textContent = 'Tungi';
+            }
+        })();
+
         function changeLang(lang) {
             let locale = 'en';
             if (lang === 'Русский') locale = 'ru';
@@ -262,7 +350,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    document.getElementById('current-lang').textContent = lang;
+                    const langEl = document.getElementById('current-lang');
+                    if (langEl) {
+                        langEl.textContent = lang;
+                    }
                     // Reload the page to apply new language
                     window.location.reload();
                 }
@@ -285,10 +376,14 @@
         // Set initial language display based on current locale
         document.addEventListener('DOMContentLoaded', function() {
             const locale = '{{ app()->getLocale() }}';
-            let langDisplay = 'English';
-            if (locale === 'ru') langDisplay = 'Русский';
-            else if (locale === 'uz') langDisplay = 'O\'zbekcha';
-            document.getElementById('current-lang').textContent = langDisplay;
+            let langDisplay = 'UZB';
+            if (locale === 'ru') langDisplay = 'RUS';
+            else if (locale === 'en') langDisplay = 'ENG';
+            
+            const langEl = document.getElementById('current-lang');
+            if (langEl) {
+                langEl.textContent = langDisplay;
+            }
             
             // Restore selected location from session storage
             const savedLocation = sessionStorage.getItem('selectedLocation');
