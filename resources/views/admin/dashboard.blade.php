@@ -10,11 +10,11 @@
                 
                 <div class="flex items-center gap-4">
                     <!-- Date Range Picker -->
-                    <div class="glass-card p-3 flex items-center gap-2">
+                    <div class="glass-card p-3 flex items-center gap-2 cursor-pointer hover:shadow-lg transition-shadow" onclick="openDatePicker()">
                         <svg class="w-5 h-5 text-warm-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <span class="text-sm text-warm-gray-700 dark:text-warm-gray-300">Last 30 days</span>
+                        <span id="dateRangeDisplay" class="text-sm text-warm-gray-700 dark:text-warm-gray-300">Last 30 days</span>
                     </div>
                     
                     <!-- Export Button -->
@@ -373,4 +373,178 @@
             </div>
         </div>
     </div>
+
+    <!-- Date Picker Modal -->
+    <div id="datePickerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" onclick="closeDatePickerOnOutside(event)">
+        <div class="glass-card p-6 w-full max-w-md mx-4 animate-fade-in" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-warm-gray-900 dark:text-white">Select Date Range</h3>
+                <button onclick="closeDatePicker()" class="text-warm-gray-500 hover:text-warm-gray-700 dark:hover:text-warm-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Quick Select Options -->
+                <div class="grid grid-cols-2 gap-2 mb-4">
+                    <button onclick="selectQuickRange('today')" class="btn btn-secondary text-sm">Today</button>
+                    <button onclick="selectQuickRange('week')" class="btn btn-secondary text-sm">This Week</button>
+                    <button onclick="selectQuickRange('month')" class="btn btn-secondary text-sm">This Month</button>
+                    <button onclick="selectQuickRange('year')" class="btn btn-secondary text-sm">This Year</button>
+                </div>
+
+                <!-- Custom Date Range -->
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-warm-gray-700 dark:text-warm-gray-300 mb-2">From Date</label>
+                        <input type="date" id="fromDate" class="w-full px-4 py-2 border border-warm-gray-300 dark:border-warm-gray-600 rounded-lg bg-white dark:bg-warm-gray-800 text-warm-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-warm-gray-700 dark:text-warm-gray-300 mb-2">To Date</label>
+                        <input type="date" id="toDate" class="w-full px-4 py-2 border border-warm-gray-300 dark:border-warm-gray-600 rounded-lg bg-white dark:bg-warm-gray-800 text-warm-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <!-- Apply Button -->
+                <button onclick="applyDateRange()" class="btn btn-primary w-full mt-4">
+                    Apply Date Range
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedStartDate = null;
+        let selectedEndDate = null;
+
+        function openDatePicker() {
+            document.getElementById('datePickerModal').classList.remove('hidden');
+            document.getElementById('datePickerModal').classList.add('flex');
+            
+            // Set default dates (last 30 days)
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today);
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+            
+            document.getElementById('toDate').value = formatDateForInput(today);
+            document.getElementById('fromDate').value = formatDateForInput(thirtyDaysAgo);
+        }
+
+        function closeDatePicker() {
+            document.getElementById('datePickerModal').classList.add('hidden');
+            document.getElementById('datePickerModal').classList.remove('flex');
+        }
+
+        function closeDatePickerOnOutside(event) {
+            if (event.target.id === 'datePickerModal') {
+                closeDatePicker();
+            }
+        }
+
+        function formatDateForInput(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatDateForDisplay(date) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        function selectQuickRange(range) {
+            const today = new Date();
+            let startDate = new Date(today);
+            
+            switch(range) {
+                case 'today':
+                    // Today only
+                    break;
+                case 'week':
+                    // This week (last 7 days)
+                    startDate.setDate(today.getDate() - 7);
+                    break;
+                case 'month':
+                    // This month (last 30 days)
+                    startDate.setDate(today.getDate() - 30);
+                    break;
+                case 'year':
+                    // This year (last 365 days)
+                    startDate.setDate(today.getDate() - 365);
+                    break;
+            }
+            
+            document.getElementById('fromDate').value = formatDateForInput(startDate);
+            document.getElementById('toDate').value = formatDateForInput(today);
+        }
+
+        function applyDateRange() {
+            const fromDateValue = document.getElementById('fromDate').value;
+            const toDateValue = document.getElementById('toDate').value;
+            
+            if (!fromDateValue || !toDateValue) {
+                alert('Please select both start and end dates');
+                return;
+            }
+            
+            const fromDate = new Date(fromDateValue);
+            const toDate = new Date(toDateValue);
+            
+            if (fromDate > toDate) {
+                alert('Start date must be before end date');
+                return;
+            }
+            
+            // Calculate the difference in days
+            const diffTime = Math.abs(toDate - fromDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Update the display
+            let displayText;
+            if (diffDays === 0) {
+                displayText = formatDateForDisplay(fromDate);
+            } else if (diffDays <= 1) {
+                displayText = 'Last 1 day';
+            } else if (diffDays <= 7) {
+                displayText = `Last ${diffDays} days`;
+            } else if (diffDays <= 30) {
+                displayText = `Last ${diffDays} days`;
+            } else if (diffDays <= 365) {
+                const months = Math.floor(diffDays / 30);
+                displayText = `Last ${months} month${months > 1 ? 's' : ''}`;
+            } else {
+                const years = Math.floor(diffDays / 365);
+                displayText = `Last ${years} year${years > 1 ? 's' : ''}`;
+            }
+            
+            document.getElementById('dateRangeDisplay').textContent = displayText;
+            
+            // Store the selected dates
+            selectedStartDate = fromDate;
+            selectedEndDate = toDate;
+            
+            // Close modal
+            closeDatePicker();
+            
+            // Here you can add logic to filter data based on the selected date range
+            console.log('Date range selected:', {
+                from: formatDateForInput(fromDate),
+                to: formatDateForInput(toDate),
+                days: diffDays
+            });
+            
+            // Optionally reload the page with date parameters
+            // window.location.href = `?from=${formatDateForInput(fromDate)}&to=${formatDateForInput(toDate)}`;
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeDatePicker();
+            }
+        });
+    </script>
 </x-admin-layout>

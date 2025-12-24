@@ -50,132 +50,132 @@ class DatabaseSeeder extends Seeder
         $categories = [
             [
                 'name' => 'Furniture',
-                'image' => 'sofa.png',
+                'icon' => 'sofa.png',
                 'subcategories' => ['Living Room', 'Bedroom', 'Office', 'Kitchen', 'Garden', 'Kids', 'Custom Made', 'Antique']
             ],
             [
                 'name' => 'Supermarket',
-                'image' => 'supermarket.png',
+                'icon' => 'supermarket.png',
                 'subcategories' => ['Groceries', 'Bakery', 'Dairy', 'Meat', 'Vegetables', 'Frozen Foods', 'Beverages', 'Household']
             ],
             [
                 'name' => 'SPA',
-                'image' => 'spa.png',
+                'icon' => 'spa.png',
                 'subcategories' => ['Massage', 'Sauna', 'Facial', 'Body Treatment', 'Manicure', 'Pedicure', 'Hammam', 'Aromatherapy']
             ],
             [
                 'name' => 'Studio',
-                'image' => 'camera.png',
+                'icon' => 'camera.png',
                 'subcategories' => ['Photo Studio', 'Video Studio', 'Recording Studio', 'Dance Studio', 'Art Studio', 'Yoga Studio', 'Pilates', 'Fitness']
             ],
             [
                 'name' => 'Playground',
-                'image' => 'playground.png',
+                'icon' => 'playground.png',
                 'subcategories' => ['Kids Play', 'Indoor', 'Outdoor', 'Trampoline', 'Bouncy Castle', 'Game Zone', 'Sports Area', 'Birthday Party']
             ],
             [
                 'name' => 'Car',
-                'image' => 'car.png',
+                'icon' => 'car.png',
                 'subcategories' => ['Car Wash', 'Car Repair', 'Auto Parts', 'Tire Service', 'Oil Change', 'Car Rental', 'Dealerships', 'Parking']
             ],
             [
                 'name' => 'Cottage',
-                'image' => 'mountain-hut.png',
+                'icon' => 'mountain-hut.png',
                 'subcategories' => ['Weekend Rental', 'Daily Rental', 'Events', 'With Pool', 'Mountain View', 'Lake View', 'Luxury', 'Budget']
             ],
             [
                 'name' => 'Hotel',
-                'image' => 'hotel.png',
+                'icon' => 'hotel.png',
                 'subcategories' => ['Luxury Hotels', 'Budget Hotels', 'Hostels', 'Guest Houses', 'Apartments', 'Resorts', 'Boutique Hotels', 'Motels']
             ],
             [
                 'name' => 'Food',
-                'image' => 'dining-plate.png',
+                'icon' => 'dining-plate.png',
                 'subcategories' => ['Restaurants', 'Fast Food', 'Cafes', 'Bakery', 'Traditional', 'Asian', 'Italian', 'Street Food']
             ],
             [
                 'name' => 'Salon',
-                'image' => 'barbershop-and-beauty-salon.png',
+                'icon' => 'barbershop-and-beauty-salon.png',
                 'subcategories' => ['Hair Salon', 'Barber Shop', 'Beauty Salon', 'Nail Salon', 'Makeup', 'Brow Studio', 'Lash Extensions', 'Tattoo']
             ],
             [
                 'name' => 'Clothing',
-                'image' => 'clothes-hanger.png',
+                'icon' => 'clothes-hanger.png',
                 'subcategories' => ['Men Fashion', 'Women Fashion', 'Kids Clothing', 'Sports Wear', 'Shoes', 'Accessories', 'Boutique', 'Outlet']
             ],
             [
                 'name' => 'Medicine',
-                'image' => 'hospital.png',
+                'icon' => 'hospital.png',
                 'subcategories' => ['Hospitals', 'Clinics', 'Pharmacies', 'Dental', 'Laboratory', 'Emergency', 'Pediatric', 'Eye Care']
             ],
             [
                 'name' => 'School',
-                'image' => 'school.png',
+                'icon' => 'school.png',
                 'subcategories' => ['Public School', 'Private School', 'International', 'Language School', 'Music School', 'Art School', 'Sports School', 'Online']
             ],
             [
                 'name' => 'Kindergarten',
-                'image' => 'kids-playing.png',
+                'icon' => 'kids-playing.png',
                 'subcategories' => ['Public', 'Private', 'Montessori', 'Bilingual', 'Daycare', 'Nursery', 'Preschool', 'After School']
             ],
             [
                 'name' => 'Sports',
-                'image' => 'soccer-ball.png',
+                'icon' => 'soccer-ball.png',
                 'subcategories' => ['Gym', 'Swimming Pool', 'Tennis', 'Football', 'Basketball', 'Martial Arts', 'Yoga', 'Dance']
             ],
             [
                 'name' => 'Government organizations',
-                'image' => 'building.png',
+                'icon' => 'building.png',
                 'subcategories' => ['City Hall', 'Police', 'Post Office', 'Tax Office', 'Registry', 'Employment', 'Social Services', 'Immigration']
             ],
             [
                 'name' => 'Home appliances',
-                'image' => 'home-appliances.png',
+                'icon' => 'home-appliances.png',
                 'subcategories' => ['Refrigerators', 'Washing Machines', 'TVs', 'Air Conditioners', 'Vacuum Cleaners', 'Microwaves', 'Small Appliances', 'Repair']
             ],
             [
                 'name' => 'Hobbies and creativity',
-                'image' => 'workshop.png',
+                'icon' => 'workshop.png',
                 'subcategories' => ['Art Supplies', 'Craft Shops', 'Music Store', 'Books', 'Board Games', 'Model Kits', 'Sewing', 'DIY']
             ],
             [
                 'name' => 'Tour agency',
-                'image' => 'hot-air-balloon.png',
+                'icon' => 'hot-air-balloon.png',
                 'subcategories' => ['Domestic Tours', 'International', 'Adventure', 'Cultural', 'Eco Tourism', 'City Tours', 'Package Tours', 'Visa Services']
             ],
             [
                 'name' => 'Electronics',
-                'image' => 'laptop.png',
+                'icon' => 'laptop.png',
                 'subcategories' => ['Computers', 'Laptops', 'Phones', 'Tablets', 'Accessories', 'Gaming', 'Smart Home', 'Repair']
             ],
             [
                 'name' => 'Construction and repair',
-                'image' => 'workshop-pegboard.png',
+                'icon' => 'workshop-pegboard.png',
                 'subcategories' => ['Builders', 'Electricians', 'Plumbers', 'Painters', 'Carpenters', 'Renovations', 'Materials', 'Design']
             ],
             [
                 'name' => 'Beauty and care',
-                'image' => 'barbershop-and-beauty-salon.png',
+                'icon' => 'barbershop-and-beauty-salon.png',
                 'subcategories' => ['Cosmetics', 'Skincare', 'Perfume', 'Hair Care', 'Body Care', 'Organic', 'Professional', 'Men Care']
             ],
             [
                 'name' => 'Zoo',
-                'image' => 'zoo.png',
+                'icon' => 'zoo.png',
                 'subcategories' => ['City Zoo', 'Safari Park', 'Aquarium', 'Bird Park', 'Petting Zoo', 'Reptile House', 'Wildlife', 'Conservation']
             ],
             [
                 'name' => 'Book',
-                'image' => 'book.png',
+                'icon' => 'book.png',
                 'subcategories' => ['Bookstores', 'Libraries', 'Used Books', 'Academic', 'Children Books', 'Comics', 'E-books', 'Book Cafe']
             ],
             [
                 'name' => 'Real estate',
-                'image' => 'house.png',
+                'icon' => 'house.png',
                 'subcategories' => ['Apartments Sale', 'Houses Sale', 'Rent', 'Commercial', 'Land', 'New Buildings', 'Real Estate Agency', 'Mortgage']
             ],
             [
                 'name' => 'Mosque',
-                'image' => 'mosque.png',
+                'icon' => 'mosque.png',
                 'subcategories' => ['Friday Mosque', 'Neighborhood Mosque', 'Historical', 'Modern', 'Educational', 'Charity', 'Community Center', 'Islamic School']
             ],
         ];
@@ -186,7 +186,7 @@ class DatabaseSeeder extends Seeder
                 [
                     'name' => $categoryData['name'],
                     'slug' => Str::slug($categoryData['name']),
-                    'image' => $categoryData['image'],
+                    'icon' => $categoryData['icon'],
                 ]
             );
 

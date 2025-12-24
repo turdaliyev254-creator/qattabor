@@ -32,7 +32,11 @@
                             <td class="px-6 py-4">{{ $category->slug }}</td>
                             <td class="px-6 py-4">
                                 @if($category->icon)
-                                    <span class="text-xl">{{ $category->icon }}</span>
+                                    @if(Str::endsWith($category->icon, '.png'))
+                                        <img src="{{ asset('size-512/images/' . $category->icon) }}" alt="{{ $category->name }}" class="w-8 h-8 object-contain">
+                                    @else
+                                        <span class="text-xl">{{ $category->icon }}</span>
+                                    @endif
                                 @else
                                     <span class="text-gray-400">-</span>
                                 @endif

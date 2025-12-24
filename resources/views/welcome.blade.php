@@ -77,8 +77,14 @@
             <a href="{{ route('places.by-category', $category->slug) }}" class="relative">
                 <div class="flex flex-col items-center gap-2 w-full cursor-pointer hover:opacity-80 transition-opacity">
                     <div class="w-16 h-16 flex items-center justify-center drop-shadow-lg hover:drop-shadow-xl transition-all">
-                        @if($category->image)
-                            <img src="{{ asset('size-512/images/' . $category->image) }}" alt="{{ $category->name }}" class="w-full h-full object-contain">
+                        @if($category->icon)
+                            @if(Str::endsWith($category->icon, '.png'))
+                                <img src="{{ asset('size-512/images/' . $category->icon) }}" alt="{{ $category->name }}" class="w-full h-full object-contain">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center text-4xl">
+                                    {{ $category->icon }}
+                                </div>
+                            @endif
                         @else
                             <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">
                                 {{ substr($category->name, 0, 1) }}
