@@ -41,10 +41,10 @@ class SearchController extends Controller
         // Perform basic search
         $searchResults = $this->performSearch($query);
         
-        // Get AI interpretation if API key is configured
+        // Get AI interpretation if Gemini API key is configured
         $aiInterpretation = null;
-        if (config('services.openai.api_key') || config('services.gemini.api_key')) {
-            $aiInterpretation = $this->getAiInterpretation($query, $searchResults);
+        if (config('services.gemini.api_key')) {
+            $aiInterpretation = $this->getGeminiInterpretation($query, $searchResults);
         }
 
         return response()->json([
@@ -100,113 +100,54 @@ class SearchController extends Controller
         ];
     }
 
-    /**
-     * Get AI interpretation of search query and results
-     */
-    private function getAiInterpretation($query, $searchResults)
-    {
-        try {
-            // Try Gemini first (better quota)
-            if (config('services.gemini.api_key')) {
-                return $this->getGeminiInterpretation($query, $searchResults);
-            }
-            
-            // Fallback to OpenAI
-            if (config('services.openai.api_key')) {
-                return $this->getOpenAiInterpretation($query, $searchResults);
-            }
-        } catch (\Exception $e) {
-            \Log::error('AI Search Error: ' . $e->getMessage());
-            return null;
-        }
 
-        return null;
-    }
-
-    /**
-     * Get interpretation from OpenAI
-     */
-    private function getOpenAiInterpretation($query, $searchResults)
-    {
-        $placesContext = $searchResults['places']->take(5)->map(function($place) {
-            return "{$place->name} ({$place->category->name})";
-        })->implode(', ');
-
-        $categoriesContext = $searchResults['categories']->map(function($cat) {
-            return "{$cat->name} ({$cat->places_count} places)";
-        })->implode(', ');
-
-        $prompt = "User is searching for: '{$query}'. ";
-        if ($placesContext) {
-            $prompt .= "Top results: {$placesContext}. ";
-        }
-        if ($categoriesContext) {
-            $prompt .= "Related categories: {$categoriesContext}. ";
-        }
-        $prompt .= "Provide a brief, helpful response (max 2 sentences) about what the user is looking for and suggest the best match.";
-
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-            'Content-Type' => 'application/json',
-        ])->timeout(10)->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-3.5-turbo',
-            'messages' => [
-                ['role' => 'system', 'content' => 'You are a helpful assistant for a local places discovery app. Be concise and friendly.'],
-                ['role' => 'user', 'content' => $prompt]
-            ],
-            'max_tokens' => 100,
-            'temperature' => 0.7,
-        ]);
-
-        if ($response->successful()) {
-            return $response->json()['choices'][0]['message']['content'];
-        }
-
-        return null;
-    }
 
     /**
      * Get interpretation from Google Gemini
      */
     private function getGeminiInterpretation($query, $searchResults)
     {
-        $placesContext = $searchResults['places']->take(5)->map(function($place) {
-            return "{$place->name} ({$place->category->name})";
-        })->implode(', ');
+        try {
+            $placesContext = $searchResults['places']->take(5)->map(function($place) {
+                return "{$place->name} ({$place->category->name})";
+            })->implode(', ');
 
-        $categoriesContext = $searchResults['categories']->map(function($cat) {
-            return "{$cat->name} ({$cat->places_count} places)";
-        })->implode(', ');
+            $categoriesContext = $searchResults['categories']->map(function($cat) {
+                return "{$cat->name} ({$cat->places_count} places)";
+            })->implode(', ');
 
-        $prompt = "User is searching for: '{$query}'. ";
-        if ($placesContext) {
-            $prompt .= "Top results: {$placesContext}. ";
-        }
-        if ($categoriesContext) {
-            $prompt .= "Related categories: {$categoriesContext}. ";
-        }
-        $prompt .= "Provide a brief, helpful response (max 2 sentences) about what the user is looking for and suggest the best match.";
+            $prompt = "User is searching for: '{$query}'. ";
+            if ($placesContext) {
+                $prompt .= "Top results: {$placesContext}. ";
+            }
+            if ($categoriesContext) {
+                $prompt .= "Related categories: {$categoriesContext}. ";
+            }
+            $prompt .= "Provide a brief, helpful response (max 2 sentences) about what the user is looking for and suggest the best match.";
 
-        $response = Http::timeout(15)->post(
-            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=' . config('services.gemini.api_key'),
-            [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $prompt]
+            $response = Http::timeout(15)->post(
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-exp-1206:generateContent?key=' . config('services.gemini.api_key'),
+                [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                ['text' => $prompt]
+                            ]
                         ]
+                    ],
+                    'generationConfig' => [
+                        'temperature' => 0.7,
+                        'maxOutputTokens' => 150,
                     ]
-                ],
-                'generationConfig' => [
-                    'temperature' => 0.7,
-                    'maxOutputTokens' => 100,
                 ]
-            ]
-        );
+            );
 
-        if ($response->successful()) {
-            $data = $response->json();
-            return $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
+            if ($response->successful()) {
+                $data = $response->json();
+                return $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
+            }
+        } catch (\Exception $e) {
+            \Log::error('Gemini AI Search Error: ' . $e->getMessage());
         }
 
         return null;
