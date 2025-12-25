@@ -1,4 +1,26 @@
 <?php
+// ...existing code...
+
+Route::get('/fresh-seed-now', function() {
+    try {
+        // First, delete all existing data
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        \DB::table('places')->truncate();
+        \DB::table('subcategories')->truncate();
+        \DB::table('categories')->truncate();
+        \DB::table('locations')->truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        
+        // Now run the seeder
+        \Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
+        \Artisan::call('cache:clear');
+        \Artisan::call('view:clear');
+        
+        return "✅ Database cleared and seeded successfully! Now check your sidebar.";
+    } catch (\Exception $e) {
+        return "❌ Error: " . $e->getMessage();
+    }
+});
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
@@ -14,6 +36,7 @@ Route::get('/categories/{category:slug}', [PlaceController::class, 'byCategory']
 Route::get('/categories/{category:slug}/{subcategory:slug}', [PlaceController::class, 'bySubcategory'])->name('places.by-subcategory');
 Route::get('/places/{place:slug}', [PlaceController::class, 'show'])->name('places.show');
 Route::get('/map', [PlaceController::class, 'map'])->name('map.index');
+
 
 // AI Search endpoint
 Route::post('/search/ai', [SearchController::class, 'aiSearch'])->name('search.ai');
