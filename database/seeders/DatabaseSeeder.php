@@ -126,7 +126,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Government organizations',
                 'icon' => 'building.png',
-                'subcategories' => ['City Hall', 'Police', 'Post Office', 'Tax Office', 'Registry', 'Employment', 'Social Services', 'Immigration']
+                'subcategories' => ['City Hall', 'Police', 'Post Office', 'Tax Office', 'Registry', 'Employment', 'Social Services', 'Immigration', 'Ishonch telefonlari']
             ],
             [
                 'name' => 'Home appliances',
@@ -241,6 +241,12 @@ class DatabaseSeeder extends Seeder
                 'Beauty Salon' => 'beauty-salon.png', 'Nail Salon' => 'nail-salon.png',
                 'Makeup' => 'makeup.png', 'Brow Studio' => 'eyebrow.png', 
                 'Lash Extensions' => 'eyelash.png', 'Tattoo' => 'tattoo.png',
+                // Government organizations
+                'City Hall' => 'building.png', 'Police' => 'police.png', 
+                'Post Office' => 'post-office.png', 'Tax Office' => 'tax.png',
+                'Registry' => 'registry.png', 'Employment' => 'employment.png',
+                'Social Services' => 'social-services.png', 'Immigration' => 'passport.png',
+                'Ishonch telefonlari' => 'phone.png',
             ];
 
             foreach ($categoryData['subcategories'] as $subName) {
@@ -271,6 +277,10 @@ class DatabaseSeeder extends Seeder
         // Create Fergana Places
         echo "\n🏙️  Creating places for Fergana city...\n";
         $this->call(FerganaPlaceSeeder::class);
+
+        // Create Ishonch telefonlari
+        echo "\n📞 Creating Ishonch telefonlari...\n";
+        $this->call(IshonchTelefonlariSeeder::class);
 
         echo "\n🎉 Database seeding completed successfully!\n";
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
