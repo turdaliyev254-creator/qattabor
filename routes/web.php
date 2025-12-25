@@ -47,9 +47,10 @@ Route::get('/categories/{category:slug}/{subcategory:slug}', [PlaceController::c
 Route::get('/places/{place:slug}', [PlaceController::class, 'show'])->name('places.show');
 Route::get('/map', [PlaceController::class, 'map'])->name('map.index');
 
-
-// AI Search endpoint
+// Search routes
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::post('/search/ai', [SearchController::class, 'aiSearch'])->name('search.ai');
+Route::get('/search/autocomplete', [SearchController::class, 'autocomplete'])->name('search.autocomplete');
 
 // Quick search for places
 Route::get('/search-places', [SearchController::class, 'quickSearch'])->name('search.quick');

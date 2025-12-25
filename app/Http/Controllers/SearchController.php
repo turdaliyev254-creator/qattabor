@@ -126,7 +126,7 @@ class SearchController extends Controller
             $prompt .= "Provide a brief, helpful response (max 2 sentences) about what the user is looking for and suggest the best match.";
 
             $response = Http::timeout(15)->post(
-                'https://generativelanguage.googleapis.com/v1beta/models/gemini-exp-1206:generateContent?key=' . config('services.gemini.api_key'),
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' . config('services.gemini.api_key'),
                 [
                     'contents' => [
                         [

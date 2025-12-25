@@ -203,6 +203,18 @@
 
                 <!-- Menu Items -->
                 <nav class="space-y-2 flex-1">
+                    <a href="{{ route('search.index') }}" class="group flex items-center gap-4 px-4 py-4 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-gray-700/50 dark:hover:to-gray-700/50 rounded-2xl transition-all border border-transparent hover:border-purple-200/50 dark:hover:border-gray-600 backdrop-blur-sm hover:shadow-md">
+                        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 dark:from-gray-700 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="font-semibold flex-1">{{ __('Search') }}</span>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+
                     <a href="#" class="group flex items-center gap-4 px-4 py-4 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700/50 dark:hover:to-gray-700/50 rounded-2xl transition-all border border-transparent hover:border-blue-200/50 dark:hover:border-gray-600 backdrop-blur-sm hover:shadow-md">
                         <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all">
                             <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
