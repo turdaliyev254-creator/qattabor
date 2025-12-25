@@ -21,6 +21,8 @@ class Place extends Model
         'website',
         'latitude',
         'longitude',
+        'working_hours',
+        'rating',
     ];
 
     public function category()
