@@ -11,6 +11,9 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <!-- Telegram Web App Script -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -491,6 +494,28 @@
                 changeLocation('Toshkent');
             }
         });
+
+        // Telegram Web App Initialization
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            
+            // Expand to full screen
+            tg.expand();
+            
+            // Enable closing confirmation to prevent accidental closure
+            tg.enableClosingConfirmation();
+            
+            // Set header color to match app theme
+            tg.setHeaderColor('#ffffff');
+            tg.setBackgroundColor('#ffffff');
+            
+            // Ready the app
+            tg.ready();
+            
+            console.log('Telegram Web App initialized successfully');
+            console.log('isExpanded:', tg.isExpanded);
+            console.log('viewportHeight:', tg.viewportHeight);
+        }
     </script>
 </body>
 </html>

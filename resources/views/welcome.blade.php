@@ -425,23 +425,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Telegram Web App Script -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const tg = window.Telegram.WebApp;
-
-            // Saytni to'liq ekranga yoyish
-            tg.expand();
-
-            // Pastga slide qilganda yopilib ketmasligi uchun tasdiqlashni yoqish
-            tg.enableClosingConfirmation();
-
-            // Botga ma'lumot yuborish yoki ranglarni mavzuga moslash uchun tayyor holatga keltirish
-            tg.ready();
-            
-            console.log("Telegram Web App ishga tushdi, ekran kengaytirildi.");
-        });
-    </script>
 </x-glass-layout>
