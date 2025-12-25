@@ -22,6 +22,16 @@ Route::get('/fresh-seed-now', function() {
     }
 });
 
+Route::get('/clear-all-cache', function() {
+    \Artisan::call('cache:clear');
+    \Artisan::call('config:clear');
+    \Artisan::call('route:clear');
+    \Artisan::call('view:clear');
+    \Artisan::call('optimize:clear');
+    
+    return "✅ All caches cleared! Refresh your website now.";
+});
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlaceController;
