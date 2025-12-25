@@ -358,11 +358,13 @@
             if (isDark) {
                 html.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
-                document.getElementById('mode-text').textContent = {{ json_encode(__('Light mode')) }};
+                const modeText = document.getElementById('mode-text');
+                if (modeText) modeText.textContent = @json(__('Light mode'));
             } else {
                 html.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
-                document.getElementById('mode-text').textContent = {{ json_encode(__('Dark mode')) }};
+                const modeText = document.getElementById('mode-text');
+                if (modeText) modeText.textContent = @json(__('Dark mode'));
             }
         }
 
@@ -374,7 +376,7 @@
             if (theme === 'dark' || (!theme && prefersDark)) {
                 document.documentElement.classList.add('dark');
                 const modeText = document.getElementById('mode-text');
-                if (modeText) modeText.textContent = {{ json_encode(__('Dark mode')) }};
+                if (modeText) modeText.textContent = @json(__('Dark mode'));
             }
         })();
 
