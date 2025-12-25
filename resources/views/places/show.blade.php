@@ -1,7 +1,7 @@
 <x-glass-layout>
     <div class="mb-4">
-        <a href="javascript:history.back()" class="inline-flex items-center text-blue-600 dark:text-blue-400 mb-2 hover:underline">
-            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="javascript:history.back()" class="inline-flex items-center gap-2 px-4 py-2 backdrop-blur-md bg-white/40 dark:bg-black/20 hover:bg-white/60 dark:hover:bg-black/30 rounded-full text-sm font-semibold text-gray-700 dark:text-gray-300 border border-white/30 dark:border-white/10 transition-all hover:scale-105 shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
             {{ __('back') }}
@@ -103,7 +103,7 @@
                 @if($place->subcategory)
                     <a href="{{ route('places.by-subcategory', [$place->category->slug, $place->subcategory->slug]) }}" 
                        class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                        {{ $place->subcategory->name }}
+                        {{ __($place->subcategory->name) }}
                     </a>
                 @elseif($place->category)
                     <a href="{{ route('places.by-category', $place->category->slug) }}" 

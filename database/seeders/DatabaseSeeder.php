@@ -192,8 +192,60 @@ class DatabaseSeeder extends Seeder
 
             echo "  ✓ " . $category->name . "\n";
 
-            // Create subcategories
+            // Create subcategories with icons
+            $subcategoryIcons = [
+                // Furniture
+                'Living Room' => 'armchair.png', 'Bedroom' => 'bed.png', 'Office' => 'office-chair.png', 
+                'Kitchen' => 'kitchen.png', 'Garden' => 'garden.png', 'Kids' => 'toy-horse.png', 
+                'Custom Made' => 'carpenter.png', 'Antique' => 'antique-clock.png',
+                // Supermarket  
+                'Groceries' => 'shopping-cart.png', 'Bakery' => 'bread.png', 'Dairy' => 'milk.png',
+                'Meat' => 'meat.png', 'Vegetables' => 'vegetables.png', 'Frozen Foods' => 'frozen-food.png',
+                'Beverages' => 'drinks.png', 'Household' => 'cleaning-spray.png',
+                // SPA
+                'Massage' => 'spa.png', 'Sauna' => 'sauna.png', 'Facial' => 'beauty.png',
+                'Body Treatment' => 'spa.png', 'Manicure' => 'nail-polish.png', 'Pedicure' => 'pedicure.png',
+                'Hammam' => 'sauna.png', 'Aromatherapy' => 'aromatherapy.png',
+                // Studio
+                'Photo Studio' => 'camera.png', 'Video Studio' => 'video-camera.png', 
+                'Recording Studio' => 'microphone.png', 'Dance Studio' => 'ballet-shoes.png',
+                'Art Studio' => 'palette.png', 'Yoga Studio' => 'yoga.png', 
+                'Pilates' => 'pilates.png', 'Fitness' => 'dumbbell.png',
+                // Playground
+                'Kids Play' => 'playground.png', 'Indoor' => 'indoor-playground.png', 
+                'Outdoor' => 'swing.png', 'Trampoline' => 'trampoline.png',
+                'Bouncy Castle' => 'bouncy-castle.png', 'Game Zone' => 'game-console.png',
+                'Sports Area' => 'soccer-ball.png', 'Birthday Party' => 'birthday-cake.png',
+                // Car
+                'Car Wash' => 'car-wash.png', 'Car Repair' => 'car-repair.png', 
+                'Auto Parts' => 'gears.png', 'Tire Service' => 'tire.png',
+                'Oil Change' => 'oil.png', 'Car Rental' => 'car.png', 
+                'Dealerships' => 'car-dealer.png', 'Parking' => 'parking.png',
+                // Cottage
+                'Weekend Rental' => 'cottage.png', 'Daily Rental' => 'house.png', 
+                'Events' => 'party.png', 'With Pool' => 'swimming-pool.png',
+                'Mountain View' => 'mountain.png', 'Lake View' => 'lake.png', 
+                'Luxury' => 'luxury.png', 'Budget' => 'budget.png',
+                // Hotel
+                'Luxury Hotels' => 'luxury-hotel.png', 'Budget Hotels' => 'budget-hotel.png', 
+                'Hostels' => 'hostel.png', 'Guest Houses' => 'guest-house.png',
+                'Apartments' => 'apartment.png', 'Resorts' => 'resort.png', 
+                'Boutique Hotels' => 'boutique-hotel.png', 'Motels' => 'motel.png',
+                // Food
+                'Restaurants' => 'restaurant.png', 'Fast Food' => 'fast-food.png', 
+                'Cafes' => 'coffee.png', 'Traditional' => 'traditional-food.png',
+                'Asian' => 'asian-food.png', 'Italian' => 'pizza.png', 
+                'Street Food' => 'street-food.png',
+                // Salon
+                'Hair Salon' => 'hair-salon.png', 'Barber Shop' => 'barbershop.png', 
+                'Beauty Salon' => 'beauty-salon.png', 'Nail Salon' => 'nail-salon.png',
+                'Makeup' => 'makeup.png', 'Brow Studio' => 'eyebrow.png', 
+                'Lash Extensions' => 'eyelash.png', 'Tattoo' => 'tattoo.png',
+            ];
+
             foreach ($categoryData['subcategories'] as $subName) {
+                $icon = $subcategoryIcons[$subName] ?? null;
+                
                 Subcategory::firstOrCreate(
                     [
                         'slug' => Str::slug($subName),
@@ -203,6 +255,7 @@ class DatabaseSeeder extends Seeder
                         'name' => $subName,
                         'slug' => Str::slug($subName),
                         'category_id' => $category->id,
+                        'icon' => $icon,
                     ]
                 );
             }

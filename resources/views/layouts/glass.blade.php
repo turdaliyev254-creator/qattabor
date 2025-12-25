@@ -20,7 +20,7 @@
         <div class="absolute inset-0 bg-grid-pattern opacity-[0.015] dark:opacity-[0.05]"></div>
 
         <!-- Header -->
-        <header class="fixed top-0 w-full z-50 transition-all duration-300 bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl shadow-sm" id="navbar">
+        <header class="fixed top-0 w-full z-50 transition-all duration-300 backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 border-b border-white/20 dark:border-gray-700/30 shadow-lg shadow-gray-200/20 dark:shadow-gray-900/40" id="navbar">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-20 items-center justify-between">
                     <!-- Logo -->
@@ -114,8 +114,7 @@
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
              @click="open = false" 
-             class="fixed inset-0 z-40 bg-black bg-opacity-50"
-             style="display: none;">
+             class="fixed inset-0 z-40 bg-black bg-opacity-50">
         </div>
 
         <!-- Side Menu (Right Side) -->
@@ -126,8 +125,7 @@
              x-transition:leave="transition ease-in duration-200 transform"
              x-transition:leave-start="translate-x-0"
              x-transition:leave-end="translate-x-full"
-             class="fixed top-0 right-0 h-full w-80 bg-gradient-to-b from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 shadow-2xl z-50 overflow-y-auto backdrop-blur-xl"
-             style="display: none;">
+             class="fixed top-0 right-0 h-full w-80 bg-gradient-to-b from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 shadow-2xl z-50 overflow-y-auto backdrop-blur-xl">
             
             <div class="p-6 h-full flex flex-col">
                 <!-- Header with Logo and Close -->
@@ -191,8 +189,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-bold text-gray-900 dark:text-white text-sm">Theme</div>
-                                <div id="mode-text" class="text-xs text-gray-600 dark:text-gray-400 font-medium">Kunduzgi</div>
+                                <div class="font-bold text-gray-900 dark:text-white text-sm">{{ __('Theme') }}</div>
+                                <div id="mode-text" class="text-xs text-gray-600 dark:text-gray-400 font-medium">{{ __('Light mode') }}</div>
                             </div>
                         </div>
                         <button onclick="toggleDarkMode()" 
@@ -211,7 +209,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <span class="font-semibold flex-1">Biz haqimizda</span>
+                        <span class="font-semibold flex-1">{{ __('About us') }}</span>
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
@@ -223,7 +221,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                             </svg>
                         </div>
-                        <span class="font-semibold flex-1">Aloqa</span>
+                        <span class="font-semibold flex-1">{{ __('Contact') }}</span>
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
@@ -235,7 +233,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
                             </svg>
                         </div>
-                        <span class="font-semibold flex-1">Yangiliklar</span>
+                        <span class="font-semibold flex-1">{{ __('News') }}</span>
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
@@ -286,12 +284,16 @@
         </div>
 
         <!-- Main Content -->
-        <main class="flex-grow pt-20 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
-            {{ $slot }}
+        <main class="flex-grow pt-28 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
+            @if(isset($slot))
+                {{ $slot }}
+            @else
+                @yield('content')
+            @endif
         </main>
 
         <!-- Bottom Navigation Bar -->
-        <div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-700/50 z-30 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div class="fixed bottom-0 left-0 right-0 backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 border-t border-white/20 dark:border-gray-700/30 z-30 shadow-2xl shadow-gray-200/20 dark:shadow-gray-900/40">
             <div class="grid grid-cols-3 h-16">
                 <!-- Home Button -->
                 <a href="{{ route('home') }}" class="flex flex-col items-center justify-center space-y-1 {{ request()->routeIs('home') ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400' }} hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
@@ -356,11 +358,11 @@
             if (isDark) {
                 html.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
-                document.getElementById('mode-text').textContent = 'Kunduzgi';
+                document.getElementById('mode-text').textContent = {{ json_encode(__('Light mode')) }};
             } else {
                 html.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
-                document.getElementById('mode-text').textContent = 'Tungi';
+                document.getElementById('mode-text').textContent = {{ json_encode(__('Dark mode')) }};
             }
         }
 
@@ -372,7 +374,7 @@
             if (theme === 'dark' || (!theme && prefersDark)) {
                 document.documentElement.classList.add('dark');
                 const modeText = document.getElementById('mode-text');
-                if (modeText) modeText.textContent = 'Tungi';
+                if (modeText) modeText.textContent = {{ json_encode(__('Dark mode')) }};
             }
         })();
 
@@ -382,26 +384,19 @@
             else if (lang === 'UZB') locale = 'uz';
             else if (lang === 'ENG') locale = 'en';
             
-            // Send AJAX request to change locale
-            fetch(`/language/${locale}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const langEl = document.getElementById('current-lang');
-                    if (langEl) {
-                        langEl.textContent = lang;
-                    }
-                    // Reload the page to apply new language
-                    window.location.reload();
-                }
-            })
-            .catch(error => console.error('Error changing language:', error));
+            // Create a form and submit it
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/language/${locale}`;
+            
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = document.querySelector('meta[name="csrf-token"]').content;
+            
+            form.appendChild(csrfToken);
+            document.body.appendChild(form);
+            form.submit();
         }
         
         function changeLocation(location) {

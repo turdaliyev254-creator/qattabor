@@ -1,7 +1,7 @@
 <x-glass-layout>
     <div class="mb-6">
-        <a href="{{ route('home') }}" class="inline-flex items-center text-blue-600 dark:text-blue-400 mb-2 hover:underline">
-            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-4 py-2 backdrop-blur-md bg-white/40 dark:bg-black/20 hover:bg-white/60 dark:hover:bg-black/30 rounded-full text-sm font-semibold text-gray-700 dark:text-gray-300 border border-white/30 dark:border-white/10 transition-all hover:scale-105 shadow-sm mb-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
             {{ __('back') }}
@@ -41,7 +41,7 @@
                         <h3 class="font-semibold text-base text-gray-900 dark:text-white mb-1 line-clamp-1">{{ $place->name }}</h3>
                         
                         @if($place->subcategory)
-                            <p class="text-xs text-blue-600 dark:text-blue-400 mb-1">{{ $place->subcategory->name }}</p>
+                            <p class="text-xs text-blue-600 dark:text-blue-400 mb-1">{{ __($place->subcategory->name) }}</p>
                         @endif
                         
                         @if($place->location)

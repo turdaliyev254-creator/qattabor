@@ -14,26 +14,26 @@
         </div>
 
         <!-- Categories Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
             @foreach($categories as $category)
-            <div class="flex flex-col items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
-                <div class="w-20 h-20 flex items-center justify-center drop-shadow-lg hover:drop-shadow-xl transition-all">
+            <a href="{{ route('places.by-category', $category->slug) }}" class="flex flex-col items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+                <div class="w-14 h-14 flex items-center justify-center drop-shadow-lg hover:drop-shadow-xl transition-all">
                     @if($category->icon)
                         @if(Str::endsWith($category->icon, '.png'))
                             <img src="{{ asset('size-512/images/' . $category->icon) }}" alt="{{ $category->name }}" class="w-full h-full object-contain">
                         @else
-                            <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center text-white text-4xl">
+                            <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-2xl">
                                 {{ $category->icon }}
                             </div>
                         @endif
                     @else
-                        <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">
+                        <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
                             {{ substr($category->name, 0, 1) }}
                         </div>
                     @endif
                 </div>
-                <span class="text-base font-semibold text-gray-700 dark:text-gray-300 text-center">{{ __($category->name) }}</span>
-            </div>
+                <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 text-center line-clamp-2">{{ __($category->name) }}</span>
+            </a>
             @endforeach
         </div>
     </div>

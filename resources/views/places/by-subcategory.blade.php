@@ -6,8 +6,8 @@
             </svg>
             {{ __('back_to_category') }}
         </a>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ $subcategory->name }}</h1>
-        <p class="text-sm text-gray-600 dark:text-gray-400">{{ $category->name }}</p>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ __($subcategory->name) }}</h1>
+        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __($category->name) }}</p>
     </div>
 
     <!-- Places Grid -->

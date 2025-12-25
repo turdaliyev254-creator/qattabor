@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -13,6 +14,12 @@ Route::get('/categories/{category:slug}', [PlaceController::class, 'byCategory']
 Route::get('/categories/{category:slug}/{subcategory:slug}', [PlaceController::class, 'bySubcategory'])->name('places.by-subcategory');
 Route::get('/places/{place:slug}', [PlaceController::class, 'show'])->name('places.show');
 Route::get('/map', [PlaceController::class, 'map'])->name('map.index');
+
+// AI Search endpoint
+Route::post('/search/ai', [SearchController::class, 'aiSearch'])->name('search.ai');
+
+// Quick search for places
+Route::get('/search-places', [SearchController::class, 'quickSearch'])->name('search.quick');
 
 Route::middleware('auth')->group(function () {
     Route::get('/saved-places', [PlaceController::class, 'savedPlaces'])->name('places.saved');
@@ -25,7 +32,7 @@ Route::post('/language/{locale}', function ($locale) {
         session(['locale' => $locale]);
         app()->setLocale($locale);
     }
-    return response()->json(['success' => true, 'locale' => $locale]);
+    return redirect()->back();
 })->name('language.switch');
 
 Route::get('/dashboard', function () {

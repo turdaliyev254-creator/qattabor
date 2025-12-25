@@ -13,7 +13,7 @@
     <!-- Map Container -->
     <div id="map" class="w-full h-[calc(100vh-220px)] rounded-xl overflow-hidden shadow-lg"></div>
 
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=&lang=en_US" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=&amp;lang=en_US" type="text/javascript"></script>
     <script>
         const places = @json($places);
         

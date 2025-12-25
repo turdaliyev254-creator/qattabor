@@ -1,12 +1,12 @@
 <x-glass-layout>
     <div class="mb-6">
-        <a href="{{ route('home') }}" class="inline-flex items-center text-blue-600 dark:text-blue-400 mb-2 hover:underline">
-            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-4 py-2 backdrop-blur-md bg-white/40 dark:bg-black/20 hover:bg-white/60 dark:hover:bg-black/30 rounded-full text-sm font-semibold text-gray-700 dark:text-gray-300 border border-white/30 dark:border-white/10 transition-all hover:scale-105 shadow-sm mb-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
             {{ __('back') }}
         </a>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $category->name }}</h1>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ __($category->name) }}</h1>
     </div>
 
     <!-- Subcategories Section -->
@@ -15,21 +15,27 @@
             <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('subcategories') }}</h2>
             
             <!-- Grid Layout Subcategories -->
-            <div class="grid grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                 @foreach($subcategories as $subcategory)
                     <a href="{{ route('places.by-subcategory', [$category->slug, $subcategory->slug]) }}" 
                        class="group">
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 p-4">
-                            <!-- Category Icon -->
-                            <div class="flex justify-center mb-3">
-                                <div class="w-16 h-16 flex items-center justify-center drop-shadow-lg group-hover:scale-110 transition-transform">
-                                    @if($category->image)
-                                        <img src="{{ asset('size-512/images/' . $category->image) }}" 
-                                             alt="{{ $category->name }}" 
-                                             class="w-full h-full object-contain">
+                        <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 p-3">
+                            <!-- Subcategory Icon -->
+                            <div class="flex justify-center mb-2">
+                                <div class="w-12 h-12 flex items-center justify-center drop-shadow-lg group-hover:scale-110 transition-transform">
+                                    @if($subcategory->icon)
+                                        @if(Str::endsWith($subcategory->icon, '.png'))
+                                            <img src="{{ asset('size-512/images/' . $subcategory->icon) }}" 
+                                                 alt="{{ $subcategory->name }}" 
+                                                 class="w-full h-full object-contain">
+                                        @else
+                                            <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-2xl">
+                                                {{ $subcategory->icon }}
+                                            </div>
+                                        @endif
                                     @else
-                                        <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">
-                                            {{ substr($category->name, 0, 1) }}
+                                        <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
+                                            {{ substr($subcategory->name, 0, 1) }}
                                         </div>
                                     @endif
                                 </div>
@@ -37,9 +43,9 @@
                             
                             <!-- Text -->
                             <div class="text-center">
-                                <h3 class="font-bold text-sm text-gray-900 dark:text-white mb-2 line-clamp-2 leading-tight">{{ $subcategory->name }}</h3>
-                                <div class="inline-flex items-center justify-center px-3 py-1 bg-blue-50 dark:bg-blue-900/30 rounded-full">
-                                    <span class="text-xs font-semibold text-blue-600 dark:text-blue-400">{{ $subcategory->places_count }} {{ __('places') }}</span>
+                                <h3 class="font-medium text-xs text-gray-900 dark:text-white mb-2 line-clamp-2 leading-tight">{{ __($subcategory->name) }}</h3>
+                                <div class="inline-flex items-center justify-center px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 rounded-full">
+                                    <span class="text-xs font-medium text-blue-600 dark:text-blue-400">{{ $subcategory->places_count }} {{ __('places') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +82,7 @@
                             <h3 class="font-semibold text-base text-gray-900 dark:text-white mb-1 line-clamp-1">{{ $place->name }}</h3>
                             
                             @if($place->subcategory)
-                                <p class="text-xs text-blue-600 dark:text-blue-400 mb-1">{{ $place->subcategory->name }}</p>
+                                <p class="text-xs text-blue-600 dark:text-blue-400 mb-1">{{ __($place->subcategory->name) }}</p>
                             @endif
                             
                             @if($place->location)
