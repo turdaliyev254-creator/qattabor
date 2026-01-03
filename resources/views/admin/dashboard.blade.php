@@ -4,8 +4,8 @@
         <div class="glass-card p-8 animate-fade-in">
             <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                 <div>
-                    <h1 class="heading-large text-warm-gray-900 dark:text-white mb-2">Admin Dashboard</h1>
-                    <p class="text-warm-gray-600 dark:text-warm-gray-400">Manage your platform and monitor activity</p>
+                    <h1 class="heading-large text-warm-gray-900 dark:text-white mb-2">{{ __('Dashboard') }}</h1>
+                    <p class="text-warm-gray-600 dark:text-warm-gray-400">{{ __('Manage your platform and monitor activity') }}</p>
                 </div>
                 
                 <div class="flex items-center gap-4">
@@ -14,16 +14,16 @@
                         <svg class="w-5 h-5 text-warm-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <span id="dateRangeDisplay" class="text-sm text-warm-gray-700 dark:text-warm-gray-300">Last 30 days</span>
+                        <span id="dateRangeDisplay" class="text-sm text-warm-gray-700 dark:text-warm-gray-300">{{ __('Last 30 days') }}</span>
                     </div>
                     
                     <!-- Export Button -->
-                    <button class="btn btn-secondary hover-lift">
+                    <a href="{{ route('admin.export-activity') }}" class="btn btn-secondary hover-lift">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        Export
-                    </button>
+                        {{ __('Export') }}
+                    </a>
                 </div>
             </div>
         </div>
@@ -40,14 +40,14 @@
                     </div>
                     <div class="text-right">
                         <div class="text-3xl font-bold text-warm-gray-900 dark:text-white">{{ $stats['categories'] ?? 48 }}</div>
-                        <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">Categories</div>
+                        <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">{{ __('Categories') }}</div>
                     </div>
                 </div>
                 
                 <!-- Progress Bar -->
                 <div class="mb-3">
                     <div class="flex justify-between text-xs text-warm-gray-600 dark:text-warm-gray-400 mb-1">
-                        <span>Progress</span>
+                        <span>{{ __('Progress') }}</span>
                         <span>85%</span>
                     </div>
                     <div class="w-full bg-warm-gray-200 dark:bg-warm-gray-700 rounded-full h-1.5">
@@ -61,7 +61,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
                     </svg>
                     <span class="text-secondary-600 dark:text-secondary-400 font-medium">+8.2%</span>
-                    <span class="text-warm-gray-500 ml-1">vs last month</span>
+                    <span class="text-warm-gray-500 ml-1">{{ __('vs last month') }}</span>
                 </div>
             </div>
 
@@ -75,13 +75,13 @@
                     </div>
                     <div class="text-right">
                         <div class="text-3xl font-bold text-warm-gray-900 dark:text-white">{{ $stats['subcategories'] ?? 156 }}</div>
-                        <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">Subcategories</div>
+                        <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">{{ __('Subcategories') }}</div>
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <div class="flex justify-between text-xs text-warm-gray-600 dark:text-warm-gray-400 mb-1">
-                        <span>Active</span>
+                        <span>{{ __('Active') }}</span>
                         <span>92%</span>
                     </div>
                     <div class="w-full bg-warm-gray-200 dark:bg-warm-gray-700 rounded-full h-1.5">
@@ -94,7 +94,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
                     </svg>
                     <span class="text-secondary-600 dark:text-secondary-400 font-medium">+12.5%</span>
-                    <span class="text-warm-gray-500 ml-1">vs last month</span>
+                    <span class="text-warm-gray-500 ml-1">{{ __('vs last month') }}</span>
                 </div>
             </div>
 
@@ -109,13 +109,13 @@
                     </div>
                     <div class="text-right">
                         <div class="text-3xl font-bold text-warm-gray-900 dark:text-white">{{ $stats['places'] ?? 1234 }}</div>
-                        <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">Places</div>
+                        <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">{{ __('Places') }}</div>
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <div class="flex justify-between text-xs text-warm-gray-600 dark:text-warm-gray-400 mb-1">
-                        <span>Verified</span>
+                        <span>{{ __('Verified') }}</span>
                         <span>78%</span>
                     </div>
                     <div class="w-full bg-warm-gray-200 dark:bg-warm-gray-700 rounded-full h-1.5">
@@ -128,7 +128,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
                     </svg>
                     <span class="text-secondary-600 dark:text-secondary-400 font-medium">+18.7%</span>
-                    <span class="text-warm-gray-500 ml-1">vs last month</span>
+                    <span class="text-warm-gray-500 ml-1">{{ __('vs last month') }}</span>
                 </div>
             </div>
 
@@ -142,13 +142,13 @@
                     </div>
                     <div class="text-right">
                         <div class="text-3xl font-bold text-warm-gray-900 dark:text-white">{{ $stats['users'] ?? 892 }}</div>
-                        <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">Users</div>
+                        <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">{{ __('Users') }}</div>
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <div class="flex justify-between text-xs text-warm-gray-600 dark:text-warm-gray-400 mb-1">
-                        <span>Active</span>
+                        <span>{{ __('Active') }}</span>
                         <span>94%</span>
                     </div>
                     <div class="w-full bg-warm-gray-200 dark:bg-warm-gray-700 rounded-full h-1.5">
@@ -161,7 +161,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
                     </svg>
                     <span class="text-secondary-600 dark:text-secondary-400 font-medium">+24.3%</span>
-                    <span class="text-warm-gray-500 ml-1">vs last month</span>
+                    <span class="text-warm-gray-500 ml-1">{{ __('vs last month') }}</span>
                 </div>
             </div>
         </div>
@@ -175,11 +175,11 @@
                     <div class="p-6 border-b border-warm-gray-200 dark:border-warm-gray-700">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h2 class="heading-medium text-warm-gray-900 dark:text-white">Recent Places</h2>
-                                <p class="text-sm text-warm-gray-600 dark:text-warm-gray-400 mt-1">Latest additions to your platform</p>
+                                <h2 class="heading-medium text-warm-gray-900 dark:text-white">{{ __('Recent Places') }}</h2>
+                                <p class="text-sm text-warm-gray-600 dark:text-warm-gray-400 mt-1">{{ __('Latest additions to your platform') }}</p>
                             </div>
                             <a href="{{ route('admin.places.index') }}" class="btn btn-secondary hover-lift">
-                                View All
+                                {{ __('View All') }}
                             </a>
                         </div>
                     </div>
@@ -282,25 +282,25 @@
             <div class="space-y-6">
                 <!-- Quick Actions -->
                 <div class="glass-card p-6 animate-fade-in animate-stagger-7">
-                    <h3 class="heading-medium text-warm-gray-900 dark:text-white mb-4">Quick Actions</h3>
+                    <h3 class="heading-medium text-warm-gray-900 dark:text-white mb-4">{{ __('Quick Actions') }}</h3>
                     <div class="space-y-3">
                         <a href="{{ route('admin.categories.create') }}" class="btn btn-primary w-full hover-lift text-left justify-start">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
-                            Add Category
+                            {{ __('Add Category') }}
                         </a>
                         <a href="{{ route('admin.places.create') }}" class="btn btn-secondary w-full hover-lift text-left justify-start">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                             </svg>
-                            Add Place
+                            {{ __('Add Place') }}
                         </a>
                         <button class="btn btn-ghost w-full hover-lift text-left justify-start">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
-                            Generate Report
+                            {{ __('Generate Report') }}
                         </button>
                     </div>
                 </div>

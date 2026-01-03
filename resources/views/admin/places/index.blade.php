@@ -21,6 +21,7 @@
                         <th class="px-6 py-4">Name</th>
                         <th class="px-6 py-4">Category</th>
                         <th class="px-6 py-4">Location</th>
+                        <th class="px-6 py-4">Owner</th>
                         <th class="px-6 py-4">Status</th>
                         <th class="px-6 py-4 text-right">Actions</th>
                     </tr>
@@ -50,6 +51,16 @@
                             </td>
                             <td class="px-6 py-4">{{ $place->location->name }}</td>
                             <td class="px-6 py-4">
+                                @if($place->owner)
+                                    <div class="text-sm">
+                                        <div class="font-medium text-gray-900 dark:text-white">{{ $place->owner->name }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">ID: {{ $place->owner->id }}</div>
+                                    </div>
+                                @else
+                                    <span class="text-gray-400 text-sm">No owner</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4">
                                 <div class="flex gap-1">
                                     @if($place->is_popular)
                                         <span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-bold">Popular</span>
@@ -76,7 +87,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                            <td colspan="6" class="px-6 py-8 text-center text-gray-500">
                                 No places found.
                             </td>
                         </tr>

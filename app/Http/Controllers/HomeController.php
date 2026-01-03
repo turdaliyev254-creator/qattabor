@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Place;
 use App\Models\Location;
+use App\Models\Banner;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -19,8 +20,9 @@ class HomeController extends Controller
         
         $popularPlaces = Place::where('is_popular', true)->with(['category', 'location'])->take(6)->get();
         $locations = Location::all();
+        $banners = Banner::active()->get();
 
-        return view('welcome', compact('categories', 'popularPlaces', 'locations'));
+        return view('welcome', compact('categories', 'popularPlaces', 'locations', 'banners'));
     }
 
     public function allCategories()

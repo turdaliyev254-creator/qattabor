@@ -30,9 +30,24 @@ class User extends Authenticatable
         return $this->belongsToMany(Place::class, 'saved_places');
     }
 
+    public function ownedPlaces()
+    {
+        return $this->hasMany(Place::class, 'owner_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';
+    }
+
+    public function isOwner()
+    {
+        return $this->ownedPlaces()->exists();
     }
 
     /**

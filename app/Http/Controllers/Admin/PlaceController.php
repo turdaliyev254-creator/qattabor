@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Place;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -16,7 +17,7 @@ class PlaceController extends Controller
      */
     public function index()
     {
-        $places = Place::with(['category', 'location'])->latest()->paginate(10);
+        $places = Place::with(['category', 'location', 'owner'])->latest()->paginate(10);
         return view('admin.places.index', compact('places'));
     }
 
@@ -27,7 +28,8 @@ class PlaceController extends Controller
     {
         $categories = Category::all();
         $locations = Location::all();
-        return view('admin.places.create', compact('categories', 'locations'));
+        $users = User::orderBy('name')->get();
+        return view('admin.places.create', compact('categories', 'locations', 'users'));
     }
 
     /**
@@ -40,6 +42,7 @@ class PlaceController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'location_id' => 'required|exists:locations,id',
+            'owner_id' => 'nullable|exists:users,id',
             'address' => 'nullable|string|max:255',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
@@ -76,7 +79,8 @@ class PlaceController extends Controller
     {
         $categories = Category::all();
         $locations = Location::all();
-        return view('admin.places.edit', compact('place', 'categories', 'locations'));
+        $users = User::orderBy('name')->get();
+        return view('admin.places.edit', compact('place', 'categories', 'locations', 'users'));
     }
 
     /**
@@ -89,6 +93,7 @@ class PlaceController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'location_id' => 'required|exists:locations,id',
+            'owner_id' => 'nullable|exists:users,id',
             'address' => 'nullable|string|max:255',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',

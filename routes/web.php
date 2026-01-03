@@ -70,6 +70,19 @@ Route::post('/language/{locale}', function ($locale) {
 })->name('language.switch');
 
 Route::get('/dashboard', function () {
+    $user = auth()->user();
+    
+    // Redirect admin to admin dashboard
+    if ($user->isAdmin()) {
+        return redirect()->route('admin.dashboard');
+    }
+    
+    // Redirect place owners to owner dashboard
+    if ($user->isOwner()) {
+        return redirect()->route('owner.dashboard');
+    }
+    
+    // Regular users see the standard dashboard
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -77,13 +90,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // Owner Dashboard and Comments
+    Route::get('/owner/dashboard', \App\Http\Controllers\Owner\DashboardController::class)->name('owner.dashboard');
+    Route::get('/owner/export-activity', [\App\Http\Controllers\Owner\DashboardController::class, 'exportActivity'])->name('owner.export-activity');
+    Route::post('/comments/{comment}/reply', [\App\Http\Controllers\Owner\CommentController::class, 'reply'])->name('owner.comments.reply');
+    
+    // Public Comments
+    Route::post('/places/{place}/comments', [\App\Http\Controllers\CommentController::class, 'store'])->name('comments.store');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/export-activity', [AdminController::class, 'exportActivity'])->name('admin.export-activity');
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
     Route::resource('subcategories', \App\Http\Controllers\Admin\SubcategoryController::class)->names('admin.subcategories');
     Route::resource('places', \App\Http\Controllers\Admin\PlaceController::class)->names('admin.places');
+    Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class)->names('admin.banners');
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show'])->names('admin.users');
+    
+    // Comments Management
+    Route::get('/comments', [\App\Http\Controllers\Admin\CommentController::class, 'index'])->name('admin.comments.index');
+    Route::patch('/comments/{comment}/approve', [\App\Http\Controllers\Admin\CommentController::class, 'approve'])->name('admin.comments.approve');
+    Route::delete('/comments/{comment}', [\App\Http\Controllers\Admin\CommentController::class, 'destroy'])->name('admin.comments.destroy');
 });
 
 require __DIR__.'/auth.php';

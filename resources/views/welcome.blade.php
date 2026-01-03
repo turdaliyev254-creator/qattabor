@@ -256,53 +256,71 @@
         </div>
     </div>
 
-    <!-- Hero Banner Carousel -->
-    <div class="relative mb-8 -mx-4" x-data="{ 
-        currentSlide: 0,
-        slides: [
-            {
-                image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'
-            },
-            {
-                image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'
-            },
-            {
-                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'
-            }
-        ],
-        autoplay: null,
+    <!-- Banners Section -->
+    @if($banners && $banners->count() > 0)
+    <div class="mb-8" x-data="{
+        currentBanner: 0,
+        banners: {{ $banners->count() }},
+        autoplay: true,
         init() {
-            this.autoplay = setInterval(() => {
-                this.currentSlide = (this.currentSlide + 1) % this.slides.length;
-            }, 3000);
+            setInterval(() => {
+                if (this.autoplay) {
+                    this.nextBanner();
+                }
+            }, 5000);
+        },
+        nextBanner() {
+            this.currentBanner = (this.currentBanner + 1) % this.banners;
+        },
+        prevBanner() {
+            this.currentBanner = (this.currentBanner - 1 + this.banners) % this.banners;
         }
     }">
-        <div class="relative overflow-hidden">
-            <div class="flex transition-transform duration-500 ease-out"
-                 :style="`transform: translateX(-${currentSlide * 90}%)`">
-                <template x-for="(slide, index) in slides" :key="index">
-                    <div class="flex-shrink-0 w-[90%] px-2">
-                        <div class="relative h-48 rounded-3xl overflow-hidden shadow-lg cursor-pointer">
-                            <img :src="slide.image" 
-                                 alt="Banner" 
-                                 class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-                        </div>
-                    </div>
-                </template>
+        <div class="relative overflow-hidden rounded-3xl shadow-2xl backdrop-blur-xl bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/5">
+            <!-- Banner Images -->
+            <div class="relative h-40 md:h-56 lg:h-72">
+                @foreach($banners as $index => $banner)
+                <div 
+                    x-show="currentBanner === {{ $index }}"
+                    x-transition:enter="transition ease-out duration-700"
+                    x-transition:enter-start="opacity-0 transform scale-105"
+                    x-transition:enter-end="opacity-100 transform scale-100"
+                    x-transition:leave="transition ease-in duration-700"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="absolute inset-0"
+                >
+                    @if($banner->link)
+                    <a href="{{ $banner->link }}" target="_blank" rel="noopener noreferrer" class="block w-full h-full group">
+                        <img src="{{ asset('storage/' . $banner->image) }}" 
+                             alt="{{ $banner->title }}" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </a>
+                    @else
+                    <img src="{{ asset('storage/' . $banner->image) }}" 
+                         alt="{{ $banner->title }}" 
+                         class="w-full h-full object-cover">
+                    @endif
+                </div>
+                @endforeach
             </div>
-        </div>
-        
-        <!-- Carousel dots -->
-        <div class="flex justify-center gap-1.5 mt-4">
-            <template x-for="(slide, index) in slides" :key="index">
-                <button @click="currentSlide = index" 
-                        class="h-1.5 rounded-full transition-all duration-300"
-                        :class="currentSlide === index ? 'bg-blue-600 w-8' : 'bg-gray-300 dark:bg-gray-600 w-1.5'">
+
+            <!-- Dots Indicator -->
+            @if($banners->count() > 1)
+            <div class="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/30 backdrop-blur-md px-3 py-2 rounded-full">
+                @foreach($banners as $index => $banner)
+                <button 
+                    @click="currentBanner = {{ $index }}; autoplay = false"
+                    class="h-2 rounded-full transition-all duration-300 hover:bg-white"
+                    :class="currentBanner === {{ $index }} ? 'bg-white w-8' : 'bg-white/60 w-2'">
                 </button>
-            </template>
+                @endforeach
+            </div>
+            @endif
         </div>
     </div>
+    @endif
 
     <!-- Categories Section -->
     <div class="mb-8">
