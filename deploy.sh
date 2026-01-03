@@ -35,9 +35,12 @@ fi
 # 6. Очистка и кэширование
 echo "🧹 Очистка кэша и пересборка..."
 php artisan optimize:clear
+php artisan route:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+php artisan config:clear
+php artisan route:clear
 
 # 7. Перезапуск очередей (если есть)
 echo "🔄 Перезапуск очередей..."

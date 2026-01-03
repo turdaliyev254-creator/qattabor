@@ -22,69 +22,9 @@ Route::get('/fresh-seed-now', function() {
     }
 });
 
-Route::get('/clear-all-cache', function() {
-    \Artisan::call('cache:clear');
-    \Artisan::call('config:clear');
-    \Artisan::call('route:clear');
-    \Artisan::call('view:clear');
-    \Artisan::call('optimize:clear');
-    
-    return "✅ All caches cleared! Refresh your website now.";
-});
-
-Route::get('/check-banners', function() {
-    $output = '<h1>Banner Diagnostics</h1>';
-    
-    // Check storage link
-    $storageLinkExists = is_link(public_path('storage'));
-    $output .= '<h2>Storage Link:</h2>';
-    $output .= $storageLinkExists ? '✅ public/storage symlink EXISTS<br>' : '❌ public/storage symlink MISSING<br>';
-    
-    if ($storageLinkExists) {
-        $output .= 'Target: ' . readlink(public_path('storage')) . '<br>';
-    }
-    
-    // Check banners directory
-    $bannersPath = storage_path('app/public/banners');
-    $output .= '<h2>Banners Directory:</h2>';
-    $output .= is_dir($bannersPath) ? '✅ storage/app/public/banners EXISTS<br>' : '❌ storage/app/public/banners MISSING<br>';
-    
-    if (is_dir($bannersPath)) {
-        $files = scandir($bannersPath);
-        $files = array_diff($files, ['.', '..']);
-        $output .= 'Files in directory: ' . count($files) . '<br>';
-        foreach ($files as $file) {
-            $output .= '  - ' . $file . '<br>';
-        }
-    }
-    
-    // Check database banners
-    $banners = \App\Models\Banner::active()->get();
-    $output .= '<h2>Database Banners:</h2>';
-    $output .= 'Active banners: ' . $banners->count() . '<br><br>';
-    
-    foreach ($banners as $banner) {
-        $imagePath = storage_path('app/public/' . $banner->image);
-        $imageExists = file_exists($imagePath);
-        $imageUrl = asset('storage/' . $banner->image);
-        
-        $output .= '<h3>' . $banner->title . '</h3>';
-        $output .= 'DB Image Path: ' . $banner->image . '<br>';
-        $output .= 'Full Path: ' . $imagePath . '<br>';
-        $output .= 'File Exists: ' . ($imageExists ? '✅ YES' : '❌ NO') . '<br>';
-        $output .= 'Public URL: <a href="' . $imageUrl . '" target="_blank">' . $imageUrl . '</a><br>';
-        
-        if ($imageExists && $storageLinkExists) {
-            $output .= '<img src="' . $imageUrl . '" style="max-width: 300px; margin: 10px 0;"><br>';
-        }
-        $output .= '<br>';
-    }
-    
-    $output .= '<h2>Quick Fix:</h2>';
-    $output .= 'If symlink is missing, run: <code>php artisan storage:link</code><br>';
-    
-    return $output;
-});
+// Diagnostic routes (moved to controller for route caching compatibility)
+Route::get('/check-banners', [\App\Http\Controllers\DiagnosticsController::class, 'checkBanners']);
+Route::get('/clear-all-cache', [\App\Http\Controllers\DiagnosticsController::class, 'clearCache']);
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
