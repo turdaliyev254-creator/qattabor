@@ -18,14 +18,18 @@ php artisan migrate --force
 echo "🌱 Проверка и заполнение категорий..."
 php artisan db:seed --class=CategorySeeder --force || true
 
-# 5. Очистка и кэширование
+# 5. Создание символической ссылки для storage
+echo "🔗 Создание символической ссылки для storage..."
+php artisan storage:link || true
+
+# 6. Очистка и кэширование
 echo "🧹 Очистка кэша и пересборка..."
 php artisan optimize:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# 6. Перезапуск очередей (если есть)
+# 7. Перезапуск очередей (если есть)
 echo "🔄 Перезапуск очередей..."
 php artisan queue:restart || true
 
