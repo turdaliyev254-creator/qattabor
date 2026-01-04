@@ -306,19 +306,14 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($locations as $location) {
-            $slug = Str::slug($location['name']);
-            
-            // Check if location already exists
-            $exists = DB::table('locations')->where('slug', $slug)->exists();
-            
-            if (!$exists) {
-                DB::table('locations')->insert([
+            Location::firstOrCreate(
+                ['slug' => Str::slug($location['name'])],
+                [
                     'name' => $location['name'],
-                    'slug' => $slug,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
+                    'slug' => Str::slug($location['name']),
+                    'region' => $location['region'],
+                ]
+            );
         }
 
         echo "\n✅ Created " . Category::count() . " categories\n";
