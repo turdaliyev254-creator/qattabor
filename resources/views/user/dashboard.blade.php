@@ -9,7 +9,7 @@
                 <div class="flex items-center justify-between flex-wrap gap-4">
                     <div class="flex items-center gap-4">
                         @if($user->avatar)
-                            <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" 
+                            <img src="{{ asset('public/storage/' . $user->avatar) }}" alt="{{ $user->name }}" 
                                  class="w-20 h-20 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-lg">
                         @else
                             <div class="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
