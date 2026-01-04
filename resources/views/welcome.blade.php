@@ -405,40 +405,7 @@
                     </div>
                 </a>
                 @empty
-                <!-- Sample Places -->
-                @for($i = 1; $i <= 6; $i++)
-                <a href="#" class="flex-shrink-0 w-56">
-                    <div class="backdrop-blur-xl bg-white/40 dark:bg-black/20 rounded-2xl overflow-hidden border border-white/30 dark:border-white/10 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
-                        <!-- Place Image -->
-                        <div class="relative h-32 overflow-hidden bg-gradient-to-br from-blue-{{ 400 + ($i % 3) * 100 }} via-purple-{{ 400 + ($i % 2) * 100 }} to-pink-{{ 500 + ($i % 3) * 100 }}">
-                            <div class="w-full h-full flex items-center justify-center">
-                                <svg class="w-14 h-14 text-white opacity-40" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                        </div>
-                        
-                        <!-- Place Info -->
-                        <div class="p-3">
-                            <h3 class="font-bold text-sm text-gray-900 dark:text-white mb-2 line-clamp-1">{{ __('sample_place') }} {{ $i }}</h3>
-                            <div class="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-300 mb-2">
-                                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="line-clamp-1">{{ __('tashkent') }}</span>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                </svg>
-                                <span class="font-bold text-sm text-gray-900 dark:text-white">4.{{ 5 + ($i % 4) }}</span>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">({{ 50 + ($i * 15) }})</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                @endfor
+                <p class="text-gray-600 dark:text-gray-400">{{ __('No popular places found.') }}</p>
                 @endforelse
             </div>
         </div>
