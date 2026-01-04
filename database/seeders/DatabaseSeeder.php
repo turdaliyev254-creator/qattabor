@@ -282,6 +282,10 @@ class DatabaseSeeder extends Seeder
         echo "\n📞 Creating Ishonch telefonlari...\n";
         $this->call(IshonchTelefonlariSeeder::class);
 
+        // Create Banners
+        echo "\n🎨 Creating banners...\n";
+        $this->call(BannerSeeder::class);
+
         echo "\n🎉 Database seeding completed successfully!\n";
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
         echo "🔐 Admin Login:\n";

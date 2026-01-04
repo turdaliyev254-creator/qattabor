@@ -76,14 +76,23 @@ Route::get('/dashboard', function () {
         return redirect()->route('owner.dashboard');
     }
     
-    // Regular users see the standard dashboard
-    return view('dashboard');
+    // Regular users go to user dashboard
+    return redirect()->route('user.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // User Dashboard
+    Route::get('/user/dashboard', [\App\Http\Controllers\User\DashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/user/favorites', [\App\Http\Controllers\User\DashboardController::class, 'favorites'])->name('user.favorites');
+    Route::get('/user/reviews', [\App\Http\Controllers\User\DashboardController::class, 'reviews'])->name('user.reviews');
+    Route::get('/user/recently-viewed', [\App\Http\Controllers\User\DashboardController::class, 'recentlyViewed'])->name('user.recently-viewed');
+    Route::get('/user/profile', [\App\Http\Controllers\User\ProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::put('/user/profile', [\App\Http\Controllers\User\ProfileController::class, 'update'])->name('user.profile.update');
+    Route::delete('/user/profile/avatar', [\App\Http\Controllers\User\ProfileController::class, 'deleteAvatar'])->name('user.profile.delete-avatar');
     
     // Owner Dashboard and Comments
     Route::get('/owner/dashboard', \App\Http\Controllers\Owner\DashboardController::class)->name('owner.dashboard');

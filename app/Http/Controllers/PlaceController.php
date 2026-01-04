@@ -55,6 +55,21 @@ class PlaceController extends Controller
     {
         $place->load(['category', 'subcategory', 'location']);
         
+        // Track recently viewed places in session
+        $recentlyViewed = session()->get('recently_viewed', []);
+        
+        // Remove if already exists (to move it to front)
+        $recentlyViewed = array_diff($recentlyViewed, [$place->id]);
+        
+        // Add to beginning of array
+        array_unshift($recentlyViewed, $place->id);
+        
+        // Keep only last 10
+        $recentlyViewed = array_slice($recentlyViewed, 0, 10);
+        
+        // Save back to session
+        session()->put('recently_viewed', $recentlyViewed);
+        
         // Get related places from same subcategory or category
         $relatedPlaces = Place::where('id', '!=', $place->id)
             ->where(function($query) use ($place) {

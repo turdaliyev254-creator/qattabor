@@ -158,25 +158,30 @@
 
                 @auth
                 <!-- Profile Section -->
-                <div class="mb-6 p-5 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800/80 dark:to-gray-800/60 rounded-3xl border border-blue-100/50 dark:border-gray-700/50 backdrop-blur-sm shadow-sm hover:shadow-md transition-all">
+                <a href="{{ route('dashboard') }}" class="block mb-6 p-5 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800/80 dark:to-gray-800/60 rounded-3xl border border-blue-100/50 dark:border-gray-700/50 backdrop-blur-sm shadow-sm hover:shadow-md transition-all cursor-pointer">
                     <div class="flex items-center gap-4">
                         <div class="relative">
-                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
-                            </div>
+                            @if(auth()->user()->avatar)
+                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" 
+                                     class="w-14 h-14 rounded-2xl object-cover shadow-lg">
+                            @else
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                </div>
+                            @endif
                             <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
                         </div>
                         <div class="flex-1">
-                            <div class="font-bold text-gray-900 dark:text-white text-lg">Kabinet</div>
-                            <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">+998 90 ...</div>
+                            <div class="font-bold text-gray-900 dark:text-white text-lg">{{ auth()->user()->name }}</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">{{ Str::mask(auth()->user()->phone, '*', 7) }}</div>
                         </div>
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </div>
-                </div>
+                </a>
                 @endauth
 
                 <!-- Dark Mode Toggle -->
