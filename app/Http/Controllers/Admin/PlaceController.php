@@ -41,6 +41,7 @@ class PlaceController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'subcategory_id' => 'nullable|exists:subcategories,id',
             'location_id' => 'required|exists:locations,id',
             'owner_id' => 'nullable|exists:users,id',
             'address' => 'nullable|string|max:255',

@@ -26,27 +26,39 @@ class PlaceController extends Controller
         return view('places.popular', compact('places', 'locations'));
     }
 
-    public function byCategory(Category $category)
+    public function byCategory(Request $request, Category $category)
     {
         $subcategories = $category->subcategories()
             ->withCount('places')
             ->orderBy('name')
             ->get();
         
-        $places = $category->places()
-            ->with(['subcategory', 'location'])
-            ->latest()
-            ->paginate(12);
+        $placesQuery = $category->places()->with(['subcategory', 'location']);
+        
+        // Filter by region if provided
+        if ($request->has('region') && $request->region) {
+            $placesQuery->whereHas('location', function($query) use ($request) {
+                $query->where('region', $request->region);
+            });
+        }
+        
+        $places = $placesQuery->latest()->paginate(12);
 
         return view('places.by-category', compact('category', 'subcategories', 'places'));
     }
 
-    public function bySubcategory(Category $category, Subcategory $subcategory)
+    public function bySubcategory(Request $request, Category $category, Subcategory $subcategory)
     {
-        $places = $subcategory->places()
-            ->with(['category', 'location'])
-            ->latest()
-            ->paginate(12);
+        $placesQuery = $subcategory->places()->with(['category', 'location']);
+        
+        // Filter by region if provided
+        if ($request->has('region') && $request->region) {
+            $placesQuery->whereHas('location', function($query) use ($request) {
+                $query->where('region', $request->region);
+            });
+        }
+        
+        $places = $placesQuery->latest()->paginate(12);
 
         return view('places.by-subcategory', compact('category', 'subcategory', 'places'));
     }

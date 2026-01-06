@@ -421,6 +421,23 @@
             form.submit();
         }
         
+        // Map display location names to database region values
+        const locationToRegion = {
+            'Toshkent': 'Tashkent City',
+            'Toshkent viloyati': 'Tashkent Region',
+            'Fargona': 'Fergana Region',
+            'Qoqon': 'Fergana Region',
+            'Namangan': 'Namangan Region',
+            'Samarqand': 'Samarkand Region',
+            'Buxoro': 'Bukhara Region',
+            'Andijon': 'Andijan Region',
+            'Navoi': 'Navoiy Region',
+            'Xorazm': 'Xorazm Region',
+            'Surxondaryo': 'Surxondaryo Region',
+            'Qashqadaryo': 'Qashqadaryo Region',
+            'Jizzax': 'Jizzakh Region'
+        };
+        
         function changeLocation(location) {
             // Store selected location in session storage
             sessionStorage.setItem('selectedLocation', location);
@@ -446,9 +463,11 @@
                 }
             });
             
-            // TODO: Filter places by selected location
-            // You can reload the page with location parameter or use AJAX to filter
-            console.log('Location changed to:', location);
+            // Reload page with region parameter to filter places
+            const regionValue = locationToRegion[location] || location;
+            const url = new URL(window.location);
+            url.searchParams.set('region', regionValue);
+            window.location.href = url.toString();
         }
         
         // Set initial language display based on current locale
@@ -485,18 +504,46 @@
                 activeBtn.classList.add('bg-blue-600', 'text-white', 'font-semibold');
             }
             
-            // Restore selected location from session storage
+            // Restore selected location from session storage or URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const regionParam = urlParams.get('region');
             const savedLocation = sessionStorage.getItem('selectedLocation');
-            if (savedLocation) {
+            
+            // Reverse map region parameter to display location
+            const regionToLocation = {
+                'Tashkent City': 'Toshkent',
+                'Tashkent Region': 'Toshkent viloyati',
+                'Fergana Region': 'Fargona',
+                'Namangan Region': 'Namangan',
+                'Samarkand Region': 'Samarqand',
+                'Bukhara Region': 'Buxoro',
+                'Andijan Region': 'Andijon',
+                'Navoiy Region': 'Navoi',
+                'Xorazm Region': 'Xorazm',
+                'Surxondaryo Region': 'Surxondaryo',
+                'Qashqadaryo Region': 'Qashqadaryo',
+                'Jizzakh Region': 'Jizzax'
+            };
+            
+            const currentLocation = regionParam ? (regionToLocation[regionParam] || savedLocation || 'Toshkent') : (savedLocation || 'Toshkent');
+            
+            if (currentLocation) {
                 const locationEl = document.getElementById('current-location');
                 if (locationEl) {
-                    locationEl.textContent = savedLocation;
+                    locationEl.textContent = currentLocation;
                 }
-                // Set active location button
-                changeLocation(savedLocation);
-            } else {
-                // Set default location to Toshkent
-                changeLocation('Toshkent');
+                // Set active location button without reloading
+                const locationButtons = document.querySelectorAll('.location-btn');
+                locationButtons.forEach(btn => {
+                    const btnLocation = btn.getAttribute('data-location');
+                    if (btnLocation === currentLocation) {
+                        btn.classList.remove('text-gray-700', 'dark:text-gray-300', 'bg-gray-100/80', 'dark:bg-gray-700/80', 'hover:bg-blue-50', 'hover:text-blue-600', 'dark:hover:bg-gray-600', 'dark:hover:text-blue-400', 'border-transparent', 'hover:border-blue-200', 'dark:hover:border-blue-800');
+                        btn.classList.add('text-white', 'bg-gradient-to-br', 'from-blue-500', 'to-purple-600', 'shadow-lg', 'border-blue-400');
+                        btn.style.fontWeight = '700';
+                    }
+                });
+                // Store in session storage for next page load
+                sessionStorage.setItem('selectedLocation', currentLocation);
             }
         });
 
