@@ -497,5 +497,21 @@
     "email": "Email",
     "optional": "Необязательно",
     "cancel": "Отмена",
-    "save_changes": "Сохранить изменения"
+    "save_changes": "Сохранить изменения",
+    "Password": "Пароль",
+    "Confirm Password": "Подтвердите пароль",
+    "Current Password": "Текущий пароль",
+    "New Password": "Новый пароль",
+    "Remember me": "Запомнить меня",
+    "Change Password": "Изменить пароль",
+    "Password updated successfully": "Пароль успешно обновлен",
+    "Enter your password": "Введите ваш пароль",
+    "Enter password again": "Введите пароль еще раз",
+    "phone_format_error": "Телефон должен быть в формате +998XXXXXXXXX",
+    "Show password": "Показать пароль",
+    "Hide password": "Скрыть пароль",
+    "Password must be at least 8 characters": "Пароль должен содержать не менее 8 символов",
+    "Passwords must match": "Пароли должны совпадать",
+    "Current password is incorrect": "Текущий пароль неверен",
+    "password_changed_successfully": "Пароль успешно изменен"
 }

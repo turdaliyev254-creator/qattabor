@@ -496,6 +496,22 @@
     "email": "Email",
     "optional": "Optional",
     "cancel": "Cancel",
-    "save_changes": "Save Changes"
+    "save_changes": "Save Changes",
+    "Password": "Password",
+    "Confirm Password": "Confirm Password",
+    "Current Password": "Current Password",
+    "New Password": "New Password",
+    "Remember me": "Remember me",
+    "Change Password": "Change Password",
+    "Password updated successfully": "Password updated successfully",
+    "Enter your password": "Enter your password",
+    "Enter password again": "Enter password again",
+    "phone_format_error": "Phone must be in format +998XXXXXXXXX",
+    "Show password": "Show password",
+    "Hide password": "Hide password",
+    "Password must be at least 8 characters": "Password must be at least 8 characters",
+    "Passwords must match": "Passwords must match",
+    "Current password is incorrect": "Current password is incorrect",
+    "password_changed_successfully": "Password changed successfully"
 }
 

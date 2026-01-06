@@ -27,8 +27,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
             'phone' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ];
     }
 
@@ -41,20 +41,14 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        // Find user by name and phone
-        $user = \App\Models\User::where('name', $this->name)
-            ->where('phone', $this->phone)
-            ->first();
-
-        if (! $user) {
+        if (! Auth::attempt(['phone' => $this->phone, 'password' => $this->password], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'name' => trans('auth.failed'),
+                'phone' => trans('auth.failed'),
             ]);
         }
 
-        Auth::login($user, $this->boolean('remember'));
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -86,6 +80,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('phone')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('phone')));
     }
 }

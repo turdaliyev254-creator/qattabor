@@ -372,7 +372,7 @@
                         <!-- Place Image -->
                         <div class="relative h-32 overflow-hidden">
                             @if($place->image)
-                            <img src="{{ asset('storage/' . $place->image) }}" 
+                            <img src="{{ asset('public/storage/' . $place->image) }}" 
                                  alt="{{ $place->name }}" 
                                  class="w-full h-full object-cover">
                             @else

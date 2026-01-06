@@ -64,7 +64,7 @@ class DiagnosticsController extends Controller
             foreach ($banners as $index => $banner) {
                 $imagePath = storage_path('app/public/' . $banner->image);
                 $imageExists = file_exists($imagePath);
-                $imageUrl = asset('storage/' . $banner->image);
+                $imageUrl = asset('public/storage/' . $banner->image);
                 
                 $output .= '<h3>Banner ' . ($index + 1) . ': ' . htmlspecialchars($banner->title) . '</h3>';
                 $output .= '<p><strong>Database path:</strong> ' . htmlspecialchars($banner->image) . '</p>';

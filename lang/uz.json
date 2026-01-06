@@ -497,6 +497,22 @@
     "email": "Email",
     "optional": "Ixtiyoriy",
     "cancel": "Bekor qilish",
-    "save_changes": "O'zgarishlarni saqlash"
+    "save_changes": "O'zgarishlarni saqlash",
+    "Password": "Parol",
+    "Confirm Password": "Parolni tasdiqlang",
+    "Current Password": "Joriy parol",
+    "New Password": "Yangi parol",
+    "Remember me": "Meni eslab qol",
+    "Change Password": "Parolni o'zgartirish",
+    "Password updated successfully": "Parol muvaffaqiyatli yangilandi",
+    "Enter your password": "Parolingizni kiriting",
+    "Enter password again": "Parolni qayta kiriting",
+    "phone_format_error": "Telefon raqami +998XXXXXXXXX formatida bo'lishi kerak",
+    "Show password": "Parolni ko'rsatish",
+    "Hide password": "Parolni yashirish",
+    "Password must be at least 8 characters": "Parol kamida 8 ta belgidan iborat bo'lishi kerak",
+    "Passwords must match": "Parollar mos kelishi kerak",
+    "Current password is incorrect": "Joriy parol noto'g'ri",
+    "password_changed_successfully": "Parol muvaffaqiyatli o'zgartirildi"
 }
 

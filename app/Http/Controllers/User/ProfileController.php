@@ -26,6 +26,7 @@ class ProfileController extends Controller
                 'required',
                 'string',
                 'max:20',
+                'regex:/^\+998[0-9]{9}$/',
                 Rule::unique('users')->ignore($user->id)
             ],
             'email' => [
@@ -35,6 +36,8 @@ class ProfileController extends Controller
                 Rule::unique('users')->ignore($user->id)
             ],
             'avatar' => ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
+        ], [
+            'phone.regex' => __('phone_format_error'),
         ]);
         
         // Handle avatar upload

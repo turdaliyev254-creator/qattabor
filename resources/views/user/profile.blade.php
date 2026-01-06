@@ -20,6 +20,12 @@
         </div>
         @endif
 
+        @if(session('status') === 'password-updated')
+        <div class="mb-6 backdrop-blur-xl bg-green-500/20 border border-green-500/30 rounded-2xl p-4">
+            <p class="text-green-800 dark:text-green-200">{{ __('Password updated successfully') }}</p>
+        </div>
+        @endif
+
         <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
@@ -31,7 +37,7 @@
                 <div class="flex items-center gap-6">
                     <div class="relative">
                         @if($user->avatar)
-                            <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" 
+                            <img src="{{ asset('public/storage/' . $user->avatar) }}" alt="{{ $user->name }}" 
                                  id="avatar-preview"
                                  class="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-lg">
                         @else
@@ -111,6 +117,76 @@
                 </div>
             </div>
 
+            <!-- Change Password Section -->
+            <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('Change Password') }}</h2>
+                
+                <form action="{{ route('password.update') }}" method="POST" id="passwordForm" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+
+                    <!-- Current Password -->
+                    <div>
+                        <label for="current_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('Current Password') }} <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="password" name="current_password" id="current_password"
+                                   class="w-full px-4 py-3 pr-12 rounded-xl backdrop-blur-md bg-white/50 dark:bg-gray-700/50 border border-white/30 dark:border-gray-600/30 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                            <button type="button" onclick="togglePasswordField('current_password', 'eyeIconCurrent')" class="absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none">
+                                <img src="/size-512/images/eye.png" alt="{{ __('Show password') }}" class="w-5 h-5 opacity-60 hover:opacity-100 transition-opacity" id="eyeIconCurrent">
+                            </button>
+                        </div>
+                        @error('current_password')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- New Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('New Password') }} <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="password" name="password" id="new_password"
+                                   class="w-full px-4 py-3 pr-12 rounded-xl backdrop-blur-md bg-white/50 dark:bg-gray-700/50 border border-white/30 dark:border-gray-600/30 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                            <button type="button" onclick="togglePasswordField('new_password', 'eyeIconNew')" class="absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none">
+                                <img src="/size-512/images/eye.png" alt="{{ __('Show password') }}" class="w-5 h-5 opacity-60 hover:opacity-100 transition-opacity" id="eyeIconNew">
+                            </button>
+                        </div>
+                        @error('password')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                        <p class="text-xs text-red-600 dark:text-red-400 mt-1 hidden" id="newPasswordError"></p>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('Confirm Password') }} <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="password" name="password_confirmation" id="password_confirmation_profile"
+                                   class="w-full px-4 py-3 pr-12 rounded-xl backdrop-blur-md bg-white/50 dark:bg-gray-700/50 border border-white/30 dark:border-gray-600/30 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                            <button type="button" onclick="togglePasswordField('password_confirmation_profile', 'eyeIconConfirm')" class="absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none">
+                                <img src="/size-512/images/eye.png" alt="{{ __('Show password') }}" class="w-5 h-5 opacity-60 hover:opacity-100 transition-opacity" id="eyeIconConfirm">
+                            </button>
+                        </div>
+                        @error('password_confirmation')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                        <p class="text-xs text-red-600 dark:text-red-400 mt-1 hidden" id="confirmPasswordError"></p>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" 
+                                class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold">
+                            {{ __('Change Password') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Submit Button -->
             <div class="flex justify-end gap-4">
                 <a href="{{ route('user.dashboard') }}" 
@@ -141,6 +217,69 @@ function previewAvatar(event) {
         }
         reader.readAsDataURL(file);
     }
+}
+
+function togglePasswordField(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.alt = '{{ __("Hide password") }}';
+    } else {
+        input.type = 'password';
+        icon.alt = '{{ __("Show password") }}';
+    }
+}
+
+// Client-side password validation for password change form
+const newPasswordInput = document.getElementById('new_password');
+const confirmPasswordInput = document.getElementById('password_confirmation_profile');
+const newPasswordError = document.getElementById('newPasswordError');
+const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+if (newPasswordInput) {
+    newPasswordInput.addEventListener('input', validateNewPassword);
+    newPasswordInput.addEventListener('blur', validateNewPassword);
+    confirmPasswordInput.addEventListener('input', validatePasswordConfirmation);
+    confirmPasswordInput.addEventListener('blur', validatePasswordConfirmation);
+
+    function validateNewPassword() {
+        const value = newPasswordInput.value;
+        if (value && value.length < 8) {
+            newPasswordError.textContent = '{{ __("Password must be at least 8 characters") }}';
+            newPasswordError.classList.remove('hidden');
+            newPasswordInput.classList.add('border-red-500');
+            return false;
+        } else {
+            newPasswordError.classList.add('hidden');
+            newPasswordInput.classList.remove('border-red-500');
+            return true;
+        }
+    }
+
+    function validatePasswordConfirmation() {
+        const password = newPasswordInput.value;
+        const confirm = confirmPasswordInput.value;
+        if (confirm && password !== confirm) {
+            confirmPasswordError.textContent = '{{ __("Passwords must match") }}';
+            confirmPasswordError.classList.remove('hidden');
+            confirmPasswordInput.classList.add('border-red-500');
+            return false;
+        } else {
+            confirmPasswordError.classList.add('hidden');
+            confirmPasswordInput.classList.remove('border-red-500');
+            return true;
+        }
+    }
+
+    document.getElementById('passwordForm').addEventListener('submit', function(e) {
+        const newPasswordValid = validateNewPassword();
+        const confirmValid = validatePasswordConfirmation();
+        
+        if (!newPasswordValid || !confirmValid) {
+            e.preventDefault();
+        }
+    });
 }
 </script>
 @endsection

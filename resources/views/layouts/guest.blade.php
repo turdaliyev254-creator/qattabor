@@ -34,30 +34,6 @@
                 </a>
             </div>
 
-            <!-- Language Switcher -->
-            <div class="absolute top-6 right-6 z-20">
-                <div class="flex gap-2">
-                    <form action="{{ route('language.switch', 'en') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all {{ app()->getLocale() == 'en' ? 'bg-white/90 dark:bg-white/20 text-blue-600 dark:text-white shadow-lg backdrop-blur-md border border-white/50' : 'backdrop-blur-md bg-white/20 dark:bg-black/20 text-gray-800 dark:text-white hover:bg-white/30 dark:hover:bg-black/30 border border-white/30 dark:border-white/10 shadow-md' }}">
-                            EN
-                        </button>
-                    </form>
-                    <form action="{{ route('language.switch', 'ru') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all {{ app()->getLocale() == 'ru' ? 'bg-white/90 dark:bg-white/20 text-blue-600 dark:text-white shadow-lg backdrop-blur-md border border-white/50' : 'backdrop-blur-md bg-white/20 dark:bg-black/20 text-gray-800 dark:text-white hover:bg-white/30 dark:hover:bg-black/30 border border-white/30 dark:border-white/10 shadow-md' }}">
-                            RU
-                        </button>
-                    </form>
-                    <form action="{{ route('language.switch', 'uz') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all {{ app()->getLocale() == 'uz' ? 'bg-white/90 dark:bg-white/20 text-blue-600 dark:text-white shadow-lg backdrop-blur-md border border-white/50' : 'backdrop-blur-md bg-white/20 dark:bg-black/20 text-gray-800 dark:text-white hover:bg-white/30 dark:hover:bg-black/30 border border-white/30 dark:border-white/10 shadow-md' }}">
-                            UZ
-                        </button>
-                    </form>
-                </div>
-            </div>
-
             <div class="w-full max-w-sm relative z-10">
                 <div class="backdrop-blur-xl bg-white/40 dark:bg-black/40 shadow-2xl rounded-2xl overflow-hidden border border-white/50 dark:border-white/10">
                     <!-- Header -->
