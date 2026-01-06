@@ -8,7 +8,7 @@
     </div>
 
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 max-w-4xl">
-        <form action="{{ route('admin.places.update', $place) }}" method="POST">
+        <form action="{{ route('admin.places.update', $place) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             
@@ -24,13 +24,23 @@
 
                     <div>
                         <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
-                        <select name="category_id" id="category_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required>
+                        <select name="category_id" id="category_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required onchange="loadSubcategories(this.value)">
                             <option value="">Select Category</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id', $place->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
                         </select>
                         @error('category_id')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div id="subcategory-container" style="display: none;">
+                        <label for="subcategory_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subcategory (Optional)</label>
+                        <select name="subcategory_id" id="subcategory_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                            <option value="">Select Subcategory</option>
+                        </select>
+                        @error('subcategory_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
@@ -140,11 +150,21 @@
 
                 <div class="space-y-6">
                     <div>
-                        <label for="image_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image URL</label>
-                        <input type="url" name="image_url" id="image_url" value="{{ old('image_url', $place->image_url) }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" placeholder="https://example.com/image.jpg">
-                        @error('image_url')
+                        <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Place Image</label>
+                        @if($place->image_url)
+                            <div class="mb-3">
+                                <img src="{{ asset('storage/' . $place->image_url) }}" alt="{{ $place->name }}" class="w-32 h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Current image</p>
+                            </div>
+                        @endif
+                        <input type="file" name="image" id="image" accept="image/jpeg,image/jpg,image/png,image/webp" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-indigo-900/30 dark:file:text-indigo-400" onchange="previewImage(event)">
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">JPG, JPEG, PNG, WEBP (Max 5MB) - Leave empty to keep current image</p>
+                        @error('image')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
+                        <div id="imagePreview" class="mt-3 hidden">
+                            <img id="preview" src="" alt="Preview" class="w-32 h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
+                        </div>
                     </div>
 
                     <div>
@@ -194,4 +214,78 @@
             </div>
         </form>
     </div>
+
+    <script>
+        // Image preview function
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('preview');
+            const previewContainer = document.getElementById('imagePreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Store subcategories data
+        const categoriesData = @json($categories->map(function($cat) {
+            return [
+                'id' => $cat->id,
+                'name' => $cat->name,
+                'subcategories' => $cat->subcategories
+            ];
+        }));
+
+        function loadSubcategories(categoryId) {
+            const subcategoryContainer = document.getElementById('subcategory-container');
+            const subcategorySelect = document.getElementById('subcategory_id');
+            
+            // Clear existing options
+            subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+            
+            if (!categoryId) {
+                subcategoryContainer.style.display = 'none';
+                return;
+            }
+            
+            // Find the selected category
+            const category = categoriesData.find(cat => cat.id == categoryId);
+            
+            if (category && category.subcategories && category.subcategories.length > 0) {
+                // Add subcategory options
+                category.subcategories.forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub.id;
+                    option.textContent = sub.name;
+                    subcategorySelect.appendChild(option);
+                });
+                
+                subcategoryContainer.style.display = 'block';
+            } else {
+                subcategoryContainer.style.display = 'none';
+            }
+        }
+
+        // Load subcategories on page load if category is already selected
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('category_id');
+            const currentSubcategoryId = '{{ old("subcategory_id", $place->subcategory_id) }}';
+            
+            if (categorySelect.value) {
+                loadSubcategories(categorySelect.value);
+                
+                // Set the current subcategory value if it exists
+                if (currentSubcategoryId) {
+                    setTimeout(() => {
+                        document.getElementById('subcategory_id').value = currentSubcategoryId;
+                    }, 100);
+                }
+            }
+        });
+    </script>
 </x-admin-layout>

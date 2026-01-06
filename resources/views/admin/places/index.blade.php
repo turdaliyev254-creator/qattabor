@@ -32,7 +32,11 @@
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                 <div class="flex items-center gap-3">
                                     @if($place->image_url)
-                                        <img src="{{ $place->image_url }}" alt="{{ $place->name }}" class="w-10 h-10 rounded-lg object-cover">
+                                        @if(str_starts_with($place->image_url, 'http'))
+                                            <img src="{{ $place->image_url }}" alt="{{ $place->name }}" class="w-10 h-10 rounded-lg object-cover">
+                                        @else
+                                            <img src="{{ asset('storage/' . $place->image_url) }}" alt="{{ $place->name }}" class="w-10 h-10 rounded-lg object-cover">
+                                        @endif
                                     @else
                                         <div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -45,9 +49,16 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300">
-                                    {{ $place->category->name }}
-                                </span>
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300">
+                                        {{ $place->category->name }}
+                                    </span>
+                                    @if($place->subcategory)
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                                            {{ $place->subcategory->name }}
+                                        </span>
+                                    @endif
+                                </div>
                             </td>
                             <td class="px-6 py-4">{{ $place->location->name }}</td>
                             <td class="px-6 py-4">

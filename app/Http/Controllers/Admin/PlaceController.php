@@ -17,7 +17,7 @@ class PlaceController extends Controller
      */
     public function index()
     {
-        $places = Place::with(['category', 'location', 'owner'])->latest()->paginate(10);
+        $places = Place::with(['category', 'subcategory', 'location', 'owner'])->latest()->paginate(10);
         return view('admin.places.index', compact('places'));
     }
 
@@ -26,7 +26,7 @@ class PlaceController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::with('subcategories')->get();
         $locations = Location::all();
         $users = User::orderBy('name')->get();
         return view('admin.places.create', compact('categories', 'locations', 'users'));
@@ -77,7 +77,7 @@ class PlaceController extends Controller
      */
     public function edit(Place $place)
     {
-        $categories = Category::all();
+        $categories = Category::with('subcategories')->get();
         $locations = Location::all();
         $users = User::orderBy('name')->get();
         return view('admin.places.edit', compact('place', 'categories', 'locations', 'users'));
@@ -92,6 +92,7 @@ class PlaceController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'subcategory_id' => 'nullable|exists:subcategories,id',
             'location_id' => 'required|exists:locations,id',
             'owner_id' => 'nullable|exists:users,id',
             'address' => 'nullable|string|max:255',
@@ -99,7 +100,7 @@ class PlaceController extends Controller
             'longitude' => 'nullable|numeric',
             'phone' => 'nullable|string|max:255',
             'website' => 'nullable|url|max:255',
-            'image_url' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
             'is_popular' => 'boolean',
             'is_featured' => 'boolean',
         ]);
@@ -108,9 +109,20 @@ class PlaceController extends Controller
             $validated['slug'] = Str::slug($validated['name']);
         }
         
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($place->image_url && \Storage::disk('public')->exists($place->image_url)) {
+                \Storage::disk('public')->delete($place->image_url);
+            }
+            $imagePath = $request->file('image')->store('places', 'public');
+            $validated['image_url'] = $imagePath;
+        }
+        
         $validated['is_popular'] = $request->has('is_popular');
         $validated['is_featured'] = $request->has('is_featured');
 
+        unset($validated['image']);
         $place->update($validated);
 
         return redirect()->route('admin.places.index')
