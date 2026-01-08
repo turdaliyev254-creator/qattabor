@@ -35,12 +35,11 @@ class PlaceController extends Controller
         
         $placesQuery = $category->places()->with(['subcategory', 'location']);
         
-        // Filter by location if provided
-        if ($request->has('location') && $request->location) {
-            $location = Location::where('name', $request->location)->first();
-            if ($location) {
-                $placesQuery->where('location_id', $location->id);
-            }
+        // Filter by region if provided
+        if ($request->has('region') && $request->region) {
+            $placesQuery->whereHas('location', function($query) use ($request) {
+                $query->where('region', $request->region);
+            });
         }
         
         $places = $placesQuery->latest()->paginate(12);
@@ -52,12 +51,11 @@ class PlaceController extends Controller
     {
         $placesQuery = $subcategory->places()->with(['category', 'location']);
         
-        // Filter by location if provided
-        if ($request->has('location') && $request->location) {
-            $location = Location::where('name', $request->location)->first();
-            if ($location) {
-                $placesQuery->where('location_id', $location->id);
-            }
+        // Filter by region if provided
+        if ($request->has('region') && $request->region) {
+            $placesQuery->whereHas('location', function($query) use ($request) {
+                $query->where('region', $request->region);
+            });
         }
         
         $places = $placesQuery->latest()->paginate(12);
@@ -65,20 +63,27 @@ class PlaceController extends Controller
         return view('places.by-subcategory', compact('category', 'subcategory', 'places'));
     }
 
-    public function show(Request $request, Place $place)
+    public function show(Place $place)
     {
         $place->load(['category', 'subcategory', 'location']);
         
         // Track recently viewed places in session
         $recentlyViewed = session()->get('recently_viewed', []);
+        
+        // Remove if already exists (to move it to front)
         $recentlyViewed = array_diff($recentlyViewed, [$place->id]);
+        
+        // Add to beginning of array
         array_unshift($recentlyViewed, $place->id);
+        
+        // Keep only last 10
         $recentlyViewed = array_slice($recentlyViewed, 0, 10);
+        
+        // Save back to session
         session()->put('recently_viewed', $recentlyViewed);
         
-        // Get related places from same subcategory or category AND same location
+        // Get related places from same subcategory or category
         $relatedPlaces = Place::where('id', '!=', $place->id)
-            ->where('location_id', $place->location_id)  // Filter by same location
             ->where(function($query) use ($place) {
                 if ($place->subcategory_id) {
                     $query->where('subcategory_id', $place->subcategory_id);

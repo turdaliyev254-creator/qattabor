@@ -37,7 +37,7 @@
                 <div class="flex items-center gap-6">
                     <div class="relative">
                         @if($user->avatar)
-                            <img src="{{ asset('public/storage/' . $user->avatar) }}" alt="{{ $user->name }}" 
+                            <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" 
                                  id="avatar-preview"
                                  class="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-lg">
                         @else
@@ -117,14 +117,30 @@
                 </div>
             </div>
 
-            <!-- Change Password Section -->
+
+
+            <!-- Submit Button -->
+            <div class="flex justify-end gap-4">
+                <a href="{{ route('user.dashboard') }}" 
+                   class="px-8 py-3 backdrop-blur-md bg-white/70 dark:bg-gray-700/70 text-gray-700 dark:text-gray-300 rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold border border-white/30 dark:border-gray-600/30">
+                    {{ __('cancel') }}
+                </a>
+                <button type="submit" 
+                        class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold">
+                    {{ __('save_changes') }}
+                </button>
+            </div>
+        </form>
+
+        <!-- Change Password Section (Separate Form) -->
+        <form action="{{ route('password.update') }}" method="POST" id="passwordForm">
+            @csrf
+            @method('PUT')
+            
             <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('Change Password') }}</h2>
                 
-                <form action="{{ route('password.update') }}" method="POST" id="passwordForm" class="space-y-4">
-                    @csrf
-                    @method('PUT')
-
+                <div class="space-y-4">
                     <!-- Current Password -->
                     <div>
                         <label for="current_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -184,19 +200,7 @@
                             {{ __('Change Password') }}
                         </button>
                     </div>
-                </form>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="flex justify-end gap-4">
-                <a href="{{ route('user.dashboard') }}" 
-                   class="px-8 py-3 backdrop-blur-md bg-white/70 dark:bg-gray-700/70 text-gray-700 dark:text-gray-300 rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold border border-white/30 dark:border-gray-600/30">
-                    {{ __('cancel') }}
-                </a>
-                <button type="submit" 
-                        class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105 font-semibold">
-                    {{ __('save_changes') }}
-                </button>
+                </div>
             </div>
         </form>
     </div>
@@ -222,64 +226,76 @@ function previewAvatar(event) {
 function togglePasswordField(inputId, iconId) {
     const input = document.getElementById(inputId);
     const icon = document.getElementById(iconId);
-    if (input.type === 'password') {
-        input.type = 'text';
-        icon.alt = '{{ __("Hide password") }}';
-    } else {
-        input.type = 'password';
-        icon.alt = '{{ __("Show password") }}';
+    if (input && icon) {
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.alt = '{{ __("Hide password") }}';
+        } else {
+            input.type = 'password';
+            icon.alt = '{{ __("Show password") }}';
+        }
     }
 }
 
 // Client-side password validation for password change form
-const newPasswordInput = document.getElementById('new_password');
-const confirmPasswordInput = document.getElementById('password_confirmation_profile');
-const newPasswordError = document.getElementById('newPasswordError');
-const confirmPasswordError = document.getElementById('confirmPasswordError');
+document.addEventListener('DOMContentLoaded', function() {
+    const newPasswordInput = document.getElementById('new_password');
+    const confirmPasswordInput = document.getElementById('password_confirmation_profile');
+    const newPasswordError = document.getElementById('newPasswordError');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
+    const passwordForm = document.getElementById('passwordForm');
 
-if (newPasswordInput) {
-    newPasswordInput.addEventListener('input', validateNewPassword);
-    newPasswordInput.addEventListener('blur', validateNewPassword);
-    confirmPasswordInput.addEventListener('input', validatePasswordConfirmation);
-    confirmPasswordInput.addEventListener('blur', validatePasswordConfirmation);
-
-    function validateNewPassword() {
-        const value = newPasswordInput.value;
-        if (value && value.length < 8) {
-            newPasswordError.textContent = '{{ __("Password must be at least 8 characters") }}';
-            newPasswordError.classList.remove('hidden');
-            newPasswordInput.classList.add('border-red-500');
-            return false;
-        } else {
-            newPasswordError.classList.add('hidden');
-            newPasswordInput.classList.remove('border-red-500');
-            return true;
+    if (newPasswordInput && confirmPasswordInput && newPasswordError && confirmPasswordError && passwordForm) {
+        function validateNewPassword() {
+            const value = newPasswordInput.value;
+            if (value && value.length < 8) {
+                newPasswordError.textContent = '{{ __("Password must be at least 8 characters") }}';
+                newPasswordError.classList.remove('hidden');
+                newPasswordInput.classList.add('border-red-500');
+                return false;
+            } else {
+                newPasswordError.classList.add('hidden');
+                newPasswordInput.classList.remove('border-red-500');
+                return true;
+            }
         }
-    }
 
-    function validatePasswordConfirmation() {
-        const password = newPasswordInput.value;
-        const confirm = confirmPasswordInput.value;
-        if (confirm && password !== confirm) {
-            confirmPasswordError.textContent = '{{ __("Passwords must match") }}';
-            confirmPasswordError.classList.remove('hidden');
-            confirmPasswordInput.classList.add('border-red-500');
-            return false;
-        } else {
-            confirmPasswordError.classList.add('hidden');
-            confirmPasswordInput.classList.remove('border-red-500');
-            return true;
+        function validatePasswordConfirmation() {
+            const password = newPasswordInput.value;
+            const confirm = confirmPasswordInput.value;
+            if (confirm && password !== confirm) {
+                confirmPasswordError.textContent = '{{ __("Passwords must match") }}';
+                confirmPasswordError.classList.remove('hidden');
+                confirmPasswordInput.classList.add('border-red-500');
+                return false;
+            } else {
+                confirmPasswordError.classList.add('hidden');
+                confirmPasswordInput.classList.remove('border-red-500');
+                return true;
+            }
         }
-    }
 
-    document.getElementById('passwordForm').addEventListener('submit', function(e) {
-        const newPasswordValid = validateNewPassword();
-        const confirmValid = validatePasswordConfirmation();
+        if (newPasswordInput && typeof newPasswordInput.addEventListener === 'function') {
+            newPasswordInput.addEventListener('input', validateNewPassword);
+            newPasswordInput.addEventListener('blur', validateNewPassword);
+        }
         
-        if (!newPasswordValid || !confirmValid) {
-            e.preventDefault();
+        if (confirmPasswordInput && typeof confirmPasswordInput.addEventListener === 'function') {
+            confirmPasswordInput.addEventListener('input', validatePasswordConfirmation);
+            confirmPasswordInput.addEventListener('blur', validatePasswordConfirmation);
         }
-    });
-}
+
+        if (passwordForm && typeof passwordForm.addEventListener === 'function') {
+            passwordForm.addEventListener('submit', function(e) {
+                const newPasswordValid = validateNewPassword();
+                const confirmValid = validatePasswordConfirmation();
+                
+                if (!newPasswordValid || !confirmValid) {
+                    e.preventDefault();
+                }
+            });
+        }
+    }
+});
 </script>
 @endsection

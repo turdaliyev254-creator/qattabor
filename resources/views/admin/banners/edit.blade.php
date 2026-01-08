@@ -28,7 +28,7 @@
                     @if($banner->image)
                         <div class="mb-3">
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ __('Current Image') }}:</p>
-                            <img src="{{ asset('public/storage/' . $banner->image) }}" alt="{{ $banner->title }}" class="h-32 rounded-lg">
+                            <img src="{{ asset('storage/' . $banner->image) }}" alt="{{ $banner->title }}" class="h-32 rounded-lg">
                         </div>
                     @endif
                     

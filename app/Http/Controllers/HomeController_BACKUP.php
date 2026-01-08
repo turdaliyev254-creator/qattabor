@@ -17,14 +17,13 @@ class HomeController extends Controller
             ->take(10)
             ->get();
         
-        // Filter popular places by location if selected
+        // Filter popular places by region if selected
         $popularPlacesQuery = Place::where('is_popular', true)->with(['category', 'location']);
         
-        if ($request->has('location') && $request->location) {
-            $location = Location::where('name', $request->location)->first();
-            if ($location) {
-                $popularPlacesQuery->where('location_id', $location->id);
-            }
+        if ($request->has('region') && $request->region) {
+            $popularPlacesQuery->whereHas('location', function($query) use ($request) {
+                $query->where('region', $request->region);
+            });
         }
         
         $popularPlaces = $popularPlacesQuery->take(6)->get();

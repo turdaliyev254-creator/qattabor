@@ -292,13 +292,13 @@
                 >
                     @if($banner->link)
                     <a href="{{ $banner->link }}" target="_blank" rel="noopener noreferrer" class="block w-full h-full group">
-                        <img src="{{ asset('public/storage/' . $banner->image) }}" 
+                        <img src="{{ asset('storage/' . $banner->image) }}" 
                              alt="{{ $banner->title }}" 
                              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </a>
                     @else
-                    <img src="{{ asset('public/storage/' . $banner->image) }}" 
+                    <img src="{{ asset('storage/' . $banner->image) }}" 
                          alt="{{ $banner->title }}" 
                          class="w-full h-full object-cover">
                     @endif
@@ -372,7 +372,7 @@
                         <!-- Place Image -->
                         <div class="relative h-32 overflow-hidden">
                             @if($place->image)
-                            <img src="{{ asset('public/storage/' . $place->image) }}" 
+                            <img src="{{ asset('storage/' . $place->image) }}" 
                                  alt="{{ $place->name }}" 
                                  class="w-full h-full object-cover">
                             @else

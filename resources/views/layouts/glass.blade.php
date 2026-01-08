@@ -162,7 +162,7 @@
                     <div class="flex items-center gap-4">
                         <div class="relative">
                             @if(auth()->user()->avatar)
-                                <img src="{{ asset('public/storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" 
+                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" 
                                      class="w-14 h-14 rounded-2xl object-cover shadow-lg">
                             @else
                                 <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
@@ -421,23 +421,6 @@
             form.submit();
         }
         
-        // Map display location names to database region values
-        const locationToRegion = {
-            'Toshkent': 'Tashkent City',
-            'Toshkent viloyati': 'Tashkent Region',
-            'Fargona': 'Fergana Region',
-            'Qoqon': 'Fergana Region',
-            'Namangan': 'Namangan Region',
-            'Samarqand': 'Samarkand Region',
-            'Buxoro': 'Bukhara Region',
-            'Andijon': 'Andijan Region',
-            'Navoi': 'Navoiy Region',
-            'Xorazm': 'Xorazm Region',
-            'Surxondaryo': 'Surxondaryo Region',
-            'Qashqadaryo': 'Qashqadaryo Region',
-            'Jizzax': 'Jizzakh Region'
-        };
-        
         function changeLocation(location) {
             // Store selected location in session storage
             sessionStorage.setItem('selectedLocation', location);
@@ -463,10 +446,9 @@
                 }
             });
             
-            // Reload page with region parameter to filter places
-            const regionValue = locationToRegion[location] || location;
+            // Reload page with location parameter to filter places
             const url = new URL(window.location);
-            url.searchParams.set('region', regionValue);
+            url.searchParams.set('location', location);
             window.location.href = url.toString();
         }
         

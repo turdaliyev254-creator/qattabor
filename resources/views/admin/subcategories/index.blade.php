@@ -13,11 +13,30 @@
         </div>
     @endif
 
+    <!-- Search Section -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 mb-4">
+        <form method="GET" action="{{ route('admin.subcategories.index') }}" class="flex gap-4">
+            <div class="flex-1">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search subcategories..." class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+            </div>
+            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                Search
+            </button>
+            @if(request('search'))
+                <a href="{{ route('admin.subcategories.index') }}" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-700 dark:text-white rounded-lg shadow-sm transition-colors duration-200">
+                    Clear
+                </a>
+            @endif
+        </form>
+    </div>
+
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-gray-600 dark:text-gray-400">
                 <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs uppercase font-medium text-gray-500 dark:text-gray-300">
                     <tr>
+                        <th class="px-6 py-4">Icon</th>
                         <th class="px-6 py-4">Name</th>
                         <th class="px-6 py-4">Slug</th>
                         <th class="px-6 py-4">Parent Category</th>
@@ -27,6 +46,13 @@
                 <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                     @forelse($subcategories as $subcategory)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                            <td class="px-6 py-4">
+                                @if($subcategory->icon)
+                                    <img src="/size-512/images/{{ $subcategory->icon }}" alt="{{ $subcategory->name }}" class="w-8 h-8 object-contain">
+                                @else
+                                    <span class="text-gray-400">-</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $subcategory->name }}</td>
                             <td class="px-6 py-4">{{ $subcategory->slug ?? '-' }}</td>
                             <td class="px-6 py-4">
@@ -58,8 +84,12 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-8 text-center text-gray-500">
-                                No subcategories found.
+                            <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                                @if(request('search'))
+                                    No subcategories found matching "{{ request('search') }}".
+                                @else
+                                    No subcategories found.
+                                @endif
                             </td>
                         </tr>
                     @endforelse

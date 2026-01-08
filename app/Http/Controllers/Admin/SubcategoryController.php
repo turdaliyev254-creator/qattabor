@@ -13,9 +13,23 @@ class SubcategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $subcategories = Subcategory::with('category')->latest()->paginate(10);
+        $query = Subcategory::with('category');
+        
+        // Search functionality
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('slug', 'like', '%' . $search . '%')
+                  ->orWhereHas('category', function($q) use ($search) {
+                      $q->where('name', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+        
+        $subcategories = $query->latest()->paginate(10);
         return view('admin.subcategories.index', compact('subcategories'));
     }
 
@@ -36,6 +50,7 @@ class SubcategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
+            'icon' => 'nullable|string|max:255',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
@@ -62,7 +77,6 @@ class SubcategoryController extends Controller
         $categories = Category::all();
         return view('admin.subcategories.edit', compact('subcategory', 'categories'));
     }
-
     /**
      * Update the specified resource in storage.
      */
@@ -71,6 +85,7 @@ class SubcategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
+            'icon' => 'nullable|string|max:255',
         ]);
 
         if ($subcategory->name !== $validated['name']) {

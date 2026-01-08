@@ -109,6 +109,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
     Route::resource('subcategories', \App\Http\Controllers\Admin\SubcategoryController::class)->names('admin.subcategories');
     Route::resource('places', \App\Http\Controllers\Admin\PlaceController::class)->names('admin.places');
+    Route::delete('place-images/{image}', [\App\Http\Controllers\Admin\PlaceController::class, 'deleteImage'])->name('admin.place-images.delete');
     Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class)->names('admin.banners');
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show'])->names('admin.users');
     
@@ -117,5 +118,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::patch('/comments/{comment}/approve', [\App\Http\Controllers\Admin\CommentController::class, 'approve'])->name('admin.comments.approve');
     Route::delete('/comments/{comment}', [\App\Http\Controllers\Admin\CommentController::class, 'destroy'])->name('admin.comments.destroy');
 });
+
 
 require __DIR__.'/auth.php';

@@ -49,7 +49,14 @@ class PlaceController extends Controller
             'longitude' => 'nullable|numeric',
             'phone' => 'nullable|string|max:255',
             'website' => 'nullable|url|max:255',
+            'navigate_link' => 'nullable|url|max:255',
+            'working_hours' => 'nullable|json',
+            'instagram' => 'nullable|url|max:255',
+            'telegram' => 'nullable|url|max:255',
+            'facebook' => 'nullable|url|max:255',
+            'youtube' => 'nullable|url|max:255',
             'image_url' => 'nullable|url',
+            'images.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
             'is_popular' => 'boolean',
             'is_featured' => 'boolean',
         ]);
@@ -58,8 +65,24 @@ class PlaceController extends Controller
         // Handle checkbox boolean values if not present in request
         $validated['is_popular'] = $request->has('is_popular');
         $validated['is_featured'] = $request->has('is_featured');
+        
+        // Decode working_hours JSON string
+        if (isset($validated['working_hours'])) {
+            $validated['working_hours'] = json_decode($validated['working_hours'], true);
+        }
 
-        Place::create($validated);
+        $place = Place::create($validated);
+
+        // Handle multiple images upload
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $imagePath = $image->store('places', 'public');
+                $place->images()->create([
+                    'image_path' => $imagePath,
+                    'order' => $index,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.places.index')
             ->with('success', 'Place created successfully.');
@@ -101,13 +124,25 @@ class PlaceController extends Controller
             'longitude' => 'nullable|numeric',
             'phone' => 'nullable|string|max:255',
             'website' => 'nullable|url|max:255',
+            'navigate_link' => 'nullable|url|max:255',
+            'working_hours' => 'nullable|json',
+            'instagram' => 'nullable|url|max:255',
+            'telegram' => 'nullable|url|max:255',
+            'facebook' => 'nullable|url|max:255',
+            'youtube' => 'nullable|url|max:255',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'images.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
             'is_popular' => 'boolean',
             'is_featured' => 'boolean',
         ]);
 
         if ($place->name !== $validated['name']) {
             $validated['slug'] = Str::slug($validated['name']);
+        }
+        
+        // Decode working_hours JSON string
+        if (isset($validated['working_hours'])) {
+            $validated['working_hours'] = json_decode($validated['working_hours'], true);
         }
         
         // Handle image upload
@@ -120,10 +155,22 @@ class PlaceController extends Controller
             $validated['image_url'] = $imagePath;
         }
         
+        // Handle multiple images upload
+        if ($request->hasFile('images')) {
+            $existingCount = $place->images()->count();
+            foreach ($request->file('images') as $index => $image) {
+                $imagePath = $image->store('places', 'public');
+                $place->images()->create([
+                    'image_path' => $imagePath,
+                    'order' => $existingCount + $index,
+                ]);
+            }
+        }
+        
         $validated['is_popular'] = $request->has('is_popular');
         $validated['is_featured'] = $request->has('is_featured');
 
-        unset($validated['image']);
+        unset($validated['image'], $validated['images']);
         $place->update($validated);
 
         return redirect()->route('admin.places.index')
@@ -139,5 +186,20 @@ class PlaceController extends Controller
 
         return redirect()->route('admin.places.index')
             ->with('success', 'Place deleted successfully.');
+    }
+
+    public function deleteImage($imageId)
+    {
+        $image = \App\Models\PlaceImage::findOrFail($imageId);
+        
+        // Delete the file
+        if (\Storage::disk('public')->exists($image->image_path)) {
+            \Storage::disk('public')->delete($image->image_path);
+        }
+        
+        // Delete the record
+        $image->delete();
+
+        return response()->json(['success' => true]);
     }
 }

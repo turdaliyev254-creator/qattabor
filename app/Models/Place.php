@@ -20,6 +20,11 @@ class Place extends Model
         'address',
         'phone',
         'website',
+        'navigate_link',
+        'instagram',
+        'telegram',
+        'facebook',
+        'youtube',
         'latitude',
         'longitude',
         'working_hours',
@@ -28,6 +33,12 @@ class Place extends Model
         'phone_clicks',
         'website_clicks',
         'social_clicks',
+    ];
+
+    protected $casts = [
+        'working_hours' => 'array',
+        'is_popular' => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     public function category()
@@ -48,6 +59,11 @@ class Place extends Model
     public function savedByUsers()
     {
         return $this->belongsToMany(User::class, 'saved_places');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(PlaceImage::class)->orderBy('order');
     }
 
     public function owner()

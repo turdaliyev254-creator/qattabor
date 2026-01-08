@@ -41,7 +41,7 @@
                     @forelse($banners as $banner)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <img src="{{ asset('public/storage/' . $banner->image) }}" alt="{{ $banner->title }}" class="h-16 w-24 object-cover rounded">
+                                <img src="{{ asset('storage/' . $banner->image) }}" alt="{{ $banner->title }}" class="h-16 w-24 object-cover rounded">
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $banner->title }}</div>

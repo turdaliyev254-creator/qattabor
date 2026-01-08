@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('locations', function (Blueprint $table) {
-            $table->string('region')->nullable()->after('slug');
+        Schema::create('place_images', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('place_id')->constrained()->onDelete('cascade');
+            $table->string('image_path');
+            $table->integer('order')->default(0);
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('locations', function (Blueprint $table) {
-            $table->dropColumn('region');
-        });
+        Schema::dropIfExists('place_images');
     }
 };
