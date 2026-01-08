@@ -321,19 +321,24 @@ class DatabaseSeeder extends Seeder
 
         // Create Locations
         echo "📍 Creating locations...\n";
-        $this->call(LocationSeeder::class);
+        $locations = [
+            'Fergana' => ['Fergana', 'Beshariq', 'Buvayda', 'Dangara', 'Fergana district', 'Furqat', 'Qo\'shtepa', 'Quva', 'Rishton', 'So\'x', 'Toshloq', 'Uchko\'prik', 'O\'zbekiston', 'Yozyovon', 'Margilan', 'Quvasoy'],
+            'Namangan' => ['Namangan', 'Chortoq', 'Chust', 'Kosonsoy', 'Mingbuloq', 'Namangan district', 'Norin', 'Pop', 'To\'raqo\'rg\'on', 'Uchqo\'rg\'on', 'Uychi', 'Yangiqo\'rg\'on'],
+            'Andijan' => ['Andijan', 'Asaka', 'Baliqchi', 'Bo\'z', 'Buloqboshi', 'Izboskan', 'Jalaquduq', 'Qo\'rg\'ontepa', 'Marhamat', 'Oltinko\'l', 'Paxtaobod', 'Ulug\'nor', 'Xo\'jaobod', 'Shahrixon'],
+        ];
 
-        // Create Fergana Places
-        echo "\n🏙️  Creating places for Fergana city...\n";
-        $this->call(FerganaPlaceSeeder::class);
-
-        // Create Ishonch telefonlari
-        echo "\n📞 Creating Ishonch telefonlari...\n";
-        $this->call(IshonchTelefonlariSeeder::class);
-
-        // Create Banners
-        echo "\n🎨 Creating banners...\n";
-        $this->call(BannerSeeder::class);
+        foreach ($locations as $regionName => $cities) {
+            foreach ($cities as $cityName) {
+                Location::firstOrCreate(
+                    ['name' => $cityName],
+                    [
+                        'slug' => Str::slug($cityName),
+                        'region' => $regionName,
+                    ]
+                );
+            }
+        }
+        echo "✅ Created " . Location::count() . " locations\n\n";
 
         echo "\n🎉 Database seeding completed successfully!\n";
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
