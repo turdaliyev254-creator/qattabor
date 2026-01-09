@@ -45,50 +45,6 @@ class DatabaseSeeder extends Seeder
         );
         echo "✅ Test user created: user@qattabor.uz / user123\n\n";
 
-        // Create Categories
-        echo "📂 Creating categories...\n";
-        
-        $categories = [
-            ['name' => 'Furniture', 'icon' => 'sofa.png'],
-            ['name' => 'Supermarket', 'icon' => 'supermarket.png'],
-            ['name' => 'SPA', 'icon' => 'spa.png'],
-            ['name' => 'Studio', 'icon' => 'camera.png'],
-            ['name' => 'Playground', 'icon' => 'playground.png'],
-            ['name' => 'Car', 'icon' => 'car.png'],
-            ['name' => 'Cottage', 'icon' => 'mountain-hut.png'],
-            ['name' => 'Hotel', 'icon' => 'hotel.png'],
-            ['name' => 'Food', 'icon' => 'dining-plate.png'],
-            ['name' => 'Salon', 'icon' => 'barbershop-and-beauty-salon.png'],
-            ['name' => 'Clothing', 'icon' => 'clothes-hanger.png'],
-            ['name' => 'Medicine', 'icon' => 'hospital.png'],
-            ['name' => 'School', 'icon' => 'school.png'],
-            ['name' => 'Kindergarten', 'icon' => 'kids-playing.png'],
-            ['name' => 'Sports', 'icon' => 'soccer-ball.png'],
-            ['name' => 'Government organizations', 'icon' => 'building.png'],
-            ['name' => 'Home appliances', 'icon' => 'home-appliances.png'],
-            ['name' => 'Hobbies and creativity', 'icon' => 'workshop.png'],
-            ['name' => 'Tour agency', 'icon' => 'hot-air-balloon.png'],
-            ['name' => 'Electronics', 'icon' => 'laptop.png'],
-            ['name' => 'Construction and repair', 'icon' => 'workshop-pegboard.png'],
-            ['name' => 'Beauty and care', 'icon' => 'barbershop-and-beauty-salon.png'],
-            ['name' => 'Zoo', 'icon' => 'zoo.png'],
-            ['name' => 'Book', 'icon' => 'book.png'],
-            ['name' => 'Real estate', 'icon' => 'house.png'],
-            ['name' => 'Mosque', 'icon' => 'mosque.png'],
-        ];
-
-        foreach ($categories as $categoryData) {
-            Category::firstOrCreate(
-                ['slug' => Str::slug($categoryData['name'])],
-                [
-                    'name' => $categoryData['name'],
-                    'slug' => Str::slug($categoryData['name']),
-                    'icon' => $categoryData['icon'],
-                ]
-            );
-        }
-        echo "✅ Created " . Category::count() . " categories\n\n";
-
         echo "\n🎉 Database seeding completed successfully!\n";
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
         echo "🔐 Admin Login:\n";
