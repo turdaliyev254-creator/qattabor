@@ -6,25 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('place_images', function (Blueprint $table) {
+        Schema::create('banners', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('place_id')->constrained()->onDelete('cascade');
-            $table->string('image_path');
+            $table->string('title');
+            $table->string('image');
+            $table->string('link')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->integer('order')->default(0);
             $table->timestamps();
+
+            $table->index(['is_active', 'order']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('place_images');
+        Schema::dropIfExists('banners');
     }
 };

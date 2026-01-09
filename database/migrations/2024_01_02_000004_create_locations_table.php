@@ -6,27 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('icon')->nullable();
-            $table->string('color')->nullable();
-            $table->string('image')->nullable();
+            $table->string('region')->nullable();
+            $table->foreignId('region_id')->nullable()->constrained('regions')->nullOnDelete();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('locations');
     }
 };

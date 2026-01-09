@@ -6,27 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('regions', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('name_uz');
-            $table->string('name_ru');
-            $table->string('name_en');
+            $table->string('name');
+            $table->string('name_uz')->nullable();
+            $table->string('name_ru')->nullable();
+            $table->string('name_en')->nullable();
             $table->string('slug')->unique();
             $table->integer('order')->default(0);
             $table->boolean('is_active')->default(true);
+            $table->decimal('center_latitude', 10, 8)->nullable();
+            $table->decimal('center_longitude', 11, 8)->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('regions');
