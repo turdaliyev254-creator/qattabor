@@ -6,6 +6,7 @@ use App\Models\Place;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Location;
+use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -21,7 +22,7 @@ class SearchController extends Controller
         $aiResponse = null;
         
         if ($query) {
-            $results = $this->performSearch($query);
+            $results = $this->performSearch($query, $request);
         }
 
         return view('search.index', compact('query', 'results', 'aiResponse'));
@@ -39,7 +40,7 @@ class SearchController extends Controller
         $query = $request->input('query');
         
         // Perform basic search
-        $searchResults = $this->performSearch($query);
+        $searchResults = $this->performSearch($query, $request);
         
         // Get AI interpretation if Gemini API key is configured
         $aiInterpretation = null;
@@ -59,19 +60,44 @@ class SearchController extends Controller
     /**
      * Perform intelligent search across places, categories, and subcategories
      */
-    private function performSearch($query)
+    private function performSearch($query, Request $request)
     {
         $searchTerm = '%' . $query . '%';
         
         // Search places with relationships
-        $places = Place::with(['category', 'subcategory', 'location'])
+        $placesQuery = Place::with(['category', 'subcategory', 'location'])
             ->where(function($q) use ($searchTerm) {
                 $q->where('name', 'like', $searchTerm)
                   ->orWhere('description', 'like', $searchTerm)
                   ->orWhere('address', 'like', $searchTerm);
-            })
-            ->limit(20)
-            ->get();
+            });
+
+        // Get region from request or use default (first region)
+        $regionName = $request->input('region');
+        
+        // If no region specified, use the first active region as default
+        if (!$regionName) {
+            $defaultRegion = Region::where('is_active', true)->orderBy('order')->first();
+            if ($defaultRegion) {
+                $regionName = $defaultRegion->localized_name;
+            }
+        }
+        
+        // Filter by region name
+        if ($regionName) {
+            $region = Region::where('name', $regionName)
+                ->orWhere('name_uz', $regionName)
+                ->orWhere('name_ru', $regionName)
+                ->orWhere('name_en', $regionName)
+                ->first();
+            
+            if ($region) {
+                $locationIds = Location::where('region_id', $region->id)->pluck('id');
+                $placesQuery->whereIn('location_id', $locationIds);
+            }
+        }
+
+        $places = $placesQuery->limit(20)->get();
 
         // Search categories
         $categories = Category::where('name', 'like', $searchTerm)

@@ -22,9 +22,10 @@
             const map = new ymaps.Map('map', {
                 center: [40.3864, 71.7864],
                 zoom: 12,
-                controls: ['zoomControl', 'searchControl', 'typeSelector', 'fullscreenControl']
+                controls: [],
+                mapType: 'yandex#map'
             });
-
+            map.options.set('yandexMapDisablePoi', true);
             // Create clusterer for better performance with many markers
             const clusterer = new ymaps.Clusterer({
                 preset: 'islands#invertedVioletClusterIcons',

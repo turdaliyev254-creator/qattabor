@@ -80,19 +80,9 @@
                                     </button>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2.5" id="location-buttons">
-                                    <button onclick="changeLocation('Toshkent')" data-location="Toshkent" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Toshkent') }}</button>
-                                    <button onclick="changeLocation('Toshkent viloyati')" data-location="Toshkent viloyati" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Toshkent viloyati') }}</button>
-                                    <button onclick="changeLocation('Fargona')" data-location="Fargona" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __("Farg'ona") }}</button>
-                                    <button onclick="changeLocation('Qoqon')" data-location="Qoqon" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __("Qo'qon") }}</button>
-                                    <button onclick="changeLocation('Namangan')" data-location="Namangan" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Namangan') }}</button>
-                                    <button onclick="changeLocation('Samarqand')" data-location="Samarqand" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Samarqand') }}</button>
-                                    <button onclick="changeLocation('Buxoro')" data-location="Buxoro" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Buxoro') }}</button>
-                                    <button onclick="changeLocation('Andijon')" data-location="Andijon" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Andijon') }}</button>
-                                    <button onclick="changeLocation('Navoi')" data-location="Navoi" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Navoi') }}</button>
-                                    <button onclick="changeLocation('Xorazm')" data-location="Xorazm" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Xorazm') }}</button>
-                                    <button onclick="changeLocation('Surxondaryo')" data-location="Surxondaryo" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Surxondaryo') }}</button>
-                                    <button onclick="changeLocation('Qashqadaryo')" data-location="Qashqadaryo" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Qashqadaryo') }}</button>
-                                    <button onclick="changeLocation('Jizzax')" data-location="Jizzax" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ __('Jizzax') }}</button>
+                                    @foreach($regions as $region)
+                                        <button onclick="changeLocation('{{ $region->localized_name }}')" data-location="{{ $region->localized_name }}" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ $region->localized_name }}</button>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -340,6 +330,78 @@
                 </a>
             </div>
         </div>
+
+        <!-- Geolocation Permission Modal -->
+        <div id="geolocation-modal" x-data="{ show: false }" x-show="show" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+             style="display: none;">
+            <div x-show="show"
+                 x-transition:enter="transition ease-out duration-300 transform"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-200 transform"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-md w-full p-8 relative">
+                
+                <!-- Icon -->
+                <div class="flex justify-center mb-6">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Title -->
+                <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white mb-4">
+                    {{ __('Detect Your Location') }}
+                </h2>
+                
+                <!-- Description -->
+                <p class="text-center text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                    {{ __('We would like to use your location to show you nearby places and relevant content for your region. Your privacy is important to us.') }}
+                </p>
+                
+                <!-- Buttons -->
+                <div class="space-y-3">
+                    <button onclick="requestGeolocation()" 
+                            class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-xl hover:scale-105">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        {{ __('Use My Location') }}
+                    </button>
+                    
+                    <button onclick="showManualSelector()" 
+                            class="w-full px-6 py-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-2xl transition-all">
+                        {{ __('Choose Manually') }}
+                    </button>
+                </div>
+                
+                <!-- Privacy Note -->
+                <p class="text-xs text-center text-gray-500 dark:text-gray-400 mt-6">
+                    {{ __('Your location data is not stored and is only used for this session.') }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Loading Spinner Modal -->
+        <div id="loading-modal" x-data="{ show: false }" x-show="show" 
+             class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+             style="display: none;">
+            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 text-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mx-auto mb-4"></div>
+                <p class="text-gray-700 dark:text-gray-300 font-semibold">{{ __('Detecting your location...') }}</p>
+            </div>
+        </div>
     </div>
 
     <style>
@@ -370,6 +432,143 @@
     </style>
     
     <script>
+        // Geolocation Functions
+        let geolocationModalShown = false;
+
+        function showGeolocationModal() {
+            if (!geolocationModalShown) {
+                const modal = document.getElementById('geolocation-modal');
+                if (modal && modal.__x) {
+                    modal.__x.$data.show = true;
+                    geolocationModalShown = true;
+                }
+            }
+        }
+
+        function hideGeolocationModal() {
+            const modal = document.getElementById('geolocation-modal');
+            if (modal && modal.__x) {
+                modal.__x.$data.show = false;
+            }
+        }
+
+        function showLoadingModal() {
+            const modal = document.getElementById('loading-modal');
+            if (modal && modal.__x) {
+                modal.__x.$data.show = true;
+            }
+        }
+
+        function hideLoadingModal() {
+            const modal = document.getElementById('loading-modal');
+            if (modal && modal.__x) {
+                modal.__x.$data.show = false;
+            }
+        }
+
+        function requestGeolocation() {
+            hideGeolocationModal();
+            showLoadingModal();
+            
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        detectRegionFromCoordinates(lat, lon);
+                    },
+                    function(error) {
+                        hideLoadingModal();
+                        console.log("Geolocation error:", error);
+                        alert(@json(__('Could not access your location. Please select manually.')));
+                        showManualSelector();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                hideLoadingModal();
+                alert(@json(__('Geolocation is not supported by your browser.')));
+                showManualSelector();
+            }
+        }
+
+        async function detectRegionFromCoordinates(lat, lon) {
+            try {
+                const response = await fetch('/api/detect-region', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({ lat, lon })
+                });
+                
+                const data = await response.json();
+                hideLoadingModal();
+                
+                if (data.success && data.region) {
+                    // Auto-select the detected region
+                    selectInitialLocation(data.region, true);
+                } else {
+                    // Show manual selector if detection failed or outside Uzbekistan
+                    if (data.message && data.message.includes('outside Uzbekistan')) {
+                        alert(@json(__('You appear to be outside Uzbekistan. Please select a region manually.')));
+                    }
+                    showManualSelector();
+                }
+            } catch (error) {
+                hideLoadingModal();
+                console.error('Region detection error:', error);
+                alert(@json(__('Could not detect region. Please select manually.')));
+                showManualSelector();
+            }
+        }
+
+        function showManualSelector() {
+            hideGeolocationModal();
+            // Trigger the location dropdown
+            setTimeout(() => {
+                const locationButton = document.querySelector('[x-data*="locationOpen"]');
+                if (locationButton && locationButton.__x) {
+                    locationButton.__x.$data.locationOpen = true;
+                }
+            }, 100);
+        }
+
+        function selectInitialLocation(location, isAutoDetected = false) {
+            sessionStorage.setItem('selectedLocation', location);
+            sessionStorage.setItem('locationAutoDetected', isAutoDetected ? 'true' : 'false');
+            
+            const locationEl = document.getElementById('current-location');
+            if (locationEl) {
+                locationEl.textContent = location;
+            }
+            
+            // Update active button styling
+            updateLocationButtonStyling(location);
+            
+            // Update URL and reload to apply filter
+            const url = new URL(window.location);
+            url.searchParams.set('region', location);
+            window.location.href = url.toString();
+        }
+
+        function updateLocationButtonStyling(location) {
+            const locationButtons = document.querySelectorAll('.location-btn');
+            locationButtons.forEach(btn => {
+                const btnLocation = btn.getAttribute('data-location');
+                if (btnLocation === location) {
+                    btn.classList.remove('text-gray-700', 'dark:text-gray-300', 'bg-gray-100/80', 'dark:bg-gray-700/80', 'hover:bg-blue-50', 'hover:text-blue-600', 'dark:hover:bg-gray-600', 'dark:hover:text-blue-400', 'border-transparent', 'hover:border-blue-200', 'dark:hover:border-blue-800');
+                    btn.classList.add('text-white', 'bg-gradient-to-br', 'from-blue-500', 'to-purple-600', 'shadow-lg', 'border-blue-400');
+                    btn.style.fontWeight = '700';
+                }
+            });
+        }
+
         // Dark Mode Toggle Function
         function toggleDarkMode() {
             const html = document.documentElement;
@@ -421,38 +620,24 @@
             form.submit();
         }
         
+        // Modified changeLocation function
         function changeLocation(location) {
-            // Store selected location in session storage
             sessionStorage.setItem('selectedLocation', location);
+            sessionStorage.setItem('locationAutoDetected', 'false'); // Manual override
+            
             const locationEl = document.getElementById('current-location');
             if (locationEl) {
                 locationEl.textContent = location;
             }
 
-            // Update active location button styling
-            const locationButtons = document.querySelectorAll('.location-btn');
-            locationButtons.forEach(btn => {
-                const btnLocation = btn.getAttribute('data-location');
-                if (btnLocation === location) {
-                    // Active button - gradient background
-                    btn.classList.remove('text-gray-700', 'dark:text-gray-300', 'bg-gray-100/80', 'dark:bg-gray-700/80', 'hover:bg-blue-50', 'hover:text-blue-600', 'dark:hover:bg-gray-600', 'dark:hover:text-blue-400', 'border-transparent', 'hover:border-blue-200', 'dark:hover:border-blue-800');
-                    btn.classList.add('text-white', 'bg-gradient-to-br', 'from-blue-500', 'to-purple-600', 'shadow-lg', 'border-blue-400');
-                    btn.style.fontWeight = '700';
-                } else {
-                    // Inactive buttons
-                    btn.classList.remove('text-white', 'bg-gradient-to-br', 'from-blue-500', 'to-purple-600', 'shadow-lg', 'border-blue-400');
-                    btn.classList.add('text-gray-700', 'dark:text-gray-300', 'bg-gray-100/80', 'dark:bg-gray-700/80', 'hover:bg-blue-50', 'hover:text-blue-600', 'dark:hover:bg-gray-600', 'dark:hover:text-blue-400', 'border-transparent', 'hover:border-blue-200', 'dark:hover:border-blue-800');
-                    btn.style.fontWeight = '600';
-                }
-            });
+            updateLocationButtonStyling(location);
             
-            // Reload page with location parameter to filter places
             const url = new URL(window.location);
-            url.searchParams.set('location', location);
+            url.searchParams.set('region', location);
             window.location.href = url.toString();
         }
         
-        // Set initial language display based on current locale
+        // Enhanced DOMContentLoaded
         document.addEventListener('DOMContentLoaded', function() {
             const locale = '{{ app()->getLocale() }}';
             let langDisplay = 'UZB';
@@ -471,7 +656,6 @@
                 'en': document.getElementById('lang-eng')
             };
 
-            // Remove active class from all buttons
             Object.values(langButtons).forEach(btn => {
                 if (btn) {
                     btn.classList.remove('bg-blue-600', 'text-white', 'font-semibold');
@@ -479,53 +663,43 @@
                 }
             });
 
-            // Add active class to current language button
             const activeBtn = langButtons[locale] || langButtons['uz'];
             if (activeBtn) {
                 activeBtn.classList.remove('text-gray-600', 'dark:text-gray-400');
                 activeBtn.classList.add('bg-blue-600', 'text-white', 'font-semibold');
             }
             
-            // Restore selected location from session storage or URL parameter
+            // Location Detection Logic
             const urlParams = new URLSearchParams(window.location.search);
             const regionParam = urlParams.get('region');
             const savedLocation = sessionStorage.getItem('selectedLocation');
+            const isAutoDetected = sessionStorage.getItem('locationAutoDetected') === 'true';
             
-            // Reverse map region parameter to display location
-            const regionToLocation = {
-                'Tashkent City': 'Toshkent',
-                'Tashkent Region': 'Toshkent viloyati',
-                'Fergana Region': 'Fargona',
-                'Namangan Region': 'Namangan',
-                'Samarkand Region': 'Samarqand',
-                'Bukhara Region': 'Buxoro',
-                'Andijan Region': 'Andijon',
-                'Navoiy Region': 'Navoi',
-                'Xorazm Region': 'Xorazm',
-                'Surxondaryo Region': 'Surxondaryo',
-                'Qashqadaryo Region': 'Qashqadaryo',
-                'Jizzakh Region': 'Jizzax'
-            };
-            
-            const currentLocation = regionParam ? (regionToLocation[regionParam] || savedLocation || 'Toshkent') : (savedLocation || 'Toshkent');
-            
-            if (currentLocation) {
-                const locationEl = document.getElementById('current-location');
-                if (locationEl) {
-                    locationEl.textContent = currentLocation;
-                }
-                // Set active location button without reloading
-                const locationButtons = document.querySelectorAll('.location-btn');
-                locationButtons.forEach(btn => {
-                    const btnLocation = btn.getAttribute('data-location');
-                    if (btnLocation === currentLocation) {
-                        btn.classList.remove('text-gray-700', 'dark:text-gray-300', 'bg-gray-100/80', 'dark:bg-gray-700/80', 'hover:bg-blue-50', 'hover:text-blue-600', 'dark:hover:bg-gray-600', 'dark:hover:text-blue-400', 'border-transparent', 'hover:border-blue-200', 'dark:hover:border-blue-800');
-                        btn.classList.add('text-white', 'bg-gradient-to-br', 'from-blue-500', 'to-purple-600', 'shadow-lg', 'border-blue-400');
-                        btn.style.fontWeight = '700';
+            // If no location is set, show geolocation modal
+            if (!regionParam && !savedLocation) {
+                // Show modal after a short delay for better UX
+                setTimeout(() => {
+                    showGeolocationModal();
+                }, 500);
+            } else {
+                // Use existing location
+                const currentLocation = regionParam || savedLocation;
+                
+                if (currentLocation) {
+                    const locationEl = document.getElementById('current-location');
+                    if (locationEl) {
+                        locationEl.textContent = currentLocation;
                     }
-                });
-                // Store in session storage for next page load
-                sessionStorage.setItem('selectedLocation', currentLocation);
+                    updateLocationButtonStyling(currentLocation);
+                    sessionStorage.setItem('selectedLocation', currentLocation);
+                    
+                    // Add region to URL if not present
+                    if (!regionParam && currentLocation) {
+                        const url = new URL(window.location);
+                        url.searchParams.set('region', currentLocation);
+                        window.history.replaceState({}, '', url.toString());
+                    }
+                }
             }
         });
 

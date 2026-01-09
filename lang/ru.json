@@ -527,5 +527,15 @@
     "Password must be at least 8 characters": "Пароль должен содержать не менее 8 символов",
     "Passwords must match": "Пароли должны совпадать",
     "Current password is incorrect": "Текущий пароль неверен",
-    "password_changed_successfully": "Пароль успешно изменен"
+    "password_changed_successfully": "Пароль успешно изменен",
+    "Detect Your Location": "Определить ваше местоположение",
+    "We would like to use your location to show you nearby places and relevant content for your region. Your privacy is important to us.": "Мы хотели бы использовать ваше местоположение, чтобы показать вам близлежащие места и релевантный контент для вашего региона. Ваша конфиденциальность важна для нас.",
+    "Use My Location": "Использовать мое местоположение",
+    "Choose Manually": "Выбрать вручную",
+    "Your location data is not stored and is only used for this session.": "Данные о вашем местоположении не сохраняются и используются только для этого сеанса.",
+    "Detecting your location...": "Определение вашего местоположения...",
+    "Could not access your location. Please select manually.": "Не удалось получить доступ к вашему местоположению. Пожалуйста, выберите вручную.",
+    "Geolocation is not supported by your browser.": "Геолокация не поддерживается вашим браузером.",
+    "You appear to be outside Uzbekistan. Please select a region manually.": "Похоже, вы находитесь за пределами Узбекистана. Пожалуйста, выберите регион вручную.",
+    "Could not detect region. Please select manually.": "Не удалось определить регион. Пожалуйста, выберите вручную."
 }

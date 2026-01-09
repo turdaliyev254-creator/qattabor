@@ -49,6 +49,9 @@ Route::get('/search/autocomplete', [SearchController::class, 'autocomplete'])->n
 // Quick search for places
 Route::get('/search-places', [SearchController::class, 'quickSearch'])->name('search.quick');
 
+// Geolocation API
+Route::post('/api/detect-region', [\App\Http\Controllers\Api\LocationController::class, 'detectRegion'])->name('api.detect-region');
+
 Route::middleware('auth')->group(function () {
     Route::get('/saved-places', [PlaceController::class, 'savedPlaces'])->name('places.saved');
     Route::post('/places/{place}/save', [PlaceController::class, 'save'])->name('places.save');
@@ -106,6 +109,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/export-activity', [AdminController::class, 'exportActivity'])->name('admin.export-activity');
+    Route::resource('regions', \App\Http\Controllers\Admin\RegionController::class)->names('admin.regions');
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
     Route::resource('subcategories', \App\Http\Controllers\Admin\SubcategoryController::class)->names('admin.subcategories');
     Route::resource('places', \App\Http\Controllers\Admin\PlaceController::class)->names('admin.places');

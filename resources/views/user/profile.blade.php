@@ -73,7 +73,7 @@
             </div>
 
             <!-- Personal Information -->
-            <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
+            <div class="backdrop-blur-xl mt-6 bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('personal_information') }}</h2>
                 
                 <div class="space-y-4">
@@ -115,9 +115,6 @@
                         @enderror
                     </div>
                 </div>
-            </div>
-
-
 
             <!-- Submit Button -->
             <div class="flex justify-end gap-4">
@@ -130,6 +127,7 @@
                     {{ __('save_changes') }}
                 </button>
             </div>
+            </div>
         </form>
 
         <!-- Change Password Section (Separate Form) -->
@@ -137,7 +135,7 @@
             @csrf
             @method('PUT')
             
-            <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
+            <div class="backdrop-blur-xl mt-6 bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('Change Password') }}</h2>
                 
                 <div class="space-y-4">

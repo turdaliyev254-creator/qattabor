@@ -527,6 +527,16 @@
     "Password must be at least 8 characters": "Parol kamida 8 ta belgidan iborat bo'lishi kerak",
     "Passwords must match": "Parollar mos kelishi kerak",
     "Current password is incorrect": "Joriy parol noto'g'ri",
-    "password_changed_successfully": "Parol muvaffaqiyatli o'zgartirildi"
+    "password_changed_successfully": "Parol muvaffaqiyatli o'zgartirildi",
+    "Detect Your Location": "Joylashuvingizni aniqlash",
+    "We would like to use your location to show you nearby places and relevant content for your region. Your privacy is important to us.": "Yaqin atrofdagi joylar va hududingiz uchun tegishli kontentni ko'rsatish uchun joylashuvingizdan foydalanmoqchimiz. Maxfiyligingiz biz uchun muhim.",
+    "Use My Location": "Joylashuvimdan foydalanish",
+    "Choose Manually": "Qo'lda tanlash",
+    "Your location data is not stored and is only used for this session.": "Joylashuv ma'lumotlaringiz saqlanmaydi va faqat ushbu seans uchun ishlatiladi.",
+    "Detecting your location...": "Joylashuvingiz aniqlanmoqda...",
+    "Could not access your location. Please select manually.": "Joylashuvingizga kirish imkoni bo'lmadi. Iltimos, qo'lda tanlang.",
+    "Geolocation is not supported by your browser.": "Brauzeringiz geolokatsiyani qo'llab-quvvatlamaydi.",
+    "You appear to be outside Uzbekistan. Please select a region manually.": "Siz O'zbekistondan tashqarida ko'rinasiz. Iltimos, hududni qo'lda tanlang.",
+    "Could not detect region. Please select manually.": "Hududni aniqlab bo'lmadi. Iltimos, qo'lda tanlang."
 }
 

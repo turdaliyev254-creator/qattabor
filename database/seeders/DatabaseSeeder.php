@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
     {
         echo "🌱 Starting database seeding...\n\n";
 
+        // Seed Regions and Locations
+        echo "📍 Seeding regions and locations...\n";
+        $this->call(LocationSeeder::class);
+
         // Create Admin User
         $admin = User::firstOrCreate(
             ['email' => 'admin@qattabor.uz'],

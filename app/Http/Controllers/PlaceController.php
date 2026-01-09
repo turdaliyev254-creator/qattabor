@@ -6,6 +6,7 @@ use App\Models\Place;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Location;
+use App\Models\Region;
 use Illuminate\Http\Request;
 
 class PlaceController extends Controller
@@ -15,9 +16,29 @@ class PlaceController extends Controller
         $query = Place::with(['category', 'subcategory', 'location'])
             ->where('is_popular', true);
 
-        // Filter by location if selected
-        if ($request->has('location') && $request->location) {
-            $query->where('location_id', $request->location);
+        // Get region from request or use default (first region)
+        $regionName = $request->input('region');
+        
+        // If no region specified, use the first active region as default
+        if (!$regionName) {
+            $defaultRegion = Region::where('is_active', true)->orderBy('order')->first();
+            if ($defaultRegion) {
+                $regionName = $defaultRegion->localized_name;
+            }
+        }
+        
+        // Filter by region name
+        if ($regionName) {
+            $region = Region::where('name', $regionName)
+                ->orWhere('name_uz', $regionName)
+                ->orWhere('name_ru', $regionName)
+                ->orWhere('name_en', $regionName)
+                ->first();
+            
+            if ($region) {
+                $locationIds = Location::where('region_id', $region->id)->pluck('id');
+                $query->whereIn('location_id', $locationIds);
+            }
         }
 
         $places = $query->latest()->paginate(12);
@@ -35,11 +56,28 @@ class PlaceController extends Controller
         
         $placesQuery = $category->places()->with(['subcategory', 'location']);
         
-        // Filter by location if provided
-        if ($request->has('location') && $request->location) {
-            $location = Location::where('name', $request->location)->first();
-            if ($location) {
-                $placesQuery->where('location_id', $location->id);
+        // Get region from request or use default (first region)
+        $regionName = $request->input('region');
+        
+        // If no region specified, use the first active region as default
+        if (!$regionName) {
+            $defaultRegion = Region::where('is_active', true)->orderBy('order')->first();
+            if ($defaultRegion) {
+                $regionName = $defaultRegion->localized_name;
+            }
+        }
+        
+        // Filter by region name
+        if ($regionName) {
+            $region = Region::where('name', $regionName)
+                ->orWhere('name_uz', $regionName)
+                ->orWhere('name_ru', $regionName)
+                ->orWhere('name_en', $regionName)
+                ->first();
+            
+            if ($region) {
+                $locationIds = Location::where('region_id', $region->id)->pluck('id');
+                $placesQuery->whereIn('location_id', $locationIds);
             }
         }
         
@@ -52,11 +90,28 @@ class PlaceController extends Controller
     {
         $placesQuery = $subcategory->places()->with(['category', 'location']);
         
-        // Filter by location if provided
-        if ($request->has('location') && $request->location) {
-            $location = Location::where('name', $request->location)->first();
-            if ($location) {
-                $placesQuery->where('location_id', $location->id);
+        // Get region from request or use default (first region)
+        $regionName = $request->input('region');
+        
+        // If no region specified, use the first active region as default
+        if (!$regionName) {
+            $defaultRegion = Region::where('is_active', true)->orderBy('order')->first();
+            if ($defaultRegion) {
+                $regionName = $defaultRegion->localized_name;
+            }
+        }
+        
+        // Filter by region name
+        if ($regionName) {
+            $region = Region::where('name', $regionName)
+                ->orWhere('name_uz', $regionName)
+                ->orWhere('name_ru', $regionName)
+                ->orWhere('name_en', $regionName)
+                ->first();
+            
+            if ($region) {
+                $locationIds = Location::where('region_id', $region->id)->pluck('id');
+                $placesQuery->whereIn('location_id', $locationIds);
             }
         }
         
@@ -96,12 +151,38 @@ class PlaceController extends Controller
         return view('places.show', compact('place', 'relatedPlaces', 'isSaved'));
     }
 
-    public function map()
+    public function map(Request $request)
     {
-        $places = Place::with(['category', 'subcategory', 'location'])
+        $placesQuery = Place::with(['category', 'subcategory', 'location'])
             ->whereNotNull('latitude')
-            ->whereNotNull('longitude')
-            ->get();
+            ->whereNotNull('longitude');
+
+        // Get region from request or use default (first region)
+        $regionName = $request->input('region');
+        
+        // If no region specified, use the first active region as default
+        if (!$regionName) {
+            $defaultRegion = Region::where('is_active', true)->orderBy('order')->first();
+            if ($defaultRegion) {
+                $regionName = $defaultRegion->localized_name;
+            }
+        }
+        
+        // Filter by region name
+        if ($regionName) {
+            $region = Region::where('name', $regionName)
+                ->orWhere('name_uz', $regionName)
+                ->orWhere('name_ru', $regionName)
+                ->orWhere('name_en', $regionName)
+                ->first();
+            
+            if ($region) {
+                $locationIds = Location::where('region_id', $region->id)->pluck('id');
+                $placesQuery->whereIn('location_id', $locationIds);
+            }
+        }
+
+        $places = $placesQuery->get();
 
         return view('map.index', compact('places'));
     }

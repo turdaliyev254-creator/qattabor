@@ -381,15 +381,21 @@
                         <div id="multipleImagePreview" class="grid grid-cols-4 gap-4 mt-4 hidden"></div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="latitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Latitude</label>
-                            <input type="text" name="latitude" id="latitude" value="{{ old('latitude', $place->latitude) }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                    <!-- Location Picker -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Coordinates (Latitude, Longitude)</label>
+                        <div class="flex gap-2">
+                            <input type="text" name="latitude" id="latitude" value="{{ old('latitude', $place->latitude) }}" placeholder="Latitude" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" readonly>
+                            <input type="text" name="longitude" id="longitude" value="{{ old('longitude', $place->longitude) }}" placeholder="Longitude" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" readonly>
+                            <button type="button" onclick="openMapPicker()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                Pick Location
+                            </button>
                         </div>
-                        <div>
-                            <label for="longitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Longitude</label>
-                            <input type="text" name="longitude" id="longitude" value="{{ old('longitude', $place->longitude) }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
-                        </div>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Click "Pick Location" to select coordinates on the map</p>
                     </div>
 
                     <div class="flex gap-6 pt-4">
@@ -534,5 +540,130 @@
                 alert('Error deleting image');
             });
         }
+
+        // Map Picker Modal
+        function openMapPicker() {
+            document.getElementById('mapPickerModal').classList.remove('hidden');
+            if (!window.mapInitialized) {
+                initializeMap();
+            }
+        }
+
+        function closeMapPicker() {
+            document.getElementById('mapPickerModal').classList.add('hidden');
+        }
+
+        function initializeMap() {
+            const lat = parseFloat(document.getElementById('latitude').value) || 41.2995;
+            const lng = parseFloat(document.getElementById('longitude').value) || 69.2401;
+
+            ymaps.ready(function() {
+                const map = new ymaps.Map('yandex-map', {
+                    center: [lat, lng],
+                    zoom: 13,
+                    controls: ['zoomControl', 'searchControl', 'typeSelector', 'fullscreenControl']
+                });
+
+                let placemark = new ymaps.Placemark([lat, lng], {
+                    balloonContent: 'Selected Location'
+                }, {
+                    preset: 'islands#redDotIcon',
+                    draggable: true
+                });
+
+                map.geoObjects.add(placemark);
+
+                // Update coordinates when placemark is dragged
+                placemark.events.add('dragend', function() {
+                    const coords = placemark.geometry.getCoordinates();
+                    updateCoordinates(coords[0], coords[1]);
+                });
+
+                // Update coordinates when map is clicked
+                map.events.add('click', function(e) {
+                    const coords = e.get('coords');
+                    placemark.geometry.setCoordinates(coords);
+                    updateCoordinates(coords[0], coords[1]);
+                });
+
+                // Search control event
+                const searchControl = map.controls.get('searchControl');
+                searchControl.events.add('resultselect', function(e) {
+                    const index = e.get('index');
+                    searchControl.getResult(index).then(function(res) {
+                        const coords = res.geometry.getCoordinates();
+                        placemark.geometry.setCoordinates(coords);
+                        updateCoordinates(coords[0], coords[1]);
+                    });
+                });
+
+                window.mapInitialized = true;
+                window.yandexMap = map;
+                window.yandexPlacemark = placemark;
+            });
+        }
+
+        function updateCoordinates(lat, lng) {
+            document.getElementById('modal-latitude').textContent = lat.toFixed(6);
+            document.getElementById('modal-longitude').textContent = lng.toFixed(6);
+        }
+
+        function confirmLocation() {
+            const lat = document.getElementById('modal-latitude').textContent;
+            const lng = document.getElementById('modal-longitude').textContent;
+            
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+            
+            closeMapPicker();
+        }
     </script>
+
+    <!-- Map Picker Modal -->
+    <div id="mapPickerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Pick Location on Map</h3>
+                <button type="button" onclick="closeMapPicker()" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                <div id="yandex-map" style="width: 100%; height: 500px;" class="rounded-lg mb-4"></div>
+                
+                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Selected Coordinates:</p>
+                            <p class="text-lg font-semibold text-gray-900 dark:text-white">
+                                <span id="modal-latitude">{{ old('latitude', $place->latitude ?? '41.2995') }}</span>, 
+                                <span id="modal-longitude">{{ old('longitude', $place->longitude ?? '69.2401') }}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                        <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Click on the map or drag the marker to select a location. You can also use the search box to find an address.
+                    </p>
+                </div>
+                
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeMapPicker()" class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                        Cancel
+                    </button>
+                    <button type="button" onclick="confirmLocation()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors duration-200">
+                        Confirm Location
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yandex Maps API -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=en_US" type="text/javascript"></script>
 </x-admin-layout>

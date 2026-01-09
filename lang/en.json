@@ -526,6 +526,16 @@
     "Password must be at least 8 characters": "Password must be at least 8 characters",
     "Passwords must match": "Passwords must match",
     "Current password is incorrect": "Current password is incorrect",
-    "password_changed_successfully": "Password changed successfully"
+    "password_changed_successfully": "Password changed successfully",
+    "Detect Your Location": "Detect Your Location",
+    "We would like to use your location to show you nearby places and relevant content for your region. Your privacy is important to us.": "We would like to use your location to show you nearby places and relevant content for your region. Your privacy is important to us.",
+    "Use My Location": "Use My Location",
+    "Choose Manually": "Choose Manually",
+    "Your location data is not stored and is only used for this session.": "Your location data is not stored and is only used for this session.",
+    "Detecting your location...": "Detecting your location...",
+    "Could not access your location. Please select manually.": "Could not access your location. Please select manually.",
+    "Geolocation is not supported by your browser.": "Geolocation is not supported by your browser.",
+    "You appear to be outside Uzbekistan. Please select a region manually.": "You appear to be outside Uzbekistan. Please select a region manually.",
+    "Could not detect region. Please select manually.": "Could not detect region. Please select manually."
 }
 
