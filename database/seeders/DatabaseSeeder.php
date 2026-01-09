@@ -24,6 +24,14 @@ class DatabaseSeeder extends Seeder
         echo "📍 Seeding regions and locations...\n";
         $this->call(LocationSeeder::class);
 
+        // Seed Categories
+        echo "\n📂 Seeding categories...\n";
+        $this->seedCategories();
+
+        // Seed Banners
+        echo "\n🎨 Seeding banners...\n";
+        $this->call(BannerSeeder::class);
+
         // Create Admin User
         $admin = User::firstOrCreate(
             ['email' => 'admin@qattabor.uz'],
@@ -57,5 +65,49 @@ class DatabaseSeeder extends Seeder
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
         echo "🌐 Access: http://127.0.0.1:8000/admin\n";
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+    }
+
+    private function seedCategories()
+    {
+        $categories = [
+            ['name' => 'Furniture', 'slug' => 'furniture', 'icon' => 'sofa.png'],
+            ['name' => 'Supermarkets', 'slug' => 'supermarkets', 'icon' => 'supermarket.png'],
+            ['name' => 'Hotels', 'slug' => 'hotels', 'icon' => 'hotel.png'],
+            ['name' => 'Restaurants', 'slug' => 'restaurants', 'icon' => 'dining-plate.png'],
+            ['name' => 'Entertainment', 'slug' => 'entertainment', 'icon' => 'playground.png'],
+            ['name' => 'Beauty & Spa', 'slug' => 'beauty-spa', 'icon' => 'barbershop-and-beauty-salon.png'],
+            ['name' => 'Tourism', 'slug' => 'tourism', 'icon' => 'mountain-hut.png'],
+            ['name' => 'Services', 'slug' => 'services', 'icon' => 'car.png'],
+            ['name' => 'Health', 'slug' => 'health', 'icon' => 'spa.png'],
+            ['name' => 'Photo & Video', 'slug' => 'photo-video', 'icon' => 'camera.png'],
+        ];
+
+        foreach ($categories as $categoryData) {
+            $category = Category::create($categoryData);
+            echo "  ✓ {$category->name}\n";
+
+            // Add subcategories for some categories
+            if ($category->slug === 'restaurants') {
+                $subcategories = [
+                    ['name' => 'Fast Food', 'slug' => 'fast-food', 'icon' => '🍔'],
+                    ['name' => 'Cafe', 'slug' => 'cafe', 'icon' => '☕'],
+                    ['name' => 'Fine Dining', 'slug' => 'fine-dining', 'icon' => '🍽️'],
+                ];
+                foreach ($subcategories as $subData) {
+                    $subData['category_id'] = $category->id;
+                    Subcategory::create($subData);
+                }
+            } elseif ($category->slug === 'hotels') {
+                $subcategories = [
+                    ['name' => 'Hotels', 'slug' => 'hotels', 'icon' => '🏨'],
+                    ['name' => 'Hostels', 'slug' => 'hostels', 'icon' => '🏠'],
+                    ['name' => 'Resorts', 'slug' => 'resorts', 'icon' => '🏖️'],
+                ];
+                foreach ($subcategories as $subData) {
+                    $subData['category_id'] = $category->id;
+                    Subcategory::create($subData);
+                }
+            }
+        }
     }
 }

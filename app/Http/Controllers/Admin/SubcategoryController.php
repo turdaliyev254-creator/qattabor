@@ -103,9 +103,14 @@ class SubcategoryController extends Controller
      */
     public function destroy(Subcategory $subcategory)
     {
-        $subcategory->delete();
-
-        return redirect()->route('admin.subcategories.index')
-            ->with('success', 'Subcategory deleted successfully.');
+        try {
+            $subcategory->delete();
+            
+            return redirect()->route('admin.subcategories.index')
+                ->with('success', 'Subcategory deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.subcategories.index')
+                ->with('error', 'Cannot delete subcategory: ' . $e->getMessage());
+        }
     }
 }

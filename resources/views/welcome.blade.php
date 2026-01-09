@@ -332,7 +332,7 @@
         <!-- Categories Grid -->
         <div class="grid grid-cols-5 gap-4">
             @foreach($categories as $category)
-            <a href="{{ route('places.by-category', $category->slug) }}" class="relative">
+            <a href="{{ route('places.by-category', $category->slug) }}{{ request('region') ? '?region=' . urlencode(request('region')) : '' }}" class="relative">
                 <div class="flex flex-col items-center gap-2 w-full cursor-pointer hover:opacity-80 transition-opacity">
                     <div class="w-16 h-16 flex items-center justify-center drop-shadow-lg hover:drop-shadow-xl transition-all">
                         @if($category->icon)

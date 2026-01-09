@@ -13,6 +13,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="mb-4 p-4 bg-red-100 border border-red-200 text-red-700 rounded-lg">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- Search Section -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 mb-4">
         <form method="GET" action="{{ route('admin.subcategories.index') }}" class="flex gap-4">

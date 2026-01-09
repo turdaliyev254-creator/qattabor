@@ -1,6 +1,6 @@
 <x-glass-layout>
     <div class="mb-6">
-        <a href="{{ route('places.by-category', $category->slug) }}" class="inline-flex items-center text-blue-600 dark:text-blue-400 mb-2 hover:underline">
+        <a href="{{ route('places.by-category', $category->slug) }}{{ request('region') ? '?region=' . urlencode(request('region')) : '' }}" class="inline-flex items-center text-blue-600 dark:text-blue-400 mb-2 hover:underline">
             <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
@@ -13,7 +13,7 @@
     <!-- Places Grid -->
     <div class="grid grid-cols-2 gap-4">
         @forelse($places as $place)
-            <a href="{{ route('places.show', $place->slug) }}" class="block">
+            <a href="{{ route('places.show', $place->slug) }}{{ request('region') ? '?region=' . urlencode(request('region')) : '' }}" class="block">
                 <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
                     <!-- Place Image -->
                     <div class="relative h-40 overflow-hidden bg-gray-200 dark:bg-gray-700">

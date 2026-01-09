@@ -49,13 +49,6 @@ class PlaceController extends Controller
 
     public function byCategory(Request $request, Category $category)
     {
-        $subcategories = $category->subcategories()
-            ->withCount('places')
-            ->orderBy('name')
-            ->get();
-        
-        $placesQuery = $category->places()->with(['subcategory', 'location']);
-        
         // Get region from request or use default (first region)
         $regionName = $request->input('region');
         
@@ -67,7 +60,8 @@ class PlaceController extends Controller
             }
         }
         
-        // Filter by region name
+        // Find region and get location IDs
+        $locationIds = [];
         if ($regionName) {
             $region = Region::where('name', $regionName)
                 ->orWhere('name_uz', $regionName)
@@ -76,9 +70,25 @@ class PlaceController extends Controller
                 ->first();
             
             if ($region) {
-                $locationIds = Location::where('region_id', $region->id)->pluck('id');
-                $placesQuery->whereIn('location_id', $locationIds);
+                $locationIds = Location::where('region_id', $region->id)->pluck('id')->toArray();
             }
+        }
+        
+        // Get subcategories with place count filtered by location
+        $subcategories = $category->subcategories()
+            ->withCount(['places' => function($query) use ($locationIds) {
+                if (!empty($locationIds)) {
+                    $query->whereIn('location_id', $locationIds);
+                }
+            }])
+            ->orderBy('name')
+            ->get();
+        
+        $placesQuery = $category->places()->with(['subcategory', 'location']);
+        
+        // Filter places by location
+        if (!empty($locationIds)) {
+            $placesQuery->whereIn('location_id', $locationIds);
         }
         
         $places = $placesQuery->latest()->paginate(12);

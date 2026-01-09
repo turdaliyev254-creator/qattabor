@@ -17,7 +17,7 @@
             <!-- Grid Layout Subcategories -->
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                 @foreach($subcategories as $subcategory)
-                    <a href="{{ route('places.by-subcategory', [$category->slug, $subcategory->slug]) }}" 
+                    <a href="{{ route('places.by-subcategory', [$category->slug, $subcategory->slug]) }}{{ request('region') ? '?region=' . urlencode(request('region')) : '' }}" 
                        class="group">
                         <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 p-3">
                             <!-- Subcategory Icon -->
@@ -60,7 +60,7 @@
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('all_places') }}</h2>
         <div class="grid grid-cols-2 gap-4">
             @forelse($places as $place)
-                <a href="{{ route('places.show', $place->slug) }}" class="block">
+                <a href="{{ route('places.show', $place->slug) }}{{ request('region') ? '?region=' . urlencode(request('region')) : '' }}" class="block">
                     <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
                         <!-- Place Image -->
                         <div class="relative h-40 overflow-hidden bg-gray-200 dark:bg-gray-700">

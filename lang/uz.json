@@ -537,6 +537,27 @@
     "Could not access your location. Please select manually.": "Joylashuvingizga kirish imkoni bo'lmadi. Iltimos, qo'lda tanlang.",
     "Geolocation is not supported by your browser.": "Brauzeringiz geolokatsiyani qo'llab-quvvatlamaydi.",
     "You appear to be outside Uzbekistan. Please select a region manually.": "Siz O'zbekistondan tashqarida ko'rinasiz. Iltimos, hududni qo'lda tanlang.",
-    "Could not detect region. Please select manually.": "Hududni aniqlab bo'lmadi. Iltimos, qo'lda tanlang."
+    "Could not detect region. Please select manually.": "Hududni aniqlab bo'lmadi. Iltimos, qo'lda tanlang.",
+    "Supermarkets": "Supermarketlar",
+    "Restaurants": "Restoranlar",
+    "Entertainment": "Ko'ngil ochar joylar",
+    "Beauty & Spa": "Go'zallik va SPA",
+    "Tourism": "Turizm",
+    "Services": "Xizmatlar",
+    "Health": "Sog'liq",
+    "Photo & Video": "Foto va Video",
+    "Searching...": "Qidirilmoqda...",
+    "No results found": "Natijalar topilmadi",
+    "AI Assistant": "AI Yordamchi",
+    "Ask me anything about places": "Joy haqida biron narsa so'rang",
+    "What are you looking for?": "Nimani qidiryapsiz?",
+    "Example: Find me a good restaurant for family dinner, Show me parks with playgrounds, I need a hotel near downtown...": "Masalan: Oila kechki ovqati uchun yaxshi restoran toping, Bolalar maydonchasi bor parklar, Markazda mehmonxona kerak...",
+    "Please enter at least 2 characters": "Iltimos, kamida 2 ta belgi kiriting",
+    "AI assistant is currently unavailable. Please try the regular search.": "AI yordamchi hozirda mavjud emas. Iltimos, oddiy qidiruvdan foydalaning.",
+    "Sorry, there was an error processing your request.": "Kechirasiz, so'rovingizni qayta ishlashda xatolik yuz berdi.",
+    "AI Thinking...": "AI o'ylayapti...",
+    "Search with AI": "AI bilan qidirish",
+    "AI Recommendation": "AI tavsiyasi",
+    "No popular places found.": "Mashhur joylar topilmadi."
 }
 

@@ -19,26 +19,30 @@ class BannerSeeder extends Seeder
             echo "  ✓ Created banners directory\n";
         }
 
+        // Get existing banner images from directory
+        $existingImages = File::files($bannerPath);
+        $imageFiles = array_slice($existingImages, 0, 3); // Take first 3 images
+
         // Create placeholder banners
         $banners = [
             [
                 'title' => 'Welcome to QattaBor',
-                'image' => 'banners/sample-banner-1.jpg',
+                'image' => count($imageFiles) > 0 ? 'banners/' . basename($imageFiles[0]->getPathname()) : 'banners/sample-banner-1.jpg',
                 'link' => null,
                 'order' => 1,
                 'is_active' => true,
             ],
             [
                 'title' => 'Explore Categories',
-                'image' => 'banners/sample-banner-2.jpg',
-                'link' => route('categories.all'),
+                'image' => count($imageFiles) > 1 ? 'banners/' . basename($imageFiles[1]->getPathname()) : 'banners/sample-banner-2.jpg',
+                'link' => null,
                 'order' => 2,
                 'is_active' => true,
             ],
             [
                 'title' => 'Popular Places',
-                'image' => 'banners/sample-banner-3.jpg',
-                'link' => route('places.popular'),
+                'image' => count($imageFiles) > 2 ? 'banners/' . basename($imageFiles[2]->getPathname()) : 'banners/sample-banner-3.jpg',
+                'link' => null,
                 'order' => 3,
                 'is_active' => true,
             ],

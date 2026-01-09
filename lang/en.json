@@ -536,6 +536,27 @@
     "Could not access your location. Please select manually.": "Could not access your location. Please select manually.",
     "Geolocation is not supported by your browser.": "Geolocation is not supported by your browser.",
     "You appear to be outside Uzbekistan. Please select a region manually.": "You appear to be outside Uzbekistan. Please select a region manually.",
-    "Could not detect region. Please select manually.": "Could not detect region. Please select manually."
+    "Could not detect region. Please select manually.": "Could not detect region. Please select manually.",
+    "Supermarkets": "Supermarkets",
+    "Restaurants": "Restaurants",
+    "Entertainment": "Entertainment",
+    "Beauty & Spa": "Beauty & Spa",
+    "Tourism": "Tourism",
+    "Services": "Services",
+    "Health": "Health",
+    "Photo & Video": "Photo & Video",
+    "Searching...": "Searching...",
+    "No results found": "No results found",
+    "AI Assistant": "AI Assistant",
+    "Ask me anything about places": "Ask me anything about places",
+    "What are you looking for?": "What are you looking for?",
+    "Example: Find me a good restaurant for family dinner, Show me parks with playgrounds, I need a hotel near downtown...": "Example: Find me a good restaurant for family dinner, Show me parks with playgrounds, I need a hotel near downtown...",
+    "Please enter at least 2 characters": "Please enter at least 2 characters",
+    "AI assistant is currently unavailable. Please try the regular search.": "AI assistant is currently unavailable. Please try the regular search.",
+    "Sorry, there was an error processing your request.": "Sorry, there was an error processing your request.",
+    "AI Thinking...": "AI Thinking...",
+    "Search with AI": "Search with AI",
+    "AI Recommendation": "AI Recommendation",
+    "No popular places found.": "No popular places found."
 }
 
