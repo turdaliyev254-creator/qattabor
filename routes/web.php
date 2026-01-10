@@ -35,6 +35,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/categories', [HomeController::class, 'allCategories'])->name('categories.all');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('/news', [HomeController::class, 'news'])->name('news');
 Route::get('/popular-places', [PlaceController::class, 'popularPlaces'])->name('places.popular');
 Route::get('/categories/{category:slug}', [PlaceController::class, 'byCategory'])->name('places.by-category');
 Route::get('/categories/{category:slug}/{subcategory:slug}', [PlaceController::class, 'bySubcategory'])->name('places.by-subcategory');
@@ -115,7 +118,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::resource('places', \App\Http\Controllers\Admin\PlaceController::class)->names('admin.places');
     Route::delete('place-images/{image}', [\App\Http\Controllers\Admin\PlaceController::class, 'deleteImage'])->name('admin.place-images.delete');
     Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class)->names('admin.banners');
-    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show'])->names('admin.users');
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show', 'destroy'])->names('admin.users');
     
     // Comments Management
     Route::get('/comments', [\App\Http\Controllers\Admin\CommentController::class, 'index'])->name('admin.comments.index');

@@ -3,20 +3,30 @@
     <div class="relative -mx-4 -mt-6 mb-8" x-data="{ 
         currentImage: 0,
         images: {{ Js::from($place->images->count() > 0 ? $place->images->map(fn($img) => asset('storage/' . $img->image_path))->toArray() : ($place->image_url ? [$place->image_url] : [])) }},
-        showFullscreen: false
+        showFullscreen: false,
+        init() {
+            this.$watch('showFullscreen', value => {
+                if (value) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            });
+        }
     }">
         <!-- Main Image -->
         <div class="relative h-[50vh] min-h-[400px] overflow-hidden">
             <template x-if="images.length > 0">
                 <div class="relative h-full">
                     <!-- Main Image -->
-                    <img :src="images[currentImage]" 
-                         alt="{{ $place->name }}" 
-                         @click="showFullscreen = true"
-                         class="w-full h-full object-cover cursor-zoom-in">
+                    <div @click="showFullscreen = true" class="w-full h-full cursor-zoom-in">
+                        <img :src="images[currentImage]" 
+                             alt="{{ $place->name }}" 
+                             class="w-full h-full object-cover">
+                    </div>
 
                     <!-- Gradient Overlay -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
                     
                     <!-- Navigation Arrows -->
                     <template x-if="images.length > 1">
@@ -56,12 +66,12 @@
             <!-- Top Actions Bar -->
             <div class="absolute top-0 inset-x-0 p-4 sm:p-6 flex items-start justify-between z-10">
                 <!-- Back Button -->
-                <button onclick="history.back()" class="inline-flex items-center gap-2 px-4 py-2.5 backdrop-blur-md bg-black/30 hover:bg-black/50 rounded-xl text-sm font-medium text-white shadow-lg transition-all">
+                <a href="{{ $place->subcategory_id ? route('places.by-subcategory', [$place->category->slug, $place->subcategory->slug]) : route('places.by-category', $place->category->slug) }}{{ request('region') ? '?region=' . urlencode(request('region')) : '' }}" class="inline-flex items-center gap-2 px-4 py-2.5 backdrop-blur-md bg-black/30 hover:bg-black/50 rounded-xl text-sm font-medium text-white shadow-lg transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                     </svg>
                     {{ __('back') }}
-                </button>
+                </a>
 
                 <!-- Save Button -->
                 @auth
@@ -93,15 +103,32 @@
 
         <!-- Fullscreen Modal -->
         <div x-show="showFullscreen" 
-             x-cloak
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
              @click="showFullscreen = false"
-             class="fixed inset-0 z-50 bg-black flex items-center justify-center p-4">
-            <button @click="showFullscreen = false" class="absolute top-4 right-4 p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-colors">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
-            <img :src="images[currentImage]" alt="{{ $place->name }}" class="max-h-full max-w-full object-contain">
+             @keydown.escape.window="showFullscreen = false"
+             class="fixed inset-0 z-[100] bg-black"
+             style="display: none;">
+            
+            <!-- Image Container -->
+            <div class="w-full h-full flex items-center justify-center relative">
+                <!-- Image Counter -->
+                <template x-if="images.length > 1">
+                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 px-5 py-2.5 bg-white/20 backdrop-blur-md rounded-full text-white text-base font-semibold z-10">
+                        <span x-text="currentImage + 1"></span> / <span x-text="images.length"></span>
+                    </div>
+                </template>
+
+                <!-- Image -->
+                <img :src="images[currentImage]" 
+                     alt="{{ $place->name }}" 
+                     @click.stop
+                     class="max-h-full max-w-full object-contain">
+            </div>
         </div>
 
         <!-- Place Title Overlay -->

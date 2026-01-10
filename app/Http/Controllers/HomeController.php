@@ -15,7 +15,7 @@ class HomeController extends Controller
     {
         // Show all categories
         $categories = Category::withCount('subcategories')
-            ->take(10)
+            ->take(8)
             ->get();
         
         // Filter popular places by region if selected
@@ -62,5 +62,20 @@ class HomeController extends Controller
             ->get();
         
         return view('categories', compact('categories'));
+    }
+
+    public function about()
+    {
+        return view('pages.about');
+    }
+
+    public function contact()
+    {
+        return view('pages.contact');
+    }
+
+    public function news()
+    {
+        return view('pages.news');
     }
 }

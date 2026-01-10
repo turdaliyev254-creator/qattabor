@@ -1,7 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8">
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 relative">
+    <div class="container mx-auto px-4 max-w-7xl">
+        <!-- Back to Home Button -->
+        <a href="{{ route('home') }}" 
+           class="inline-flex items-center justify-center w-12 h-12 rounded-2xl backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 border border-white/50 dark:border-gray-700/50 group mb-4"
+           title="{{ __('back_to_home') }}">
+            <svg class="w-6 h-6 text-gray-700 dark:text-gray-200 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+
     <div class="container mx-auto px-4 max-w-7xl">
         <!-- Header -->
         <div class="mb-8">

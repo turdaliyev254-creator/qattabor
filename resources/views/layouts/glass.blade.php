@@ -16,8 +16,27 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Page Transition Styles -->
+    <style>
+        body {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+        body.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body class="font-sans antialiased h-full bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <script>
+        // Remove loading state when page is fully loaded
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+    </script>
     <div x-data="{ open: false }" class="min-h-screen flex flex-col relative overflow-hidden">
         <!-- Subtle Background Pattern -->
         <div class="absolute inset-0 bg-grid-pattern opacity-[0.015] dark:opacity-[0.05]"></div>
@@ -32,9 +51,7 @@
                             <div class="relative">
                                 <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl blur-sm opacity-50 group-hover:opacity-75 transition-opacity"></div>
                                 <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg transform group-hover:scale-105 transition-transform">
-                                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                                    </svg>
+                                    <x-application-logo class="w-7 h-7 text-white" />
                                 </div>
                             </div>
                             <div class="flex flex-col">
@@ -52,9 +69,7 @@
                         <div x-data="{ locationOpen: false }" class="relative">
                             <button @click="locationOpen = !locationOpen" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-2xl transition-all backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
                                 <div class="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                                    </svg>
+                                    <x-application-logo class="w-3 h-3 text-white" />
                                 </div>
                                 <span id="current-location" class="font-semibold">Toshkent</span>
                                 <svg class="w-4 h-4 text-gray-400 transition-transform" :class="locationOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,19 +84,19 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                                  x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
-                                 class="absolute right-0 mt-3 w-96 bg-white/95 dark:bg-gray-800/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 p-6 max-h-[520px] overflow-y-auto z-50"
+                                 class="absolute right-0 mt-3 w-64 lg:w-80 bg-white/95 dark:bg-gray-800/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 p-4 lg:p-6 max-h-[400px] lg:max-h-[520px] overflow-y-auto z-[70]"
                                  style="display: none;">
-                                <div class="flex items-center justify-between mb-5">
-                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('select_region') }}</h3>
+                                <div class="flex items-center justify-between mb-4 lg:mb-5">
+                                    <h3 class="text-base lg:text-lg font-bold text-gray-900 dark:text-white">{{ __('select_region') }}</h3>
                                     <button @click="locationOpen = false" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                         </svg>
                                     </button>
                                 </div>
-                                <div class="grid grid-cols-2 gap-2.5" id="location-buttons">
+                                <div class="grid grid-cols-2 gap-2 lg:gap-2.5" id="location-buttons">
                                     @foreach($regions as $region)
-                                        <button onclick="changeLocation('{{ $region->localized_name }}')" data-location="{{ $region->localized_name }}" class="location-btn px-4 py-3.5 text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ $region->localized_name }}</button>
+                                        <button onclick="changeLocation('{{ $region->localized_name }}')" data-location="{{ $region->localized_name }}" class="location-btn px-3 lg:px-4 py-2.5 lg:py-3.5 text-xs lg:text-sm text-center font-semibold text-gray-700 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/80 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800">{{ $region->localized_name }}</button>
                                     @endforeach
                                 </div>
                             </div>
@@ -118,7 +133,8 @@
              x-transition:leave="transition ease-in duration-200 transform"
              x-transition:leave-start="translate-x-0"
              x-transition:leave-end="translate-x-full"
-             class="fixed top-0 right-0 h-full w-80 bg-gradient-to-b from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 shadow-2xl z-50 overflow-y-auto backdrop-blur-xl">
+             class="fixed top-0 right-0 h-full w-80 bg-gradient-to-b from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 shadow-2xl z-50 overflow-y-auto overscroll-contain backdrop-blur-xl"
+             style="-webkit-overflow-scrolling: touch;">
             
             <div class="p-6 h-full flex flex-col">
                 <!-- Header with Logo and Close -->
@@ -127,9 +143,7 @@
                         <div class="relative">
                             <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl blur-sm opacity-50 group-hover:opacity-75 transition-opacity"></div>
                             <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-                                <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                                </svg>
+                                <x-application-logo class="w-7 h-7 text-white" />
                             </div>
                         </div>
                         <div class="flex flex-col">
@@ -201,50 +215,38 @@
 
                 <!-- Menu Items -->
                 <nav class="space-y-2 flex-1">
-                    <a href="{{ route('search.index') }}" class="group flex items-center gap-4 px-4 py-4 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-gray-700/50 dark:hover:to-gray-700/50 rounded-2xl transition-all border border-transparent hover:border-purple-200/50 dark:hover:border-gray-600 backdrop-blur-sm hover:shadow-md">
-                        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 dark:from-gray-700 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all">
-                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                        </div>
-                        <span class="font-semibold flex-1">{{ __('Search') }}</span>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
-
-                    <a href="#" class="group flex items-center gap-4 px-4 py-4 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700/50 dark:hover:to-gray-700/50 rounded-2xl transition-all border border-transparent hover:border-blue-200/50 dark:hover:border-gray-600 backdrop-blur-sm hover:shadow-md">
-                        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all">
-                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('about') }}" class="group flex items-center gap-3 px-3 py-3 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700/50 dark:hover:to-gray-700/50 rounded-xl transition-all border border-transparent hover:border-blue-200/50 dark:hover:border-gray-600 backdrop-blur-sm hover:shadow-md">
+                        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <span class="font-semibold flex-1">{{ __('About us') }}</span>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span class="font-semibold flex-1 text-sm">{{ __('About us') }}</span>
+                        <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
                     
-                    <a href="#" class="group flex items-center gap-4 px-4 py-4 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700/50 dark:hover:to-gray-700/50 rounded-2xl transition-all border border-transparent hover:border-blue-200/50 dark:hover:border-gray-600 backdrop-blur-sm hover:shadow-md">
-                        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 dark:from-gray-700 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all">
-                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('contact') }}" class="group flex items-center gap-3 px-3 py-3 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700/50 dark:hover:to-gray-700/50 rounded-xl transition-all border border-transparent hover:border-blue-200/50 dark:hover:border-gray-600 backdrop-blur-sm hover:shadow-md">
+                        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-green-100 to-emerald-100 dark:from-gray-700 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                             </svg>
                         </div>
-                        <span class="font-semibold flex-1">{{ __('Contact') }}</span>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span class="font-semibold flex-1 text-sm">{{ __('Contact') }}</span>
+                        <svg class="w-4 h-4 text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
                     
-                    <a href="#" class="group flex items-center gap-4 px-4 py-4 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700/50 dark:hover:to-gray-700/50 rounded-2xl transition-all border border-transparent hover:border-blue-200/50 dark:hover:border-gray-600 backdrop-blur-sm hover:shadow-md">
-                        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 dark:from-gray-700 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all">
-                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('news') }}" class="group flex items-center gap-3 px-3 py-3 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700/50 dark:hover:to-gray-700/50 rounded-xl transition-all border border-transparent hover:border-blue-200/50 dark:hover:border-gray-600 backdrop-blur-sm hover:shadow-md">
+                        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-100 to-pink-100 dark:from-gray-700 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all">
+                            <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
                             </svg>
                         </div>
-                        <span class="font-semibold flex-1">{{ __('News') }}</span>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span class="font-semibold flex-1 text-sm">{{ __('News') }}</span>
+                        <svg class="w-4 h-4 text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
@@ -252,16 +254,16 @@
 
                 <!-- Language Switcher and Auth Buttons -->
                 <div class="mt-auto pt-3 space-y-3">
-                    <div class="p-4 bg-white/60 dark:bg-gray-800/60 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
-                        <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 text-center mb-3">{{ __('language_label') }}</p>
+                    <div class="p-3 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
+                        <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 text-center mb-2">{{ __('language_label') }}</p>
                         <div class="flex items-center justify-center gap-2">
-                            <button onclick="changeLang('UZB')" id="lang-uzb" class="flex-1 px-4 py-2.5 text-sm font-bold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white dark:hover:from-blue-500 dark:hover:to-purple-600 transition-all shadow-sm hover:shadow-md hover:scale-105">
+                            <button onclick="changeLang('UZB')" id="lang-uzb" class="flex-1 px-3 py-2 text-xs font-bold rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white dark:hover:from-blue-500 dark:hover:to-purple-600 transition-all shadow-sm hover:shadow-md hover:scale-105">
                                 UZB
                             </button>
-                            <button onclick="changeLang('RUS')" id="lang-rus" class="flex-1 px-4 py-2.5 text-sm font-bold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white dark:hover:from-blue-500 dark:hover:to-purple-600 transition-all shadow-sm hover:shadow-md hover:scale-105">
+                            <button onclick="changeLang('RUS')" id="lang-rus" class="flex-1 px-3 py-2 text-xs font-bold rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white dark:hover:from-blue-500 dark:hover:to-purple-600 transition-all shadow-sm hover:shadow-md hover:scale-105">
                                 RUS
                             </button>
-                            <button onclick="changeLang('ENG')" id="lang-eng" class="flex-1 px-4 py-2.5 text-sm font-bold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white dark:hover:from-blue-500 dark:hover:to-purple-600 transition-all shadow-sm hover:shadow-md hover:scale-105">
+                            <button onclick="changeLang('ENG')" id="lang-eng" class="flex-1 px-3 py-2 text-xs font-bold rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white dark:hover:from-blue-500 dark:hover:to-purple-600 transition-all shadow-sm hover:shadow-md hover:scale-105">
                                 ENG
                             </button>
                         </div>
@@ -271,8 +273,8 @@
                     <!-- Logout Button -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="w-full flex items-center justify-center gap-3 px-5 py-4 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-xl hover:scale-105">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold text-sm rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                             </svg>
                             {{ __('logout') }}
@@ -282,8 +284,8 @@
 
                     @guest
                     <!-- Login Button -->
-                    <a href="{{ route('login') }}" class="w-full flex items-center justify-center gap-3 px-5 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-xl hover:scale-105">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('login') }}" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold text-sm rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
                         </svg>
                         Kirish
@@ -294,42 +296,13 @@
         </div>
 
         <!-- Main Content -->
-        <main class="flex-grow pt-28 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
+        <main class="flex-grow pt-28 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
             @if(isset($slot))
                 {{ $slot }}
             @else
                 @yield('content')
             @endif
         </main>
-
-        <!-- Bottom Navigation Bar -->
-        <div class="fixed bottom-0 left-0 right-0 backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 border-t border-white/20 dark:border-gray-700/30 z-30 shadow-2xl shadow-gray-200/20 dark:shadow-gray-900/40">
-            <div class="grid grid-cols-3 h-16">
-                <!-- Home Button -->
-                <a href="{{ route('home') }}" class="flex flex-col items-center justify-center space-y-1 {{ request()->routeIs('home') ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400' }} hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                    </svg>
-                    <span class="text-xs font-medium">{{ __('home') }}</span>
-                </a>
-
-                <!-- Saved Button -->
-                <a href="{{ route('places.saved') }}" class="flex flex-col items-center justify-center space-y-1 {{ request()->routeIs('places.saved') ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400' }} hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-                    </svg>
-                    <span class="text-xs font-medium">{{ __('saved') }}</span>
-                </a>
-
-                <!-- Map Button -->
-                <a href="{{ route('map.index') }}" class="flex flex-col items-center justify-center space-y-1 {{ request()->routeIs('map.index') ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400' }} hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
-                    </svg>
-                    <span class="text-xs font-medium">{{ __('map') }}</span>
-                </a>
-            </div>
-        </div>
 
         <!-- Geolocation Permission Modal -->
         <div id="geolocation-modal" x-data="{ show: false }" x-show="show" 
@@ -725,5 +698,37 @@
             console.log('viewportHeight:', tg.viewportHeight);
         }
     </script>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="sticky bottom-0 left-0 right-0 z-30 lg:hidden mt-auto">
+        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-700/50 shadow-2xl mx-4 mb-4 rounded-full">
+            <div class="grid grid-cols-3 h-16 px-4">
+                <!-- Home -->
+                <a href="{{ route('home') }}" class="flex flex-col items-center justify-center gap-1 {{ request()->routeIs('home') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' }} hover:text-blue-600 dark:hover:text-blue-400 transition-colors btn-hover">
+                    <svg class="w-6 h-6" fill="{{ request()->routeIs('home') ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    <span class="text-xs font-medium">{{ __('home') }}</span>
+                </a>
+
+                <!-- Saved -->
+                <a href="{{ route('places.saved') }}" class="flex flex-col items-center justify-center gap-1 {{ request()->routeIs('places.saved') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' }} hover:text-blue-600 dark:hover:text-blue-400 transition-colors btn-hover">
+                    <svg class="w-6 h-6" fill="{{ request()->routeIs('places.saved') ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                    </svg>
+                    <span class="text-xs font-medium">{{ __('saved') }}</span>
+                </a>
+
+                <!-- Map -->
+                <a href="{{ route('map.index') }}" class="flex flex-col items-center justify-center gap-1 {{ request()->routeIs('map.*') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' }} hover:text-blue-600 dark:hover:text-blue-400 transition-colors btn-hover">
+                    <svg class="w-6 h-6" fill="{{ request()->routeIs('map.*') ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                    </svg>
+                    <span class="text-xs font-medium">{{ __('map') }}</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
 </body>
 </html>

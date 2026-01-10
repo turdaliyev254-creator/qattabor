@@ -7,6 +7,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <!-- Enhanced Welcome Hero -->
             <div class="glass-card animate-fade-in relative overflow-hidden">
+                <!-- Top-left back button -->
+                <a href="{{ route('home') }}" class="absolute left-4 top-4 z-60 inline-flex items-center justify-center w-10 h-10 rounded-md bg-white/90 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 shadow">
+                    <svg class="w-5 h-5 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </a>
                 <!-- Background Pattern -->
                 <div class="absolute inset-0 opacity-5">
                     <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(245,158,11,0.3) 1px, transparent 0); background-size: 20px 20px;"></div>
@@ -47,6 +53,12 @@
                         
                         <!-- Quick Actions -->
                         <div class="flex flex-col sm:flex-row gap-3">
+                            <a href="{{ route('home') }}" class="btn btn-outline hover-lift flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                </svg>
+                                {{ __('Home Page') }}
+                            </a>
                             <button class="btn btn-primary hover-lift">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
