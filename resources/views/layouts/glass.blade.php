@@ -47,7 +47,7 @@
                 <div class="flex h-20 items-center justify-between">
                     <!-- Logo -->
                     <div class="flex-shrink-0">
-                        <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                        <a href="{{ route('home') }}" class="flex items-center gap-3 group" onclick="return navigateWithLocation(event, '{{ route('home') }}')">
                             <div class="relative">
                                 <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl blur-sm opacity-50 group-hover:opacity-75 transition-opacity"></div>
                                 <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg transform group-hover:scale-105 transition-transform">
@@ -593,6 +593,19 @@
             form.submit();
         }
         
+        // Function to navigate with location parameter
+        function navigateWithLocation(event, url) {
+            const selectedLocation = sessionStorage.getItem('selectedLocation');
+            if (selectedLocation) {
+                event.preventDefault();
+                const targetUrl = new URL(url, window.location.origin);
+                targetUrl.searchParams.set('region', selectedLocation);
+                window.location.href = targetUrl.toString();
+                return false;
+            }
+            return true;
+        }
+        
         // Modified changeLocation function
         function changeLocation(location) {
             sessionStorage.setItem('selectedLocation', location);
@@ -704,7 +717,7 @@
         <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-700/50 shadow-2xl mx-4 mb-4 rounded-full">
             <div class="grid grid-cols-3 h-16 px-4">
                 <!-- Home -->
-                <a href="{{ route('home') }}" class="flex flex-col items-center justify-center gap-1 {{ request()->routeIs('home') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' }} hover:text-blue-600 dark:hover:text-blue-400 transition-colors btn-hover">
+                <a href="{{ route('home') }}" class="flex flex-col items-center justify-center gap-1 {{ request()->routeIs('home') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' }} hover:text-blue-600 dark:hover:text-blue-400 transition-colors btn-hover" onclick="return navigateWithLocation(event, '{{ route('home') }}')">
                     <svg class="w-6 h-6" fill="{{ request()->routeIs('home') ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                     </svg>
