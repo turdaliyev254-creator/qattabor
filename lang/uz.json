@@ -585,6 +585,14 @@
     "View Place": "Joyni ko'rish",
     "No comments found.": "Sharhlar topilmadi.",
     "You do not own any places.": "Sizda birorta joy yo'q.",
-    "Search by name, phone, or email...": "Ism, telefon yoki email bo'yicha qidirish..."
+    "Search by name, phone, or email...": "Ism, telefon yoki email bo'yicha qidirish...",
+    "Create Account": "Akkaunt yaratish",
+    "Join Qattabor to discover amazing places": "Qattabor'ga qo'shilib, ajoyib joylarni kashf eting",
+    "Enter your full name": "To'liq ismingizni kiriting",
+    "Min. 8 characters": "Kamida 8 ta belgi",
+    "Re-enter password": "Parolni qayta kiriting",
+    "Already have an account?": "Allaqachon akkauntingiz bormi?",
+    "Sign In": "Kirish",
+    "Register": "Ro'yxatdan o'tish"
 }
 

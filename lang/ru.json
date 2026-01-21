@@ -585,5 +585,13 @@
     "View Place": "Просмотр места",
     "No comments found.": "Комментарии не найдены.",
     "You do not own any places.": "У вас нет мест.",
-    "Search by name, phone, or email...": "Поиск по имени, телефону или email..."
+    "Search by name, phone, or email...": "Поиск по имени, телефону или email...",
+    "Create Account": "Создать аккаунт",
+    "Join Qattabor to discover amazing places": "Присоединяйтесь к Qattabor, чтобы открыть удивительные места",
+    "Enter your full name": "Введите ваше полное имя",
+    "Min. 8 characters": "Мин. 8 символов",
+    "Re-enter password": "Повторите пароль",
+    "Already have an account?": "Уже есть аккаунт?",
+    "Sign In": "Войти",
+    "Register": "Регистрация"
 }
