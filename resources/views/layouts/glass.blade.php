@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'QattaBor') }}</title>
@@ -27,6 +27,21 @@
         body.loaded {
             opacity: 1;
             transform: translateY(0);
+        }
+        
+        /* Telegram Safe Area Support */
+        :root {
+            --safe-area-inset-top: env(safe-area-inset-top, 0px);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-area-inset-left: env(safe-area-inset-left, 0px);
+            --safe-area-inset-right: env(safe-area-inset-right, 0px);
+        }
+        
+        body {
+            padding-top: var(--safe-area-inset-top);
+            padding-bottom: var(--safe-area-inset-bottom);
+            padding-left: var(--safe-area-inset-left);
+            padding-right: var(--safe-area-inset-right);
         }
     </style>
 </head>
@@ -696,9 +711,6 @@
             // Expand to full screen
             tg.expand();
             
-            // Lock viewport height to prevent header bouncing
-            tg.lockOrientation();
-            
             // Disable vertical swipes to prevent app closure on scroll
             tg.disableVerticalSwipes();
             
@@ -709,17 +721,13 @@
             tg.setHeaderColor('#ffffff');
             tg.setBackgroundColor('#ffffff');
             
-            // Prevent body scroll and fix viewport
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
-            document.body.style.height = tg.viewportHeight + 'px';
-            
-            // Update height on viewport changes
-            tg.onEvent('viewportChanged', function() {
-                document.body.style.height = tg.viewportHeight + 'px';
-            });
+            // Apply safe area insets for iOS notch and home indicator
+            if (tg.safeAreaInset) {
+                document.documentElement.style.setProperty('--safe-area-inset-top', tg.safeAreaInset.top + 'px');
+                document.documentElement.style.setProperty('--safe-area-inset-bottom', tg.safeAreaInset.bottom + 'px');
+                document.documentElement.style.setProperty('--safe-area-inset-left', tg.safeAreaInset.left + 'px');
+                document.documentElement.style.setProperty('--safe-area-inset-right', tg.safeAreaInset.right + 'px');
+            }
             
             // Ready the app
             tg.ready();
@@ -727,6 +735,7 @@
             console.log('Telegram Web App initialized successfully');
             console.log('isExpanded:', tg.isExpanded);
             console.log('viewportHeight:', tg.viewportHeight);
+            console.log('safeAreaInset:', tg.safeAreaInset);
         }
     </script>
 
