@@ -155,7 +155,7 @@ class SubcategoryController extends Controller
 
         $validated['slug'] = Str::slug($validated['name']);
         $validated['category_id'] = $category->id;
-        $validated['order'] = Subcategory::where('category_id', $category->id)->max('order') + 1 ?? 0;
+        $validated['order'] = (Subcategory::where('category_id', $category->id)->max('order') ?? 0) + 1;
 
         Subcategory::create($validated);
 
