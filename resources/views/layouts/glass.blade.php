@@ -696,6 +696,9 @@
             // Expand to full screen
             tg.expand();
             
+            // Disable vertical swipes to prevent app closure on scroll
+            tg.disableVerticalSwipes();
+            
             // Enable closing confirmation to prevent accidental closure
             tg.enableClosingConfirmation();
             
