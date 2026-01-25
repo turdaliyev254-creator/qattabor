@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'QattaBor') }}</title>
@@ -696,6 +696,9 @@
             // Expand to full screen
             tg.expand();
             
+            // Lock viewport height to prevent header bouncing
+            tg.lockOrientation();
+            
             // Disable vertical swipes to prevent app closure on scroll
             tg.disableVerticalSwipes();
             
@@ -705,6 +708,18 @@
             // Set header color to match app theme
             tg.setHeaderColor('#ffffff');
             tg.setBackgroundColor('#ffffff');
+            
+            // Prevent body scroll and fix viewport
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            document.body.style.height = tg.viewportHeight + 'px';
+            
+            // Update height on viewport changes
+            tg.onEvent('viewportChanged', function() {
+                document.body.style.height = tg.viewportHeight + 'px';
+            });
             
             // Ready the app
             tg.ready();
