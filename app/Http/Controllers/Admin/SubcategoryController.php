@@ -146,20 +146,31 @@ class SubcategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Category $category)
+    public function store(Request $request, Category $category = null)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'icon' => 'nullable|string|max:255',
+            'category_id' => $category ? 'nullable' : 'required|exists:categories,id',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
-        $validated['category_id'] = $category->id;
-        $validated['order'] = (Subcategory::where('category_id', $category->id)->max('order') ?? 0) + 1;
+        
+        // Use category from route parameter if available, otherwise from form
+        $categoryId = $category ? $category->id : $validated['category_id'];
+        $validated['category_id'] = $categoryId;
+        
+        $validated['order'] = (Subcategory::where('category_id', $categoryId)->max('order') ?? 0) + 1;
 
         Subcategory::create($validated);
 
-        return redirect()->route('admin.categories.subcategories.index', $category)
+        // Redirect based on which route was used
+        if ($category) {
+            return redirect()->route('admin.categories.subcategories.index', $category)
+                ->with('success', 'Subcategory created successfully.');
+        }
+        
+        return redirect()->route('admin.subcategories.index')
             ->with('success', 'Subcategory created successfully.');
     }
 
