@@ -13,40 +13,13 @@
             <p class="text-lg text-gray-600 dark:text-gray-400">{{ __('Discover amazing places in Uzbekistan') }}</p>
         </div>
 
-        <!-- Content Cards -->
+        <!-- Content Card -->
         <div class="space-y-6 fade-in-up">
-            <!-- Mission Card -->
             <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ __('Our Mission') }}</h2>
-                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-                            {{ __('QattaBor is your guide to discovering the best places in Uzbekistan. We help you find restaurants, cafes, attractions, and services near you with detailed information and user reviews.') }}
-                        </p>
-                    </div>
+                <div class="prose prose-lg dark:prose-invert max-w-none">
+                    {!! nl2br(e($content ?? __('Welcome to QattaBor - your guide to discovering amazing places!'))) !!}
                 </div>
             </div>
-
-            <!-- What We Offer Card -->
-            <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ __('What We Offer') }}</h2>
-                        <ul class="space-y-3 text-gray-600 dark:text-gray-400">
-                            <li class="flex items-start gap-2">
-                                <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
                                 <span>{{ __('Comprehensive database of places across Uzbekistan') }}</span>
                             </li>
                             <li class="flex items-start gap-2">

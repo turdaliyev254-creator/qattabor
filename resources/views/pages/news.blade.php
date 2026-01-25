@@ -13,41 +13,13 @@
             <p class="text-lg text-gray-600 dark:text-gray-400">{{ __('Stay updated with the latest from QattaBor') }}</p>
         </div>
 
-        <!-- News Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in-up">
-            <!-- News Article 1 -->
-            <article class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105">
-                <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                    <svg class="w-20 h-20 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
-                    </svg>
+        <!-- News Content -->
+        <div class="fade-in-up">
+            <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
+                <div class="prose prose-lg dark:prose-invert max-w-none">
+                    {!! nl2br(e($content ?? __('Stay tuned for the latest news and updates!'))) !!}
                 </div>
-                <div class="p-6">
-                    <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        <span>{{ __('January 10, 2026') }}</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                        {{ __('New AI Search Feature Launched') }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">
-                        {{ __('We\'ve introduced a powerful AI-powered search that understands your queries in natural language and helps you find exactly what you\'re looking for.') }}
-                    </p>
-                    <a href="#" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
-                        {{ __('Read more') }} →
-                    </a>
-                </div>
-            </article>
-
-            <!-- News Article 2 -->
-            <article class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105">
-                <div class="h-48 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                    <svg class="w-20 h-20 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
+            </div>
                 </div>
                 <div class="p-6">
                     <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">

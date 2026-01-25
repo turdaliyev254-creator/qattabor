@@ -66,16 +66,43 @@ class HomeController extends Controller
 
     public function about()
     {
-        return view('pages.about');
+        $aboutUs = \App\Models\Setting::get('about_us', [
+            'en' => 'Welcome to QattaBor - your guide to discovering amazing places!',
+            'uz' => 'QattaBor-ga xush kelibsiz - ajoyib joylarni kashf qilish uchun sizning yo\'riqnomangiz!',
+            'ru' => 'Добро пожаловать в QattaBor - ваш гид по открытию удивительных мест!'
+        ]);
+        
+        $content = $aboutUs[app()->getLocale()] ?? $aboutUs['en'];
+        
+        return view('pages.about', compact('content'));
     }
 
     public function contact()
     {
-        return view('pages.contact');
+        $contact = \App\Models\Setting::get('contact', [
+            'phone' => '+998 90 123 45 67',
+            'email' => 'info@qattabor.uz',
+            'address_en' => 'Tashkent, Uzbekistan',
+            'address_uz' => 'Toshkent, O\'zbekiston',
+            'address_ru' => 'Ташкент, Узбекистан',
+            'facebook' => '',
+            'instagram' => '',
+            'telegram' => ''
+        ]);
+        
+        return view('pages.contact', compact('contact'));
     }
 
     public function news()
     {
-        return view('pages.news');
+        $news = \App\Models\Setting::get('news', [
+            'en' => 'Stay tuned for the latest news and updates!',
+            'uz' => 'Eng so\'nggi yangiliklar va yangiliklardan xabardor bo\'ling!',
+            'ru' => 'Следите за последними новостями и обновлениями!'
+        ]);
+        
+        $content = $news[app()->getLocale()] ?? $news['en'];
+        
+        return view('pages.news', compact('content'));
     }
 }
