@@ -565,6 +565,12 @@
     "Re-enter password": "Re-enter password",
     "Already have an account?": "Already have an account?",
     "Sign In": "Sign In",
-    "Register": "Register"
+    "Register": "Register",
+    "Sort By": "Sort By",
+    "Manual Order": "Manual Order",
+    "Newest First": "Newest First",
+    "Oldest First": "Oldest First",
+    "Are you sure?": "Are you sure?",
+    "Order": "Order"
 }
 

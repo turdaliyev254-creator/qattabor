@@ -593,5 +593,11 @@
     "Re-enter password": "Повторите пароль",
     "Already have an account?": "Уже есть аккаунт?",
     "Sign In": "Войти",
-    "Register": "Регистрация"
+    "Register": "Регистрация",
+    "Sort By": "Сортировать",
+    "Manual Order": "Ручной порядок",
+    "Newest First": "Новые первыми",
+    "Oldest First": "Старые первыми",
+    "Are you sure?": "Вы уверены?",
+    "Order": "Порядок"
 }

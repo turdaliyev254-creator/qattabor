@@ -38,17 +38,6 @@
                     @enderror
                 </div>
 
-                <div>
-                    <label for="color" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Color (Hex or Tailwind Class)</label>
-                    <div class="flex gap-4">
-                        <input type="color" id="colorPicker" value="{{ old('color', $category->color) }}" class="h-10 w-10 rounded cursor-pointer border border-gray-300" onchange="document.getElementById('color').value = this.value">
-                        <input type="text" name="color" id="color" value="{{ old('color', $category->color) }}" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" placeholder="#000000">
-                    </div>
-                    @error('color')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
                 <div class="pt-4 flex justify-end">
                     <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors duration-200">
                         Update Category

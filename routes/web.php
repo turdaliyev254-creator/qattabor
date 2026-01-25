@@ -114,11 +114,46 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/export-activity', [AdminController::class, 'exportActivity'])->name('admin.export-activity');
     Route::resource('regions', \App\Http\Controllers\Admin\RegionController::class)->names('admin.regions');
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
+    
+    // Nested resource routes for hierarchical navigation
+    Route::resource('categories.subcategories', \App\Http\Controllers\Admin\SubcategoryController::class)
+        ->except(['show'])
+        ->shallow()
+        ->names([
+            'index' => 'admin.categories.subcategories.index',
+            'create' => 'admin.categories.subcategories.create',
+            'store' => 'admin.categories.subcategories.store',
+            'edit' => 'admin.subcategories.edit',
+            'update' => 'admin.subcategories.update',
+            'destroy' => 'admin.subcategories.destroy',
+        ]);
+    
+    Route::resource('subcategories.places', \App\Http\Controllers\Admin\PlaceController::class)
+        ->except(['show'])
+        ->shallow()
+        ->names([
+            'index' => 'admin.subcategories.places.index',
+            'create' => 'admin.subcategories.places.create',
+            'store' => 'admin.subcategories.places.store',
+            'edit' => 'admin.places.edit',
+            'update' => 'admin.places.update',
+            'destroy' => 'admin.places.destroy',
+        ]);
+    
+    // Keep flat routes for backward compatibility
     Route::resource('subcategories', \App\Http\Controllers\Admin\SubcategoryController::class)->names('admin.subcategories');
     Route::resource('places', \App\Http\Controllers\Admin\PlaceController::class)->names('admin.places');
     Route::delete('place-images/{image}', [\App\Http\Controllers\Admin\PlaceController::class, 'deleteImage'])->name('admin.place-images.delete');
     Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class)->names('admin.banners');
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show', 'destroy'])->names('admin.users');
+    
+    // Ordering routes
+    Route::post('categories/reorder', [\App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('admin.categories.reorder');
+    Route::patch('categories/{category}/update-order', [\App\Http\Controllers\Admin\CategoryController::class, 'updateOrder'])->name('admin.categories.update-order');
+    Route::post('subcategories/reorder', [\App\Http\Controllers\Admin\SubcategoryController::class, 'reorder'])->name('admin.subcategories.reorder');
+    Route::patch('subcategories/{subcategory}/update-order', [\App\Http\Controllers\Admin\SubcategoryController::class, 'updateOrder'])->name('admin.subcategories.update-order');
+    Route::post('places/reorder', [\App\Http\Controllers\Admin\PlaceController::class, 'reorder'])->name('admin.places.reorder');
+    Route::patch('places/{place}/update-order', [\App\Http\Controllers\Admin\PlaceController::class, 'updateOrder'])->name('admin.places.update-order');
     
     // Comments Management
     Route::get('/comments', [\App\Http\Controllers\Admin\CommentController::class, 'index'])->name('admin.comments.index');

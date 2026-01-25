@@ -33,6 +33,7 @@ class Place extends Model
         'phone_clicks',
         'website_clicks',
         'social_clicks',
+        'order',
     ];
 
     protected $casts = [
@@ -40,6 +41,54 @@ class Place extends Model
         'is_popular' => 'boolean',
         'is_featured' => 'boolean',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Auto-assign order on create (scoped to subcategory)
+        static::creating(function ($place) {
+            if (is_null($place->order)) {
+                $maxOrder = static::where('subcategory_id', $place->subcategory_id)->max('order');
+                $place->order = ($maxOrder ?? 0) + 1;
+            }
+        });
+
+        // Renumber after delete (scoped to subcategory)
+        static::deleted(function ($place) {
+            static::renumberOrders($place->subcategory_id);
+        });
+    }
+
+    /**
+     * Renumber orders sequentially within a subcategory
+     */
+    public static function renumberOrders($subcategoryId = null)
+    {
+        if ($subcategoryId) {
+            $places = static::where('subcategory_id', $subcategoryId)->orderBy('order')->get();
+        } else {
+            // Renumber all subcategories separately
+            $subcategoryIds = static::distinct()->pluck('subcategory_id');
+            foreach ($subcategoryIds as $subId) {
+                static::renumberOrders($subId);
+            }
+            return;
+        }
+        
+        foreach ($places as $index => $place) {
+            $place->order = $index + 1;
+            $place->saveQuietly();
+        }
+    }
+
+    /**
+     * Scope for ordering by manual order
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order', 'asc');
+    }
 
     public function category()
     {

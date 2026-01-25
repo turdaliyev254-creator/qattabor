@@ -1,15 +1,35 @@
 <x-admin-layout>
     <div class="mb-6">
-        <a href="{{ route('admin.places.index') }}" class="text-gray-500 hover:text-gray-700 flex items-center gap-2 mb-4">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Back to Places
-        </a>
+        @if(isset($subcategory) && $subcategory)
+            <a href="{{ route('admin.subcategories.places.index', $subcategory) }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 flex items-center gap-2 mb-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Back to Places
+            </a>
+        @else
+            <a href="{{ route('admin.places.index') }}" class="text-gray-500 hover:text-gray-700 flex items-center gap-2 mb-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Back to Places
+            </a>
+        @endif
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create Place</h2>
     </div>
 
+    @if(isset($subcategory) && $subcategory)
+        <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500">
+            <strong class="text-gray-900 dark:text-white">{{ __('Creating place for') }}:</strong> 
+            <span class="text-gray-700 dark:text-gray-300">{{ $subcategory->category->name }}</span> → 
+            <span class="text-gray-700 dark:text-gray-300">{{ $subcategory->name }}</span>
+        </div>
+    @endif
+
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 max-w-4xl">
-        <form action="{{ route('admin.places.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="@if(isset($subcategory) && $subcategory){{ route('admin.subcategories.places.store', $subcategory) }}@else{{ route('admin.places.store') }}@endif" method="POST" enctype="multipart/form-data">
             @csrf
+            
+            @if(isset($subcategory) && $subcategory)
+                <input type="hidden" name="category_id" value="{{ $subcategory->category_id }}">
+                <input type="hidden" name="subcategory_id" value="{{ $subcategory->id }}">
+            @endif
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-6">

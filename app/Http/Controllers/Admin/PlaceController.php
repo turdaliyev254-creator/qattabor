@@ -6,42 +6,138 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Place;
+use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PlaceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, Subcategory $subcategory = null)
     {
-        $places = Place::with(['category', 'subcategory', 'location', 'owner'])->latest()->paginate(10);
-        return view('admin.places.index', compact('places'));
+        try {
+            $sort = $request->get('sort', 'manual');
+            
+            $query = Place::with(['category', 'subcategory', 'location', 'owner']);
+            
+            // Filter by subcategory if provided (nested route)
+            if ($subcategory && $subcategory->id) {
+                $subcategory->load('category');
+                $query->where('subcategory_id', $subcategory->id);
+            }
+            
+            switch ($sort) {
+                case 'newest':
+                    $query->latest();
+                    break;
+                case 'oldest':
+                    $query->oldest();
+                    break;
+                case 'alphabetical':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'alphabetical_desc':
+                    $query->orderBy('name', 'desc');
+                    break;
+                case 'manual':
+                default:
+                    $query->ordered();
+                    break;
+            }
+            
+            $places = $query->paginate(10);
+            return view('admin.places.index', compact('places', 'sort', 'subcategory'));
+            
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.subcategories.index')
+                ->with('error', 'Subcategory not found or has been deleted.');
+        }
+    }
+
+    /**
+     * Reorder places
+     */
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'orders' => 'required|array',
+            'orders.*' => 'required|integer|exists:places,id',
+        ]);
+
+        foreach ($request->orders as $order => $id) {
+            Place::where('id', $id)->update(['order' => $order + 1]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Places reordered successfully']);
+    }
+
+    /**
+     * Update single place order
+     */
+    public function updateOrder(Request $request, Place $place)
+    {
+        $request->validate([
+            'order' => 'required|integer|min:1',
+        ]);
+
+        $newOrder = $request->order;
+        $oldOrder = $place->order;
+        $subcategoryId = $place->subcategory_id;
+
+        if ($newOrder !== $oldOrder) {
+            // Shift other items within the same subcategory
+            if ($newOrder < $oldOrder) {
+                // Moving up
+                Place::where('subcategory_id', $subcategoryId)
+                    ->whereBetween('order', [$newOrder, $oldOrder - 1])
+                    ->increment('order');
+            } else {
+                // Moving down
+                Place::where('subcategory_id', $subcategoryId)
+                    ->whereBetween('order', [$oldOrder + 1, $newOrder])
+                    ->decrement('order');
+            }
+
+            $place->order = $newOrder;
+            $place->save();
+
+            Place::renumberOrders($subcategoryId);
+        }
+
+        // Redirect back to the referring page or default to index
+        $referer = $request->headers->get('referer');
+        if ($referer && str_contains($referer, 'subcategories/')) {
+            return redirect()->back()->with('success', 'Place order updated successfully.');
+        }
+
+        return redirect()->route('admin.places.index')
+            ->with('success', 'Place order updated successfully.');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Subcategory $subcategory)
     {
+        $subcategory->load('category');
         $categories = Category::with('subcategories')->get();
         $locations = Location::all();
         $users = User::orderBy('name')->get();
-        return view('admin.places.create', compact('categories', 'locations', 'users'));
+        return view('admin.places.create', compact('subcategory', 'categories', 'locations', 'users'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Subcategory $subcategory)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'subcategory_id' => 'nullable|exists:subcategories,id',
             'location_id' => 'required|exists:locations,id',
             'owner_id' => 'nullable|exists:users,id',
             'address' => 'nullable|string|max:255',
@@ -62,6 +158,9 @@ class PlaceController extends Controller
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
+        $validated['category_id'] = $subcategory->category_id;
+        $validated['subcategory_id'] = $subcategory->id;
+        
         // Handle checkbox boolean values if not present in request
         $validated['is_popular'] = $request->has('is_popular');
         $validated['is_featured'] = $request->has('is_featured');
@@ -84,7 +183,7 @@ class PlaceController extends Controller
             }
         }
 
-        return redirect()->route('admin.places.index')
+        return redirect()->route('admin.subcategories.places.index', $subcategory)
             ->with('success', 'Place created successfully.');
     }
 

@@ -15,6 +15,28 @@
     scrollbar-width: none;  /* Firefox */
   }
 
+  /* Sortable Drag Handle Styles */
+  .handle {
+    cursor: grab !important;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+  
+  .handle:active {
+    cursor: grabbing !important;
+  }
+  
+  .sortable-ghost {
+    opacity: 0.4;
+    background: #e3e8ef;
+  }
+  
+  .sortable-chosen {
+    background: #eff6ff;
+  }
+
   /* Page Transition Animations */
   .page-transition {
     animation: pageEnter 0.4s ease-out;

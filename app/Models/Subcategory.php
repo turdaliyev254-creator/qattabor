@@ -6,7 +6,55 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subcategory extends Model
 {
-    protected $fillable = ['category_id', 'name', 'slug', 'icon'];
+    protected $fillable = ['category_id', 'name', 'slug', 'icon', 'order'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Auto-assign order on create (scoped to category)
+        static::creating(function ($subcategory) {
+            if (is_null($subcategory->order)) {
+                $maxOrder = static::where('category_id', $subcategory->category_id)->max('order');
+                $subcategory->order = ($maxOrder ?? 0) + 1;
+            }
+        });
+
+        // Renumber after delete (scoped to category)
+        static::deleted(function ($subcategory) {
+            static::renumberOrders($subcategory->category_id);
+        });
+    }
+
+    /**
+     * Renumber orders sequentially within a category
+     */
+    public static function renumberOrders($categoryId = null)
+    {
+        if ($categoryId) {
+            $subcategories = static::where('category_id', $categoryId)->orderBy('order')->get();
+        } else {
+            // Renumber all categories separately
+            $categoryIds = static::distinct()->pluck('category_id');
+            foreach ($categoryIds as $catId) {
+                static::renumberOrders($catId);
+            }
+            return;
+        }
+        
+        foreach ($subcategories as $index => $subcategory) {
+            $subcategory->order = $index + 1;
+            $subcategory->saveQuietly();
+        }
+    }
+
+    /**
+     * Scope for ordering by manual order
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order', 'asc');
+    }
 
     public function category()
     {

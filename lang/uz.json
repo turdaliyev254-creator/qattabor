@@ -593,6 +593,12 @@
     "Re-enter password": "Parolni qayta kiriting",
     "Already have an account?": "Allaqachon akkauntingiz bormi?",
     "Sign In": "Kirish",
-    "Register": "Ro'yxatdan o'tish"
+    "Register": "Ro'yxatdan o'tish",
+    "Sort By": "Saralash",
+    "Manual Order": "Qo'lda tartib",
+    "Newest First": "Eng yangisi",
+    "Oldest First": "Eng eskisi",
+    "Are you sure?": "Ishonchingiz komilmi?",
+    "Order": "Tartib"
 }
 
