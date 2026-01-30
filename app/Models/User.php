@@ -24,6 +24,12 @@ class User extends Authenticatable
         'password',
         'role',
         'avatar',
+        'telegram_chat_id',
+        'telegram_username',
+        'telegram_first_name',
+        'telegram_region_id',
+        'telegram_language',
+        'is_telegram_verified',
     ];
 
     public function savedPlaces()
@@ -41,6 +47,16 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    public function telegramRegion()
+    {
+        return $this->belongsTo(Region::class, 'telegram_region_id');
+    }
+
+    public function createdBroadcasts()
+    {
+        return $this->hasMany(TelegramBroadcast::class, 'created_by');
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';
@@ -56,13 +72,14 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'is_telegram_verified' => 'boolean',
+        ];
+    }* Get the attributes that should be cast.
      *
      * @return array<string, string>
      */

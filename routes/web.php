@@ -55,6 +55,9 @@ Route::get('/search-places', [SearchController::class, 'quickSearch'])->name('se
 // Geolocation API
 Route::post('/api/detect-region', [\App\Http\Controllers\Api\LocationController::class, 'detectRegion'])->name('api.detect-region');
 
+// Telegram Webhook
+Route::post('/api/telegram/webhook', [\App\Http\Controllers\Api\TelegramWebhookController::class, 'handle'])->name('api.telegram.webhook');
+
 Route::middleware('auth')->group(function () {
     Route::get('/saved-places', [PlaceController::class, 'savedPlaces'])->name('places.saved');
     Route::post('/places/{place}/save', [PlaceController::class, 'save'])->name('places.save');
@@ -162,6 +165,19 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     
     // Pages Management
     Route::resource('pages', \App\Http\Controllers\Admin\PageController::class)->except(['show'])->names('admin.pages');
+    
+    // Telegram Bot Management
+    Route::prefix('telegram')->name('telegram.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\TelegramBroadcastController::class, 'index'])->name('index');
+        Route::get('/create', [\App\Http\Controllers\Admin\TelegramBroadcastController::class, 'create'])->name('create');
+        Route::post('/', [\App\Http\Controllers\Admin\TelegramBroadcastController::class, 'store'])->name('store');
+        Route::get('/{broadcast}', [\App\Http\Controllers\Admin\TelegramBroadcastController::class, 'show'])->name('show');
+        Route::post('/{broadcast}/send', [\App\Http\Controllers\Admin\TelegramBroadcastController::class, 'send'])->name('send');
+        Route::delete('/{broadcast}', [\App\Http\Controllers\Admin\TelegramBroadcastController::class, 'destroy'])->name('destroy');
+        Route::get('/stats/statistics', [\App\Http\Controllers\Admin\TelegramBroadcastController::class, 'statistics'])->name('statistics');
+        Route::get('/settings/webhook', [\App\Http\Controllers\Admin\TelegramBroadcastController::class, 'webhook'])->name('webhook');
+        Route::post('/settings/webhook', [\App\Http\Controllers\Admin\TelegramBroadcastController::class, 'setWebhook'])->name('set-webhook');
+    });
 });
 
 
