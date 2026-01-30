@@ -19,4 +19,4 @@ use App\Http\Controllers\Api\LocationController;
 Route::post('/detect-region', [LocationController::class, 'detectRegion'])->name('api.detect-region');
 
 // Telegram Webhook (no CSRF protection needed)
-Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle'])->name('api.telegram.webhook');
+Route::match(['get', 'post'], '/telegram/webhook', [TelegramWebhookController::class, 'handle'])->name('api.telegram.webhook');

@@ -21,6 +21,15 @@ class TelegramWebhookController extends Controller
 
     public function handle(Request $request)
     {
+        // Simple GET test response
+        if ($request->isMethod('get')) {
+            return response()->json([
+                'status' => 'ok',
+                'message' => 'Telegram webhook endpoint is working',
+                'bot' => config('services.telegram.bot_username'),
+            ]);
+        }
+
         try {
             $update = $request->all();
             Log::info('Telegram webhook received', $update);
