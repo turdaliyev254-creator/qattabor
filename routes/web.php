@@ -52,12 +52,6 @@ Route::get('/search/autocomplete', [SearchController::class, 'autocomplete'])->n
 // Quick search for places
 Route::get('/search-places', [SearchController::class, 'quickSearch'])->name('search.quick');
 
-// Geolocation API
-Route::post('/api/detect-region', [\App\Http\Controllers\Api\LocationController::class, 'detectRegion'])->name('api.detect-region');
-
-// Telegram Webhook
-Route::post('/api/telegram/webhook', [\App\Http\Controllers\Api\TelegramWebhookController::class, 'handle'])->name('api.telegram.webhook');
-
 Route::middleware('auth')->group(function () {
     Route::get('/saved-places', [PlaceController::class, 'savedPlaces'])->name('places.saved');
     Route::post('/places/{place}/save', [PlaceController::class, 'save'])->name('places.save');

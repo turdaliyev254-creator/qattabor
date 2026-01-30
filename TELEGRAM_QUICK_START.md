@@ -12,8 +12,8 @@
 
 ### 2️⃣ Configure .env (1 min)
 ```env
-TELEGRAM_BOT_TOKEN=paste_your_token_here
-TELEGRAM_BOT_USERNAME=@your_bot_name
+TELEGRAM_BOT_TOKEN=7884993170:AAFX-M-assMcELoJe1hV0sp3tH4PpvRNym4_here
+TELEGRAM_BOT_USERNAME=@qattabor_bot
 TELEGRAM_WEBHOOK_URL=https://qattabor.uz/api/telegram/webhook
 TELEGRAM_ADMIN_CHAT_ID=849124681
 ```
