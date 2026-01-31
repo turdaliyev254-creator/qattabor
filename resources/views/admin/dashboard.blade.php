@@ -134,35 +134,37 @@
 
             <!-- Total Users -->
             <div class="glass-card p-6 hover-lift group animate-fade-in animate-stagger-4">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <svg class="w-7 h-7 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                <a href="{{ route('admin.users.index') }}" class="block">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <svg class="w-7 h-7 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-bold text-warm-gray-900 dark:text-white">{{ $stats['users'] ?? 0 }}</div>
+                            <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">{{ __('Users') }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 space-y-2">
+                        <div class="flex justify-between text-xs text-warm-gray-600 dark:text-warm-gray-400">
+                            <span>{{ __('Admins') }}</span>
+                            <span class="font-semibold">{{ $stats['admins'] ?? 0 }}</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-warm-gray-600 dark:text-warm-gray-400">
+                            <span>{{ __('Owners') }}</span>
+                            <span class="font-semibold">{{ $stats['owners'] ?? 0 }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center text-sm text-primary-600 dark:text-primary-400 font-medium">
+                        <span>{{ __('Manage Users') }}</span>
+                        <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </div>
-                    <div class="text-right">
-                        <div class="text-3xl font-bold text-warm-gray-900 dark:text-white">{{ $stats['users'] ?? 892 }}</div>
-                        <div class="text-sm text-warm-gray-500 dark:text-warm-gray-400">{{ __('Users') }}</div>
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <div class="flex justify-between text-xs text-warm-gray-600 dark:text-warm-gray-400 mb-1">
-                        <span>{{ __('Active') }}</span>
-                        <span>94%</span>
-                    </div>
-                    <div class="w-full bg-warm-gray-200 dark:bg-warm-gray-700 rounded-full h-1.5">
-                        <div class="bg-gradient-to-r from-purple-500 to-purple-600 h-1.5 rounded-full" style="width: 94%"></div>
-                    </div>
-                </div>
-                
-                <div class="flex items-center text-sm">
-                    <svg class="w-4 h-4 mr-1 text-secondary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-                    </svg>
-                    <span class="text-secondary-600 dark:text-secondary-400 font-medium">+24.3%</span>
-                    <span class="text-warm-gray-500 ml-1">{{ __('vs last month') }}</span>
-                </div>
+                </a>
             </div>
         </div>
 

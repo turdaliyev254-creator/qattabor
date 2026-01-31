@@ -18,6 +18,8 @@ class AdminController extends Controller
             'subcategories' => Subcategory::count(),
             'places' => Place::count(),
             'users' => User::count(),
+            'admins' => User::where('role', 'admin')->count(),
+            'owners' => User::where('role', 'owner')->count(),
         ];
 
         return view('admin.dashboard', compact('stats'));

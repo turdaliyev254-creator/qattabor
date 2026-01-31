@@ -45,6 +45,32 @@ class UserController extends Controller
     }
 
     /**
+     * Update user role
+     */
+    public function updateRole(Request $request, User $user)
+    {
+        $request->validate([
+            'role' => 'required|in:user,owner,admin'
+        ]);
+
+        // Prevent changing own role
+        if ($user->id === auth()->id()) {
+            return back()->with('error', __('You cannot change your own role.'));
+        }
+
+        // Prevent removing the last admin
+        if ($user->isAdmin() && $request->role !== 'admin' && User::where('role', 'admin')->count() <= 1) {
+            return back()->with('error', __('Cannot remove the last admin user.'));
+        }
+
+        $user->update([
+            'role' => $request->role
+        ]);
+
+        return back()->with('success', __('User role updated successfully!'));
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)

@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/export-activity', [AdminController::class, 'exportActivity'])->name('admin.export-activity');
+    
     Route::resource('regions', \App\Http\Controllers\Admin\RegionController::class)->names('admin.regions');
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
     
@@ -146,6 +147,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('place-images/{image}', [\App\Http\Controllers\Admin\PlaceController::class, 'deleteImage'])->name('admin.place-images.delete');
     Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class)->names('admin.banners');
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show', 'destroy'])->names('admin.users');
+    Route::post('users/{user}/update-role', [\App\Http\Controllers\Admin\UserController::class, 'updateRole'])->name('admin.users.update-role');
     
     // Ordering routes
     Route::post('categories/reorder', [\App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('admin.categories.reorder');
