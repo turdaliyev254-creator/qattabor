@@ -62,7 +62,7 @@
                                 <!-- Image -->
                                 <template x-if="item.type === 'image'">
                                     <img :src="item.url" 
-                                         alt="{{ $place->name }}" 
+                                         alt="{{ $place->localized_name }}" 
                                          class="w-full h-full object-cover">
                                 </template>
                                 
@@ -279,7 +279,7 @@
         <!-- Place Title Overlay -->
         <div class="absolute bottom-0 inset-x-0 p-6 sm:p-8">
             <div class="max-w-4xl">
-                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 drop-shadow-2xl">{{ $place->name }}</h1>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 drop-shadow-2xl">{{ $place->localized_name }}</h1>
                 <div class="flex flex-wrap items-center gap-3">
                     @if($place->location)
                         <span class="inline-flex items-center gap-1.5 px-3 py-1.5 backdrop-blur-md bg-white/20 text-white rounded-lg text-sm font-medium">
@@ -410,7 +410,7 @@
             <!-- Description Section -->
             <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-2xl p-6 border border-white/20 dark:border-gray-700/50 shadow-lg">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ __('About') }}</h2>
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ $place->description }}</p>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ $place->localized_description }}</p>
             </div>
         @endif
 

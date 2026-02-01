@@ -66,7 +66,7 @@
                         <div class="relative h-40 overflow-hidden bg-gray-200 dark:bg-gray-700">
                             @if($place->image_url)
                                 <img src="{{ $place->image_url }}" 
-                                     alt="{{ $place->name }}" 
+                                     alt="{{ $place->localized_name }}" 
                                      class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
@@ -79,10 +79,10 @@
                         
                         <!-- Place Info -->
                         <div class="p-3">
-                            <h3 class="font-semibold text-base text-gray-900 dark:text-white mb-1 line-clamp-1">{{ $place->name }}</h3>
+                            <h3 class="font-semibold text-base text-gray-900 dark:text-white mb-1 line-clamp-1">{{ $place->localized_name }}</h3>
                             
                             @if($place->subcategory)
-                                <p class="text-xs text-blue-600 dark:text-blue-400 mb-1">{{ __($place->subcategory->name) }}</p>
+                                <p class="text-xs text-blue-600 dark:text-blue-400 mb-1">{{ $place->subcategory->localized_name }}</p>
                             @endif
                             
                             @if($place->location)

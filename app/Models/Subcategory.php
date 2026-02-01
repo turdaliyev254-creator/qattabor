@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subcategory extends Model
 {
-    protected $fillable = ['category_id', 'name', 'slug', 'icon', 'order'];
+    protected $fillable = ['category_id', 'name', 'slug', 'icon', 'order', 'name_uz', 'name_ru', 'name_en'];
 
     protected static function boot()
     {
@@ -64,5 +64,16 @@ class Subcategory extends Model
     public function places()
     {
         return $this->hasMany(Place::class);
+    }
+
+    /**
+     * Get the localized name based on the current app locale
+     */
+    public function getLocalizedNameAttribute()
+    {
+        $locale = app()->getLocale();
+        $fieldName = "name_{$locale}";
+        
+        return $this->$fieldName ?? $this->name;
     }
 }

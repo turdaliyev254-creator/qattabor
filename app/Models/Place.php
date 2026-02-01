@@ -34,6 +34,12 @@ class Place extends Model
         'website_clicks',
         'social_clicks',
         'order',
+        'name_uz',
+        'name_ru',
+        'name_en',
+        'description_uz',
+        'description_ru',
+        'description_en',
     ];
 
     protected $casts = [
@@ -165,5 +171,27 @@ class Place extends Model
     public function incrementSocialClicks()
     {
         $this->increment('social_clicks');
+    }
+
+    /**
+     * Get the localized name based on the current app locale
+     */
+    public function getLocalizedNameAttribute()
+    {
+        $locale = app()->getLocale();
+        $fieldName = "name_{$locale}";
+        
+        return $this->$fieldName ?? $this->name;
+    }
+
+    /**
+     * Get the localized description based on the current app locale
+     */
+    public function getLocalizedDescriptionAttribute()
+    {
+        $locale = app()->getLocale();
+        $fieldName = "description_{$locale}";
+        
+        return $this->$fieldName ?? $this->description;
     }
 }

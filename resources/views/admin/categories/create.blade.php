@@ -12,9 +12,59 @@
             @csrf
             
             <div class="space-y-6">
+                <!-- Language Tabs -->
+                <div class="border-b border-gray-200 dark:border-gray-700">
+                    <nav class="-mb-px flex space-x-8">
+                        <button type="button" onclick="switchLanguageTab('uz')" id="tab-uz" class="lang-tab border-b-2 border-indigo-600 py-2 px-1 text-sm font-medium text-indigo-600">
+                            🇺🇿 O'zbek
+                        </button>
+                        <button type="button" onclick="switchLanguageTab('ru')" id="tab-ru" class="lang-tab border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                            🇷🇺 Русский
+                        </button>
+                        <button type="button" onclick="switchLanguageTab('en')" id="tab-en" class="lang-tab border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                            🇬🇧 English
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Uzbek Fields -->
+                <div id="fields-uz" class="lang-fields">
+                    <div>
+                        <label for="name_uz" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nomi (O'zbek)</label>
+                        <input type="text" name="name_uz" id="name_uz" value="{{ old('name_uz') }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                        @error('name_uz')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Russian Fields -->
+                <div id="fields-ru" class="lang-fields hidden">
+                    <div>
+                        <label for="name_ru" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Название (Русский)</label>
+                        <input type="text" name="name_ru" id="name_ru" value="{{ old('name_ru') }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                        @error('name_ru')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- English Fields -->
+                <div id="fields-en" class="lang-fields hidden">
+                    <div>
+                        <label for="name_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name (English)</label>
+                        <input type="text" name="name_en" id="name_en" value="{{ old('name_en') }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                        @error('name_en')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Default Name (fallback) -->
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Default Name <span class="text-red-500">*</span></label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required>
+                    <p class="mt-1 text-xs text-gray-500">Bu nom yuqoridagi tillardan biri to'ldirilmasa ko'rsatiladi</p>
                     @error('name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -83,6 +133,22 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadIcons();
         });
+
+        // Language tab switching
+        function switchLanguageTab(lang) {
+            // Hide all language fields
+            document.querySelectorAll('.lang-fields').forEach(el => el.classList.add('hidden'));
+            // Show selected language fields
+            document.getElementById('fields-' + lang).classList.remove('hidden');
+            
+            // Update tab styles
+            document.querySelectorAll('.lang-tab').forEach(tab => {
+                tab.classList.remove('border-indigo-600', 'text-indigo-600');
+                tab.classList.add('border-transparent', 'text-gray-500');
+            });
+            document.getElementById('tab-' + lang).classList.remove('border-transparent', 'text-gray-500');
+            document.getElementById('tab-' + lang).classList.add('border-indigo-600', 'text-indigo-600');
+        }
 
         async function loadIcons() {
             try {

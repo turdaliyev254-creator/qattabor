@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['name', 'slug', 'icon', 'color', 'image', 'order'];
+    protected $fillable = ['name', 'slug', 'icon', 'color', 'image', 'order', 'name_uz', 'name_ru', 'name_en'];
 
     protected static function boot()
     {
@@ -53,5 +53,16 @@ class Category extends Model
     public function places()
     {
         return $this->hasMany(Place::class);
+    }
+
+    /**
+     * Get the localized name based on the current app locale
+     */
+    public function getLocalizedNameAttribute()
+    {
+        $locale = app()->getLocale();
+        $fieldName = "name_{$locale}";
+        
+        return $this->$fieldName ?? $this->name;
     }
 }

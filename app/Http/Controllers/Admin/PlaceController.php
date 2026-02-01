@@ -137,7 +137,13 @@ class PlaceController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'name_uz' => 'nullable|string|max:255',
+            'name_ru' => 'nullable|string|max:255',
+            'name_en' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'description_uz' => 'nullable|string',
+            'description_ru' => 'nullable|string',
+            'description_en' => 'nullable|string',
             'location_id' => 'required|exists:locations,id',
             'owner_id' => 'nullable|exists:users,id',
             'address' => 'nullable|string|max:255',
@@ -228,7 +234,13 @@ class PlaceController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'name_uz' => 'nullable|string|max:255',
+            'name_ru' => 'nullable|string|max:255',
+            'name_en' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'description_uz' => 'nullable|string',
+            'description_ru' => 'nullable|string',
+            'description_en' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'subcategory_id' => 'nullable|exists:subcategories,id',
             'location_id' => 'required|exists:locations,id',

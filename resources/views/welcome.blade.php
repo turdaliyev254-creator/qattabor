@@ -411,7 +411,7 @@
                     <div class="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center drop-shadow-lg hover:drop-shadow-xl transition-all">
                         @if($category->icon)
                             @if(Str::endsWith($category->icon, '.png'))
-                                <img src="{{ asset('size-512/images/' . $category->icon) }}" alt="{{ $category->name }}" class="w-full h-full object-contain">
+                                <img src="{{ asset('size-512/images/' . $category->icon) }}" alt="{{ $category->localized_name }}" class="w-full h-full object-contain">
                             @else
                                 <div class="w-full h-full flex items-center justify-center text-3xl sm:text-4xl">
                                     {{ $category->icon }}
@@ -419,11 +419,11 @@
                             @endif
                         @else
                             <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center text-white text-xl sm:text-2xl font-bold">
-                                {{ substr($category->name, 0, 1) }}
+                                {{ substr($category->localized_name, 0, 1) }}
                             </div>
                         @endif
                     </div>
-                    <span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 text-center leading-tight">{{ __($category->name) }}</span>
+                    <span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 text-center leading-tight">{{ $category->localized_name }}</span>
                 </div>
             </a>
             @endforeach
