@@ -92,65 +92,28 @@
 
     <script>
         function filterByBrand(brandSlug) {
-            const container = document.getElementById('places-container');
-            const currentRegion = '{{ request("region") }}';
+            // Build the URL with parameters
+            const currentUrl = new URL(window.location);
+            const currentRegion = currentUrl.searchParams.get('region');
             
-            // Show loading state
-            container.classList.add('opacity-50', 'pointer-events-none');
+            // Create new URL for navigation
+            const newUrl = new URL(window.location);
             
-            // Build URL
-            let url = '{{ route("places.ajax-filter", [$category->slug, $subcategory->slug]) }}';
-            const params = new URLSearchParams();
+            // Clear existing brand parameter
+            newUrl.searchParams.delete('brand');
             
+            // Add brand parameter if not "all"
             if (brandSlug) {
-                params.append('brand', brandSlug);
+                newUrl.searchParams.set('brand', brandSlug);
             }
+            
+            // Preserve region parameter
             if (currentRegion) {
-                params.append('region', currentRegion);
+                newUrl.searchParams.set('region', currentRegion);
             }
             
-            if (params.toString()) {
-                url += '?' + params.toString();
-            }
-            
-            // Fetch filtered places
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    // Update container
-                    container.innerHTML = data.html;
-                    container.classList.remove('opacity-50', 'pointer-events-none');
-                    
-                    // Update browser URL with state data
-                    const newUrl = new URL(window.location);
-                    if (brandSlug) {
-                        newUrl.searchParams.set('brand', brandSlug);
-                    } else {
-                        newUrl.searchParams.delete('brand');
-                    }
-                    window.history.pushState({ brand: brandSlug, isFilter: true }, '', newUrl);
-                })
-                .catch(error => {
-                    console.error('Error filtering places:', error);
-                    container.classList.remove('opacity-50', 'pointer-events-none');
-                    alert('{{ __("Failed to load places. Please try again.") }}');
-                });
+            // Navigate to the new URL (this will do a full page reload)
+            window.location.href = newUrl.toString();
         }
-        
-        // Handle browser back/forward navigation
-        window.addEventListener('popstate', function(event) {
-            // If going back without filter state, do a full page reload
-            if (!event.state || !event.state.isFilter) {
-                window.location.reload();
-                return;
-            }
-            
-            // Otherwise reload the filtered content
-            const brandSlug = event.state.brand || '';
-            filterByBrand(brandSlug);
-        });
-        
-        // Set initial state on page load
-        window.history.replaceState({ brand: '{{ request("brand", "") }}', isFilter: {{ request("brand") ? 'true' : 'false' }} }, '', window.location.href);
     </script>
 </x-glass-layout>
