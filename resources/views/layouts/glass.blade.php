@@ -694,11 +694,17 @@
                     updateLocationButtonStyling(currentLocation);
                     sessionStorage.setItem('selectedLocation', currentLocation);
                     
-                    // Add region to URL if not present
+                    // Add region to URL if not present and reload to apply filter
                     if (!regionParam && currentLocation) {
                         const url = new URL(window.location);
                         url.searchParams.set('region', currentLocation);
-                        window.history.replaceState({}, '', url.toString());
+                        
+                        // Only reload if we're on the home page to apply the location filter
+                        if (window.location.pathname === '/' || window.location.pathname === '') {
+                            window.location.href = url.toString();
+                        } else {
+                            window.history.replaceState({}, '', url.toString());
+                        }
                     }
                 }
             }

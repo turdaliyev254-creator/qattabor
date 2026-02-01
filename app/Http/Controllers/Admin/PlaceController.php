@@ -153,6 +153,7 @@ class PlaceController extends Controller
             'youtube' => 'nullable|url|max:255',
             'image_url' => 'nullable|url',
             'images.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'videos.*' => 'nullable|file|mimes:mp4,mov,avi,wmv|max:51200',
             'is_popular' => 'boolean',
             'is_featured' => 'boolean',
         ]);
@@ -178,7 +179,21 @@ class PlaceController extends Controller
                 $imagePath = $image->store('places', 'public');
                 $place->images()->create([
                     'image_path' => $imagePath,
+                    'media_type' => 'image',
                     'order' => $index,
+                ]);
+            }
+        }
+        
+        // Handle multiple videos upload
+        if ($request->hasFile('videos')) {
+            $existingCount = $place->images()->count();
+            foreach ($request->file('videos') as $index => $video) {
+                $videoPath = $video->store('places/videos', 'public');
+                $place->images()->create([
+                    'image_path' => $videoPath,
+                    'media_type' => 'video',
+                    'order' => $existingCount + $index,
                 ]);
             }
         }
@@ -231,6 +246,7 @@ class PlaceController extends Controller
             'youtube' => 'nullable|url|max:255',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
             'images.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'videos.*' => 'nullable|file|mimes:mp4,mov,avi,wmv|max:51200',
             'is_popular' => 'boolean',
             'is_featured' => 'boolean',
         ]);
@@ -261,6 +277,23 @@ class PlaceController extends Controller
                 $imagePath = $image->store('places', 'public');
                 $place->images()->create([
                     'image_path' => $imagePath,
+                    'media_type' => 'image',
+                    'order' => $existingCount + $index,
+                ]);
+            }
+        }
+        
+        // Handle multiple videos upload
+        if ($request->hasFile('videos')) {
+            $existingCount = $place->images()->count();
+            foreach ($request->file('videos') as $index => $video) {
+                $videoPath = $video->store('places/videos', 'public');
+                
+                // Generate thumbnail (optional - requires FFMpeg)
+                // For now, we'll use a default video icon
+                $place->images()->create([
+                    'image_path' => $videoPath,
+                    'media_type' => 'video',
                     'order' => $existingCount + $index,
                 ]);
             }

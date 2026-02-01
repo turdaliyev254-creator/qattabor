@@ -354,15 +354,27 @@
 
                     <!-- Multiple Images Upload -->
                     <div class="col-span-2">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Gallery Images</h3>
-                        <div>
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Gallery Media (Images & Videos)</h3>
+                        
+                        <!-- Images Upload -->
+                        <div class="mb-4">
                             <label for="images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload Images</label>
                             <input type="file" name="images[]" id="images" accept="image/*" multiple onchange="previewMultipleImages(event)" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
                             <p class="mt-1 text-xs text-gray-500">You can select multiple images (Max 5MB each)</p>
                         </div>
                         
+                        <!-- Videos Upload -->
+                        <div>
+                            <label for="videos" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload Videos</label>
+                            <input type="file" name="videos[]" id="videos" accept="video/*" multiple onchange="previewMultipleVideos(event)" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                            <p class="mt-1 text-xs text-gray-500">You can select multiple videos (Max 50MB each, MP4, MOV, AVI, WMV)</p>
+                        </div>
+                        
                         <!-- Preview Multiple Images -->
                         <div id="multipleImagePreview" class="grid grid-cols-4 gap-4 mt-4 hidden"></div>
+                        
+                        <!-- Preview Multiple Videos -->
+                        <div id="multipleVideoPreview" class="grid grid-cols-4 gap-4 mt-4 hidden"></div>
                     </div>
 
                     <!-- Location Picker -->
@@ -495,6 +507,27 @@
                 }
                 
                 reader.readAsDataURL(file);
+            }
+        }
+
+        // Preview multiple videos
+        function previewMultipleVideos(event) {
+            const preview = document.getElementById('multipleVideoPreview');
+            preview.innerHTML = '';
+            preview.classList.remove('hidden');
+            
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const div = document.createElement('div');
+                div.className = 'relative bg-gray-900 rounded-lg h-32 flex items-center justify-center';
+                div.innerHTML = `
+                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black/70 text-white text-xs rounded">${file.name}</span>
+                `;
+                preview.appendChild(div);
             }
         }
 

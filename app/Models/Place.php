@@ -130,6 +130,23 @@ class Place extends Model
         return $this->hasMany(Comment::class)->where('is_approved', true);
     }
 
+    /**
+     * Get the count of approved reviews (comments with ratings)
+     */
+    public function getReviewsCountAttribute()
+    {
+        return $this->approvedComments()->whereNotNull('rating')->count();
+    }
+
+    /**
+     * Get the average rating from approved reviews
+     */
+    public function getAverageRatingAttribute()
+    {
+        $avg = $this->approvedComments()->whereNotNull('rating')->avg('rating');
+        return $avg ? round($avg, 1) : 0;
+    }
+
     public function incrementViews()
     {
         $this->increment('views_count');

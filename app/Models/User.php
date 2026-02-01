@@ -51,6 +51,17 @@ class User extends Authenticatable
         return $this->ownedPlaces()->exists();
     }
 
+    public function isSystemOwner()
+    {
+        return $this->role === 'owner';
+    }
+
+    public function isSuperAdmin()
+    {
+        $superAdminIds = config('app.super_admin_ids', [1]);
+        return in_array($this->id, $superAdminIds) && $this->isAdmin();
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

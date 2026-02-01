@@ -16,8 +16,8 @@ class Location extends Model
     /**
      * Get the region that owns the location.
      */
-    public function region()
+    public function regionModel()
     {
-        return $this->belongsTo(Region::class);
+        return $this->belongsTo(Region::class, 'region_id');
     }
 }

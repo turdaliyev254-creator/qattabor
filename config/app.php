@@ -98,6 +98,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Super Admin IDs
+    |--------------------------------------------------------------------------
+    |
+    | List of user IDs who have super admin privileges. Only these users
+    | can change other users' roles in the admin panel.
+    |
+    */
+
+    'super_admin_ids' => array_filter(array_map('intval', explode(',', env('SUPER_ADMIN_IDS', '1')))),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |

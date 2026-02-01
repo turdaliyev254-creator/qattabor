@@ -599,5 +599,8 @@
     "Newest First": "Новые первыми",
     "Oldest First": "Старые первыми",
     "Are you sure?": "Вы уверены?",
-    "Order": "Порядок"
+    "Order": "Порядок",
+    "Only system owners can change user roles.": "Только владельцы системы могут изменять роли пользователей.",
+    "Cannot delete system owner users.": "Невозможно удалить владельцев системы.",
+    "Only super administrators can change user roles.": "Только суперадминистраторы могут изменять роли пользователей."
 }

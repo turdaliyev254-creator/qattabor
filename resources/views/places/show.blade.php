@@ -1,61 +1,164 @@
 <x-glass-layout>
-    <!-- Hero Section with Image Gallery -->
+    <!-- Hero Section with Media Gallery (2GIS Style) -->
     <div class="relative -mx-4 -mt-6 mb-8" x-data="{ 
-        currentImage: 0,
-        images: {{ Js::from($place->images->count() > 0 ? $place->images->map(fn($img) => asset('storage/' . $img->image_path))->toArray() : ($place->image_url ? [$place->image_url] : [])) }},
+        currentMedia: 0,
+        media: {{ Js::from($place->images->map(function($img) {
+            return [
+                'type' => $img->media_type,
+                'url' => $img->media_type === 'video' ? asset('storage/' . $img->image_path) : asset('storage/' . $img->image_path),
+                'thumbnail' => $img->thumbnail_url ? asset('storage/' . $img->thumbnail_path) : asset('storage/' . $img->image_path),
+                'duration' => $img->formatted_duration
+            ];
+        })->toArray()) }},
         showFullscreen: false,
+        showThumbnails: false,
+        isPlaying: false,
         init() {
             this.$watch('showFullscreen', value => {
                 if (value) {
                     document.body.style.overflow = 'hidden';
                 } else {
                     document.body.style.overflow = '';
+                    this.pauseVideo();
                 }
             });
+            this.$watch('currentMedia', () => {
+                this.pauseVideo();
+            });
+        },
+        isVideo(index) {
+            return this.media[index] && this.media[index].type === 'video';
+        },
+        pauseVideo() {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(v => {
+                v.pause();
+                v.currentTime = 0;
+            });
+            this.isPlaying = false;
+        },
+        playVideo() {
+            const video = this.$refs.currentVideo;
+            if (video) {
+                video.play();
+                this.isPlaying = true;
+            }
+        },
+        prevMedia() {
+            this.currentMedia = this.currentMedia > 0 ? this.currentMedia - 1 : this.media.length - 1;
+        },
+        nextMedia() {
+            this.currentMedia = this.currentMedia < this.media.length - 1 ? this.currentMedia + 1 : 0;
         }
     }">
-        <!-- Main Image -->
-        <div class="relative h-[50vh] min-h-[400px] overflow-hidden">
-            <template x-if="images.length > 0">
+        <!-- Main Media Display -->
+        <div class="relative h-[50vh] min-h-[400px] overflow-hidden bg-black">
+            <template x-if="media.length > 0">
                 <div class="relative h-full">
-                    <!-- Main Image -->
-                    <div @click="showFullscreen = true" class="w-full h-full cursor-zoom-in">
-                        <img :src="images[currentImage]" 
-                             alt="{{ $place->name }}" 
-                             class="w-full h-full object-cover">
+                    <!-- Media Container -->
+                    <div @click="if(!isVideo(currentMedia)) showFullscreen = true" class="w-full h-full" :class="!isVideo(currentMedia) ? 'cursor-zoom-in' : ''">
+                        <template x-for="(item, index) in media" :key="index">
+                            <div x-show="currentMedia === index" class="w-full h-full">
+                                <!-- Image -->
+                                <template x-if="item.type === 'image'">
+                                    <img :src="item.url" 
+                                         alt="{{ $place->name }}" 
+                                         class="w-full h-full object-cover">
+                                </template>
+                                
+                                <!-- Video -->
+                                <template x-if="item.type === 'video'">
+                                    <div class="relative w-full h-full flex items-center justify-center bg-black">
+                                        <video x-ref="currentVideo"
+                                               :src="item.url"
+                                               class="max-w-full max-h-full"
+                                               controls
+                                               @play="isPlaying = true"
+                                               @pause="isPlaying = false"
+                                               preload="metadata">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
                     </div>
 
                     <!-- Gradient Overlay -->
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
                     
                     <!-- Navigation Arrows -->
-                    <template x-if="images.length > 1">
+                    <template x-if="media.length > 1">
                         <div>
-                            <button @click="currentImage = currentImage > 0 ? currentImage - 1 : images.length - 1"
-                                    class="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-full shadow-xl hover:bg-white dark:hover:bg-gray-900 transition-all hover:scale-110">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <button @click="prevMedia()"
+                                    class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-full shadow-xl hover:bg-white dark:hover:bg-gray-900 transition-all hover:scale-110 z-10">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
                                 </svg>
                             </button>
-                            <button @click="currentImage = currentImage < images.length - 1 ? currentImage + 1 : 0"
-                                    class="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-full shadow-xl hover:bg-white dark:hover:bg-gray-900 transition-all hover:scale-110">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <button @click="nextMedia()"
+                                    class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-full shadow-xl hover:bg-white dark:hover:bg-gray-900 transition-all hover:scale-110 z-10">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
                                 </svg>
                             </button>
                         </div>
                     </template>
 
-                    <!-- Image Counter -->
-                    <template x-if="images.length > 1">
-                        <div class="absolute bottom-6 right-6 px-4 py-2 bg-black/70 backdrop-blur-md rounded-full text-white text-sm font-medium">
-                            <span x-text="currentImage + 1"></span> / <span x-text="images.length"></span>
+                    <!-- Media Counter & Thumbnails Toggle (2GIS Style) -->
+                    <template x-if="media.length > 1">
+                        <div class="absolute bottom-4 sm:bottom-6 right-4 sm:right-6 flex items-center gap-3 z-10">
+                            <!-- Thumbnails Toggle Button -->
+                            <button @click="showThumbnails = !showThumbnails"
+                                    class="px-3 sm:px-4 py-2 bg-black/70 backdrop-blur-md rounded-lg text-white text-xs sm:text-sm font-medium hover:bg-black/80 transition-colors flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                                </svg>
+                                <span x-text="currentMedia + 1"></span> / <span x-text="media.length"></span>
+                            </button>
                         </div>
                     </template>
+
+                    <!-- Thumbnails Strip (2GIS Style) -->
+                    <div x-show="showThumbnails && media.length > 1"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 translate-y-4"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 translate-y-0"
+                         x-transition:leave-end="opacity-0 translate-y-4"
+                         class="absolute bottom-16 sm:bottom-20 left-4 right-4 z-10"
+                         style="display: none;">
+                        <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                            <template x-for="(item, index) in media" :key="index">
+                                <button @click="currentMedia = index; showThumbnails = false"
+                                        class="relative flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border-2 transition-all"
+                                        :class="currentMedia === index ? 'border-white ring-2 ring-white/50' : 'border-white/30 hover:border-white/60'">
+                                    <img :src="item.thumbnail" 
+                                         :alt="'Thumbnail ' + (index + 1)"
+                                         class="w-full h-full object-cover">
+                                    
+                                    <!-- Video Indicator -->
+                                    <template x-if="item.type === 'video'">
+                                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <div class="relative">
+                                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z"/>
+                                                </svg>
+                                                <span x-show="item.duration" 
+                                                      class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-white bg-black/70 px-1.5 py-0.5 rounded whitespace-nowrap"
+                                                      x-text="item.duration"></span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
                 </div>
             </template>
             
-            <template x-if="images.length === 0">
+            <template x-if="media.length === 0">
                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
                     <svg class="w-32 h-32 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
@@ -109,25 +212,67 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             @click="showFullscreen = false"
+             @click="if(!isVideo(currentMedia)) showFullscreen = false"
              @keydown.escape.window="showFullscreen = false"
              class="fixed inset-0 z-[100] bg-black"
              style="display: none;">
             
-            <!-- Image Container -->
+            <!-- Close Button -->
+            <button @click="showFullscreen = false" 
+                    class="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-all z-20">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Media Container -->
             <div class="w-full h-full flex items-center justify-center relative">
-                <!-- Image Counter -->
-                <template x-if="images.length > 1">
+                <!-- Media Counter -->
+                <template x-if="media.length > 1">
                     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 px-5 py-2.5 bg-white/20 backdrop-blur-md rounded-full text-white text-base font-semibold z-10">
-                        <span x-text="currentImage + 1"></span> / <span x-text="images.length"></span>
+                        <span x-text="currentMedia + 1"></span> / <span x-text="media.length"></span>
                     </div>
                 </template>
 
-                <!-- Image -->
-                <img :src="images[currentImage]" 
-                     alt="{{ $place->name }}" 
-                     @click.stop
-                     class="max-h-full max-w-full object-contain">
+                <!-- Navigation Arrows -->
+                <template x-if="media.length > 1">
+                    <div>
+                        <button @click.stop="prevMedia()"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 p-4 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full transition-all z-10">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <button @click.stop="nextMedia()"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 p-4 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full transition-all z-10">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </template>
+
+                <!-- Media Display -->
+                <template x-for="(item, index) in media" :key="index">
+                    <div x-show="currentMedia === index" @click.stop class="max-h-full max-w-full">
+                        <!-- Image -->
+                        <template x-if="item.type === 'image'">
+                            <img :src="item.url" 
+                                 alt="{{ $place->name }}" 
+                                 class="max-h-screen max-w-full object-contain">
+                        </template>
+                        
+                        <!-- Video -->
+                        <template x-if="item.type === 'video'">
+                            <video :src="item.url"
+                                   class="max-h-screen max-w-full"
+                                   controls
+                                   preload="metadata">
+                                Your browser does not support the video tag.
+                            </video>
+                        </template>
+                    </div>
+                </template>
             </div>
         </div>
 

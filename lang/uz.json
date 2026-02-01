@@ -599,6 +599,9 @@
     "Newest First": "Eng yangisi",
     "Oldest First": "Eng eskisi",
     "Are you sure?": "Ishonchingiz komilmi?",
-    "Order": "Tartib"
+    "Order": "Tartib",
+    "Only system owners can change user roles.": "Faqat tizim egalari foydalanuvchi rollarini o'zgartirishi mumkin.",
+    "Cannot delete system owner users.": "Tizim egalarini o'chirib bo'lmaydi.",
+    "Only super administrators can change user roles.": "Faqat super administratorlar foydalanuvchi rollarini o'zgartirishi mumkin."
 }
 

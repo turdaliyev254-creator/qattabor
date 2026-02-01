@@ -19,7 +19,11 @@ class HomeController extends Controller
             ->get();
         
         // Filter popular places by region if selected
-        $popularPlacesQuery = Place::where('is_popular', true)->with(['category', 'location']);
+        $popularPlacesQuery = Place::where('is_popular', true)
+            ->with(['category', 'location.regionModel'])
+            ->withCount(['approvedComments as reviews_count' => function($query) {
+                $query->whereNotNull('rating');
+            }]);
         
         // Get region from request or use default (first region)
         $regionName = $request->input('region');

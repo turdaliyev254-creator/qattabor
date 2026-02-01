@@ -49,6 +49,11 @@ class UserController extends Controller
      */
     public function updateRole(Request $request, User $user)
     {
+        // Only super admins can change roles
+        if (!auth()->user()->isSuperAdmin()) {
+            return back()->with('error', __('Only super administrators can change user roles.'));
+        }
+
         $request->validate([
             'role' => 'required|in:user,owner,admin'
         ]);
@@ -79,6 +84,12 @@ class UserController extends Controller
         if ($user->id === auth()->id()) {
             return redirect()->route('admin.users.index')
                 ->with('error', __('You cannot delete your own account.'));
+        }
+
+        // Prevent deleting system owners
+        if ($user->isSystemOwner()) {
+            return redirect()->route('admin.users.index')
+                ->with('error', __('Cannot delete system owner users.'));
         }
 
         // Prevent deleting the last admin

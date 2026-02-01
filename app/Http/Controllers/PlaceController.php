@@ -14,6 +14,9 @@ class PlaceController extends Controller
     public function popularPlaces(Request $request)
     {
         $query = Place::with(['category', 'subcategory', 'location'])
+            ->withCount(['approvedComments as reviews_count' => function($query) {
+                $query->whereNotNull('rating');
+            }])
             ->where('is_popular', true);
 
         // Get region from request or use default (first region)
@@ -84,7 +87,11 @@ class PlaceController extends Controller
             ->orderBy('name')
             ->get();
         
-        $placesQuery = $category->places()->with(['subcategory', 'location']);
+        $placesQuery = $category->places()
+            ->with(['subcategory', 'location'])
+            ->withCount(['approvedComments as reviews_count' => function($query) {
+                $query->whereNotNull('rating');
+            }]);
         
         // Filter places by location
         if (!empty($locationIds)) {
@@ -98,7 +105,11 @@ class PlaceController extends Controller
 
     public function bySubcategory(Request $request, Category $category, Subcategory $subcategory)
     {
-        $placesQuery = $subcategory->places()->with(['category', 'location']);
+        $placesQuery = $subcategory->places()
+            ->with(['category', 'location'])
+            ->withCount(['approvedComments as reviews_count' => function($query) {
+                $query->whereNotNull('rating');
+            }]);
         
         // Get region from request or use default (first region)
         $regionName = $request->input('region');
@@ -132,7 +143,9 @@ class PlaceController extends Controller
 
     public function show(Request $request, Place $place)
     {
-        $place->load(['category', 'subcategory', 'location']);
+        $place->load(['category', 'subcategory', 'location', 'images' => function($query) {
+            $query->orderBy('order');
+        }]);
         
         // Track recently viewed places in session
         $recentlyViewed = session()->get('recently_viewed', []);
@@ -152,6 +165,9 @@ class PlaceController extends Controller
                 }
             })
             ->with(['category', 'subcategory', 'location'])
+            ->withCount(['approvedComments as reviews_count' => function($query) {
+                $query->whereNotNull('rating');
+            }])
             ->limit(6)
             ->get();
 

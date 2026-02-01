@@ -571,6 +571,9 @@
     "Newest First": "Newest First",
     "Oldest First": "Oldest First",
     "Are you sure?": "Are you sure?",
-    "Order": "Order"
+    "Order": "Order",
+    "Only system owners can change user roles.": "Only system owners can change user roles.",
+    "Cannot delete system owner users.": "Cannot delete system owner users.",
+    "Only super administrators can change user roles.": "Only super administrators can change user roles."
 }
 

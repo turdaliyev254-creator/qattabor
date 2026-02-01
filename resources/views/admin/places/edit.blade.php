@@ -352,14 +352,25 @@
 
                     <!-- Multiple Images Upload -->
                     <div class="col-span-2">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Gallery Images</h3>
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Gallery Media (Images & Videos)</h3>
                         
-                        <!-- Existing Images -->
+                        <!-- Existing Media -->
                         @if($place->images->count() > 0)
                             <div class="grid grid-cols-4 gap-4 mb-4">
                                 @foreach($place->images as $image)
                                     <div class="relative group">
-                                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Gallery image" class="w-full h-32 object-cover rounded-lg">
+                                        @if($image->isVideo())
+                                            <!-- Video Thumbnail -->
+                                            <div class="relative w-full h-32 bg-gray-900 rounded-lg flex items-center justify-center">
+                                                <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z"/>
+                                                </svg>
+                                                <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black/70 text-white text-xs rounded">VIDEO</span>
+                                            </div>
+                                        @else
+                                            <!-- Image -->
+                                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="Gallery image" class="w-full h-32 object-cover rounded-lg">
+                                        @endif
                                         <button type="button" onclick="deleteImage({{ $image->id }})" class="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -371,14 +382,24 @@
                         @endif
 
                         <!-- New Images Upload -->
-                        <div>
+                        <div class="mb-4">
                             <label for="images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Add More Images</label>
                             <input type="file" name="images[]" id="images" accept="image/*" multiple onchange="previewMultipleImages(event)" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
                             <p class="mt-1 text-xs text-gray-500">You can select multiple images (Max 5MB each)</p>
                         </div>
                         
+                        <!-- New Videos Upload -->
+                        <div>
+                            <label for="videos" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Add Videos</label>
+                            <input type="file" name="videos[]" id="videos" accept="video/*" multiple onchange="previewMultipleVideos(event)" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                            <p class="mt-1 text-xs text-gray-500">You can select multiple videos (Max 50MB each, MP4, MOV, AVI, WMV)</p>
+                        </div>
+                        
                         <!-- Preview Multiple Images -->
                         <div id="multipleImagePreview" class="grid grid-cols-4 gap-4 mt-4 hidden"></div>
+                        
+                        <!-- Preview Multiple Videos -->
+                        <div id="multipleVideoPreview" class="grid grid-cols-4 gap-4 mt-4 hidden"></div>
                     </div>
 
                     <!-- Location Picker -->
@@ -511,6 +532,27 @@
                 }
                 
                 reader.readAsDataURL(file);
+            }
+        }
+
+        // Preview multiple videos
+        function previewMultipleVideos(event) {
+            const preview = document.getElementById('multipleVideoPreview');
+            preview.innerHTML = '';
+            preview.classList.remove('hidden');
+            
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const div = document.createElement('div');
+                div.className = 'relative bg-gray-900 rounded-lg h-32 flex items-center justify-center';
+                div.innerHTML = `
+                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black/70 text-white text-xs rounded">${file.name}</span>
+                `;
+                preview.appendChild(div);
             }
         }
 
