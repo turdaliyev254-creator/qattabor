@@ -128,7 +128,7 @@
                     } else {
                         newUrl.searchParams.delete('brand');
                     }
-                    window.history.pushState({ brand: brandSlug }, '', newUrl);
+                    window.history.pushState({ brand: brandSlug, isFilter: true }, '', newUrl);
                 })
                 .catch(error => {
                     console.error('Error filtering places:', error);
@@ -139,15 +139,18 @@
         
         // Handle browser back/forward navigation
         window.addEventListener('popstate', function(event) {
-            // Get brand from URL query parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const brandSlug = urlParams.get('brand') || '';
+            // If going back without filter state, do a full page reload
+            if (!event.state || !event.state.isFilter) {
+                window.location.reload();
+                return;
+            }
             
-            // Reload content when user navigates back/forward
+            // Otherwise reload the filtered content
+            const brandSlug = event.state.brand || '';
             filterByBrand(brandSlug);
         });
         
         // Set initial state on page load
-        window.history.replaceState({ brand: '{{ request("brand", "") }}' }, '', window.location.href);
+        window.history.replaceState({ brand: '{{ request("brand", "") }}', isFilter: {{ request("brand") ? 'true' : 'false' }} }, '', window.location.href);
     </script>
 </x-glass-layout>
