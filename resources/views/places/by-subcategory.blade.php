@@ -121,14 +121,14 @@
                     container.innerHTML = data.html;
                     container.classList.remove('opacity-50', 'pointer-events-none');
                     
-                    // Update browser URL
+                    // Update browser URL with state data
                     const newUrl = new URL(window.location);
                     if (brandSlug) {
                         newUrl.searchParams.set('brand', brandSlug);
                     } else {
                         newUrl.searchParams.delete('brand');
                     }
-                    window.history.pushState({}, '', newUrl);
+                    window.history.pushState({ brand: brandSlug }, '', newUrl);
                 })
                 .catch(error => {
                     console.error('Error filtering places:', error);
@@ -136,5 +136,18 @@
                     alert('{{ __("Failed to load places. Please try again.") }}');
                 });
         }
+        
+        // Handle browser back/forward navigation
+        window.addEventListener('popstate', function(event) {
+            // Get brand from URL query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const brandSlug = urlParams.get('brand') || '';
+            
+            // Reload content when user navigates back/forward
+            filterByBrand(brandSlug);
+        });
+        
+        // Set initial state on page load
+        window.history.replaceState({ brand: '{{ request("brand", "") }}' }, '', window.location.href);
     </script>
 </x-glass-layout>
