@@ -10,6 +10,7 @@ class Place extends Model
         'owner_id',
         'category_id',
         'subcategory_id',
+        'brand_id',
         'location_id',
         'name',
         'slug',
@@ -52,11 +53,39 @@ class Place extends Model
     {
         parent::boot();
 
-        // Auto-assign order on create (scoped to subcategory)
         static::creating(function ($place) {
+            // Auto-generate unique slug
+            if (empty($place->slug)) {
+                $place->slug = \Illuminate\Support\Str::slug($place->name);
+                
+                // Ensure uniqueness
+                $count = 1;
+                $originalSlug = $place->slug;
+                while (static::where('slug', $place->slug)->exists()) {
+                    $place->slug = $originalSlug . '-' . $count;
+                    $count++;
+                }
+            }
+            
+            // Auto-assign order on create (scoped to subcategory)
             if (is_null($place->order)) {
                 $maxOrder = static::where('subcategory_id', $place->subcategory_id)->max('order');
                 $place->order = ($maxOrder ?? 0) + 1;
+            }
+        });
+
+        static::updating(function ($place) {
+            // Auto-update slug if name changed but slug wasn't manually changed
+            if ($place->isDirty('name') && !$place->isDirty('slug')) {
+                $place->slug = \Illuminate\Support\Str::slug($place->name);
+                
+                // Ensure uniqueness (excluding current place)
+                $count = 1;
+                $originalSlug = $place->slug;
+                while (static::where('slug', $place->slug)->where('id', '!=', $place->id)->exists()) {
+                    $place->slug = $originalSlug . '-' . $count;
+                    $count++;
+                }
             }
         });
 
@@ -104,6 +133,11 @@ class Place extends Model
     public function subcategory()
     {
         return $this->belongsTo(Subcategory::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 
     public function location()

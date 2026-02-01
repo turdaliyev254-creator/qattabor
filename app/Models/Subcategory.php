@@ -66,6 +66,11 @@ class Subcategory extends Model
         return $this->hasMany(Place::class);
     }
 
+    public function brands()
+    {
+        return $this->hasMany(Brand::class)->ordered();
+    }
+
     /**
      * Get the localized name based on the current app locale
      */

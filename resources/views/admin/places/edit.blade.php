@@ -37,10 +37,20 @@
 
                     <div id="subcategory-container" style="display: none;">
                         <label for="subcategory_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subcategory (Optional)</label>
-                        <select name="subcategory_id" id="subcategory_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                        <select name="subcategory_id" id="subcategory_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" onchange="loadBrands(this.value)">
                             <option value="">Select Subcategory</option>
                         </select>
                         @error('subcategory_id')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div id="brand-container" style="display: none;">
+                        <label for="brand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Brand (Optional)</label>
+                        <select name="brand_id" id="brand_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                            <option value="">No Brand</option>
+                        </select>
+                        @error('brand_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
@@ -469,9 +479,14 @@
         function loadSubcategories(categoryId) {
             const subcategoryContainer = document.getElementById('subcategory-container');
             const subcategorySelect = document.getElementById('subcategory_id');
+            const brandContainer = document.getElementById('brand-container');
             
             // Clear existing options
             subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+            
+            // Hide and clear brands
+            brandContainer.style.display = 'none';
+            document.getElementById('brand_id').innerHTML = '<option value="">No Brand</option>';
             
             if (!categoryId) {
                 subcategoryContainer.style.display = 'none';
@@ -496,10 +511,45 @@
             }
         }
 
+        function loadBrands(subcategoryId) {
+            const brandContainer = document.getElementById('brand-container');
+            const brandSelect = document.getElementById('brand_id');
+            
+            // Clear existing options
+            brandSelect.innerHTML = '<option value="">No Brand</option>';
+            
+            if (!subcategoryId) {
+                brandContainer.style.display = 'none';
+                return;
+            }
+            
+            // Fetch brands via API
+            fetch(`/admin/api/subcategories/${subcategoryId}/brands`)
+                .then(response => response.json())
+                .then(brands => {
+                    if (brands && brands.length > 0) {
+                        brands.forEach(brand => {
+                            const option = document.createElement('option');
+                            option.value = brand.id;
+                            option.textContent = brand.name;
+                            brandSelect.appendChild(option);
+                        });
+                        brandContainer.style.display = 'block';
+                    } else {
+                        brandContainer.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading brands:', error);
+                    brandContainer.style.display = 'none';
+                });
+        }
+
         // Load subcategories on page load if category is already selected
         document.addEventListener('DOMContentLoaded', function() {
             const categorySelect = document.getElementById('category_id');
             const currentSubcategoryId = '{{ old("subcategory_id", $place->subcategory_id) }}';
+            const currentBrandId = '{{ old("brand_id", $place->brand_id) }}';
             
             if (categorySelect.value) {
                 loadSubcategories(categorySelect.value);
@@ -508,6 +558,14 @@
                 if (currentSubcategoryId) {
                     setTimeout(() => {
                         document.getElementById('subcategory_id').value = currentSubcategoryId;
+                        loadBrands(currentSubcategoryId);
+                        
+                        // Set the current brand value if it exists
+                        if (currentBrandId) {
+                            setTimeout(() => {
+                                document.getElementById('brand_id').value = currentBrandId;
+                            }, 200);
+                        }
                     }, 100);
                 }
             }

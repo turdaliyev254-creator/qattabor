@@ -10,80 +10,131 @@
         <p class="text-sm text-gray-600 dark:text-gray-400">{{ __($category->name) }}</p>
     </div>
 
-    <!-- Places Grid -->
-    <div class="grid grid-cols-2 gap-4">
-        @forelse($places as $place)
-            <a href="{{ route('places.show', $place->slug) }}{{ request('region') ? '?region=' . urlencode(request('region')) : '' }}" class="block">
-                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
-                    <!-- Place Image -->
-                    <div class="relative h-40 overflow-hidden bg-gray-200 dark:bg-gray-700">
-                        @if($place->image_url)
-                            <img src="{{ $place->image_url }}" 
-                                 alt="{{ $place->name }}" 
-                                 class="w-full h-full object-cover">
-                        @else
-                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
-                                <svg class="w-16 h-16 text-white opacity-50" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                        @endif
-                        
-                        @if($place->is_popular)
-                            <div class="absolute top-2 left-2 px-2 py-1 bg-red-500 rounded-lg text-white text-xs font-semibold">
-                                {{ __('popular') }}
-                            </div>
-                        @endif
-                    </div>
-                    
-                    <!-- Place Info -->
-                    <div class="p-3">
-                        <h3 class="font-semibold text-base text-gray-900 dark:text-white mb-1 line-clamp-1">{{ $place->name }}</h3>
-                        
-                        @if($place->location)
-                            <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-2">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                                </svg>
-                                <span>{{ $place->location->name }}</span>
-                            </div>
-                        @endif
-                        
-                        @if($place->description)
-                            <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">{{ $place->description }}</p>
-                        @endif
-                        
-                        <!-- Rating -->
-                        <div class="flex items-center gap-1 mt-2">
-                            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+    <!-- Brand Filter Section -->
+    @if($brands->isNotEmpty())
+        <!-- Desktop: Horizontal Scrollable -->
+        <div class="hidden md:block mb-8">
+            <div class="flex overflow-x-auto gap-4 pb-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+                <!-- All Places Button -->
+                <button onclick="filterByBrand('')" 
+                        class="brand-filter-btn flex-shrink-0 group relative">
+                    <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-2xl transition-all duration-300 {{ !$selectedBrand ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/50' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1' }}">
+                        <div class="w-12 h-12 flex items-center justify-center rounded-xl {{ !$selectedBrand ? 'bg-white/20' : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600' }}">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                             </svg>
-                            @if(isset($place->reviews_count) && $place->reviews_count > 0)
-                                <span class="font-semibold text-sm text-gray-900 dark:text-white">{{ number_format($place->average_rating, 1) }}</span>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">({{ $place->reviews_count }})</span>
+                        </div>
+                        <span class="font-semibold text-sm">{{ __('All Places') }}</span>
+                    </div>
+                </button>
+                
+                <!-- Brand Buttons -->
+                @foreach($brands as $brand)
+                    <button onclick="filterByBrand('{{ $brand->slug }}')" 
+                            class="brand-filter-btn flex-shrink-0 group relative">
+                        <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-2xl transition-all duration-300 {{ $selectedBrand && $selectedBrand->id === $brand->id ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/50' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1' }}">
+                            @if($brand->icon)
+                                <div class="w-12 h-12 flex items-center justify-center rounded-xl {{ $selectedBrand && $selectedBrand->id === $brand->id ? 'bg-white/20' : 'bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600' }} p-2">
+                                    <img src="{{ asset('images/brands/' . $brand->icon) }}" alt="{{ $brand->localized_name }}" class="w-full h-full object-contain">
+                                </div>
                             @else
-                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('No reviews yet') }}</span>
+                                <div class="w-12 h-12 flex items-center justify-center rounded-xl {{ $selectedBrand && $selectedBrand->id === $brand->id ? 'bg-white/20' : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600' }}">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                                    </svg>
+                                </div>
+                            @endif
+                            <span class="font-semibold text-sm text-center">{{ $brand->localized_name }}</span>
+                        </div>
+                    </button>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Mobile: Horizontal Scrollable Chips -->
+        <div class="md:hidden mb-6">
+            <div class="flex overflow-x-auto gap-3 pb-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 -mx-4 px-4">
+                <!-- All Places Button -->
+                <button onclick="filterByBrand('')" 
+                        class="brand-filter-btn flex-shrink-0"
+                        title="{{ __('All Places') }}">
+                    <div class="w-16 h-16 flex items-center justify-center rounded-full transition-all duration-300 {{ !$selectedBrand ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm border border-gray-200 dark:border-gray-700 active:scale-95' }}">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </div>
+                </button>
+                
+                <!-- Brand Buttons -->
+                @foreach($brands as $brand)
+                    <button onclick="filterByBrand('{{ $brand->slug }}')" 
+                            class="brand-filter-btn flex-shrink-0"
+                            title="{{ $brand->localized_name }}">
+                        <div class="w-16 h-16 flex items-center justify-center rounded-full transition-all duration-300 {{ $selectedBrand && $selectedBrand->id === $brand->id ? 'bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md' : 'bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 active:scale-95' }} p-2.5">
+                            @if($brand->icon)
+                                <img src="{{ asset('images/brands/' . $brand->icon) }}" alt="{{ $brand->localized_name }}" class="w-full h-full object-contain">
+                            @else
+                                <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
+                                </svg>
                             @endif
                         </div>
-                    </div>
-                </div>
-            </a>
-        @empty
-            <div class="col-span-2 text-center py-12">
-                <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ __('no_places_found') }}</h3>
-                <p class="text-gray-600 dark:text-gray-400">{{ __('no_places_in_subcategory') }}</p>
+                    </button>
+                @endforeach
             </div>
-        @endforelse
-    </div>
-
-    <!-- Pagination -->
-    @if($places->hasPages())
-        <div class="mt-8">
-            {{ $places->links() }}
         </div>
     @endif
+
+    <!-- Places Container -->
+    <div id="places-container">
+        @include('places.partials.places-grid', ['places' => $places])
+    </div>
+
+    <script>
+        function filterByBrand(brandSlug) {
+            const container = document.getElementById('places-container');
+            const currentRegion = '{{ request("region") }}';
+            
+            // Show loading state
+            container.classList.add('opacity-50', 'pointer-events-none');
+            
+            // Build URL
+            let url = '{{ route("places.ajax-filter", [$category->slug, $subcategory->slug]) }}';
+            const params = new URLSearchParams();
+            
+            if (brandSlug) {
+                params.append('brand', brandSlug);
+            }
+            if (currentRegion) {
+                params.append('region', currentRegion);
+            }
+            
+            if (params.toString()) {
+                url += '?' + params.toString();
+            }
+            
+            // Fetch filtered places
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Update container
+                    container.innerHTML = data.html;
+                    container.classList.remove('opacity-50', 'pointer-events-none');
+                    
+                    // Update browser URL
+                    const newUrl = new URL(window.location);
+                    if (brandSlug) {
+                        newUrl.searchParams.set('brand', brandSlug);
+                    } else {
+                        newUrl.searchParams.delete('brand');
+                    }
+                    window.history.pushState({}, '', newUrl);
+                })
+                .catch(error => {
+                    console.error('Error filtering places:', error);
+                    container.classList.remove('opacity-50', 'pointer-events-none');
+                    alert('{{ __("Failed to load places. Please try again.") }}');
+                });
+        }
+    </script>
 </x-glass-layout>

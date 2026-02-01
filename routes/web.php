@@ -41,6 +41,7 @@ Route::get('/news', [HomeController::class, 'news'])->name('news');
 Route::get('/popular-places', [PlaceController::class, 'popularPlaces'])->name('places.popular');
 Route::get('/categories/{category:slug}', [PlaceController::class, 'byCategory'])->name('places.by-category');
 Route::get('/categories/{category:slug}/{subcategory:slug}', [PlaceController::class, 'bySubcategory'])->name('places.by-subcategory');
+Route::get('/categories/{category:slug}/{subcategory:slug}/ajax', [PlaceController::class, 'ajaxFilterPlaces'])->name('places.ajax-filter');
 Route::get('/places/{place:slug}', [PlaceController::class, 'show'])->name('places.show');
 Route::get('/map', [PlaceController::class, 'map'])->name('map.index');
 
@@ -141,6 +142,19 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
             'destroy' => 'admin.places.destroy',
         ]);
     
+    // Brand routes (nested under subcategories)
+    Route::resource('subcategories.brands', \App\Http\Controllers\Admin\BrandController::class)
+        ->except(['show'])
+        ->shallow()
+        ->names([
+            'index' => 'admin.subcategories.brands.index',
+            'create' => 'admin.subcategories.brands.create',
+            'store' => 'admin.subcategories.brands.store',
+            'edit' => 'admin.brands.edit',
+            'update' => 'admin.brands.update',
+            'destroy' => 'admin.brands.destroy',
+        ]);
+    
     // Keep flat routes for backward compatibility
     Route::resource('subcategories', \App\Http\Controllers\Admin\SubcategoryController::class)->names('admin.subcategories');
     Route::resource('places', \App\Http\Controllers\Admin\PlaceController::class)->names('admin.places');
@@ -156,6 +170,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::patch('subcategories/{subcategory}/update-order', [\App\Http\Controllers\Admin\SubcategoryController::class, 'updateOrder'])->name('admin.subcategories.update-order');
     Route::post('places/reorder', [\App\Http\Controllers\Admin\PlaceController::class, 'reorder'])->name('admin.places.reorder');
     Route::patch('places/{place}/update-order', [\App\Http\Controllers\Admin\PlaceController::class, 'updateOrder'])->name('admin.places.update-order');
+    
+    // Brand ordering routes
+    Route::post('subcategories/{subcategory}/brands/reorder', [\App\Http\Controllers\Admin\BrandController::class, 'reorder'])->name('admin.brands.reorder');
+    Route::patch('brands/{brand}/update-order', [\App\Http\Controllers\Admin\BrandController::class, 'updateOrder'])->name('admin.brands.update-order');
+    
+    // Brand API endpoint
+    Route::get('api/subcategories/{subcategory}/brands', [\App\Http\Controllers\Admin\BrandController::class, 'getBrands'])->name('admin.api.brands');
     
     // Comments Management
     Route::get('/comments', [\App\Http\Controllers\Admin\CommentController::class, 'index'])->name('admin.comments.index');

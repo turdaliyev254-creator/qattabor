@@ -105,8 +105,12 @@ class PlaceController extends Controller
 
     public function bySubcategory(Request $request, Category $category, Subcategory $subcategory)
     {
+        // Load brands for this subcategory
+        $brands = $subcategory->brands()->ordered()->get();
+        $selectedBrand = null;
+        
         $placesQuery = $subcategory->places()
-            ->with(['category', 'location'])
+            ->with(['category', 'location', 'brand'])
             ->withCount(['approvedComments as reviews_count' => function($query) {
                 $query->whereNotNull('rating');
             }]);
@@ -136,9 +140,20 @@ class PlaceController extends Controller
             }
         }
         
+        // Filter by brand if specified
+        if ($request->has('brand') && $request->brand) {
+            $selectedBrand = $brands->firstWhere('slug', $request->brand);
+            if ($selectedBrand) {
+                $placesQuery->where('brand_id', $selectedBrand->id);
+            }
+        } else {
+            // Show only unbranded places in "All" view
+            $placesQuery->whereNull('brand_id');
+        }
+        
         $places = $placesQuery->latest()->paginate(12);
 
-        return view('places.by-subcategory', compact('category', 'subcategory', 'places'));
+        return view('places.by-subcategory', compact('category', 'subcategory', 'places', 'brands', 'selectedBrand'));
     }
 
     public function show(Request $request, Place $place)
@@ -236,11 +251,61 @@ class PlaceController extends Controller
 
     public function unsave(Place $place)
     {
-        auth()->user()->savedPlaces()->detach($place->id);
+        auth()->user()->savedPlaces()->attach($place->id);
 
         return response()->json([
             'success' => true,
-            'message' => __('Place removed from saved')
+            'message' => __('Place saved successfully')
+        ]);
+    }
+
+    public function ajaxFilterPlaces(Request $request, Category $category, Subcategory $subcategory)
+    {
+        $brands = $subcategory->brands()->ordered()->get();
+        $selectedBrand = null;
+        
+        $placesQuery = $subcategory->places()
+            ->with(['category', 'location', 'brand'])
+            ->withCount(['approvedComments as reviews_count' => function($query) {
+                $query->whereNotNull('rating');
+            }]);
+        
+        // Get region from request
+        $regionName = $request->input('region');
+        
+        // Filter by region name if provided
+        if ($regionName) {
+            $region = Region::where('name', $regionName)
+                ->orWhere('name_uz', $regionName)
+                ->orWhere('name_ru', $regionName)
+                ->orWhere('name_en', $regionName)
+                ->first();
+            
+            if ($region) {
+                $locationIds = Location::where('region_id', $region->id)->pluck('id');
+                $placesQuery->whereIn('location_id', $locationIds);
+            }
+        }
+        
+        // Filter by brand if specified
+        if ($request->has('brand') && $request->brand) {
+            $selectedBrand = $brands->firstWhere('slug', $request->brand);
+            if ($selectedBrand) {
+                $placesQuery->where('brand_id', $selectedBrand->id);
+            }
+        } else {
+            // Show only unbranded places in "All" view
+            $placesQuery->whereNull('brand_id');
+        }
+        
+        $places = $placesQuery->latest()->paginate(12);
+
+        // Render the places grid partial
+        $html = view('places.partials.places-grid', compact('places'))->render();
+
+        return response()->json([
+            'html' => $html,
+            'count' => $places->total()
         ]);
     }
 }

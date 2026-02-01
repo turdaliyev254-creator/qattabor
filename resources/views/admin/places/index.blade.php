@@ -12,10 +12,18 @@
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Places') }}</h2>
         @if(isset($subcategory) && $subcategory)
-            <a href="{{ route('admin.subcategories.places.create', $subcategory) }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                {{ __('Add Place') }}
-            </a>
+            <div class="flex gap-2">
+                <a href="{{ route('admin.subcategories.brands.index', $subcategory) }}" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                    </svg>
+                    {{ __('Manage Brands') }}
+                </a>
+                <a href="{{ route('admin.subcategories.places.create', $subcategory) }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    {{ __('Add Place') }}
+                </a>
+            </div>
         @else
             <div class="px-4 py-3 bg-blue-100 dark:bg-blue-900/30 border-l-4 border-blue-500 text-blue-800 dark:text-blue-200 text-sm rounded">
                 <strong>{{ __('Note') }}:</strong> {{ __('To add places, please navigate through: Categories → Select Category → Subcategories → Select Subcategory → Add Place') }}
