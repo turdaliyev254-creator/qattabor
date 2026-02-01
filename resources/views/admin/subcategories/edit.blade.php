@@ -28,6 +28,19 @@
                     @enderror
                 </div>
 
+                <div id="parent-subcategory-wrapper" class="hidden">
+                    <label for="parent_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Parent Subcategory <span class="text-gray-500 text-xs">(Optional - for child subcategories)</span>
+                    </label>
+                    <select name="parent_id" id="parent_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                        <option value="">None (Parent Subcategory)</option>
+                    </select>
+                    <p class="mt-1 text-xs text-gray-500">Select a parent subcategory to create a child subcategory</p>
+                    @error('parent_id')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
                     <input type="text" name="name" id="name" value="{{ old('name', $subcategory->name) }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required>
@@ -94,10 +107,56 @@
 
     <script>
         let iconsData = [];
+        const currentParentId = {{ old('parent_id', $subcategory->parent_id) ?? 'null' }};
         
         // Load icons on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadIcons();
+            
+            // Parent subcategory handling
+            const categorySelect = document.getElementById('category_id');
+            const parentWrapper = document.getElementById('parent-subcategory-wrapper');
+            const parentSelect = document.getElementById('parent_id');
+            
+            categorySelect.addEventListener('change', async function() {
+                const categoryId = this.value;
+                
+                if (categoryId) {
+                    try {
+                        const response = await fetch(`/admin/subcategories/get-parents?category_id=${categoryId}`);
+                        const data = await response.json();
+                        
+                        // Clear previous options
+                        parentSelect.innerHTML = '<option value="">None (Parent Subcategory)</option>';
+                        
+                        // Add parent subcategories
+                        if (data.length > 0) {
+                            data.forEach(parent => {
+                                const option = document.createElement('option');
+                                option.value = parent.id;
+                                option.textContent = parent.name;
+                                if (currentParentId && parent.id === currentParentId) {
+                                    option.selected = true;
+                                }
+                                parentSelect.appendChild(option);
+                            });
+                            parentWrapper.classList.remove('hidden');
+                        } else {
+                            parentWrapper.classList.add('hidden');
+                        }
+                    } catch (error) {
+                        console.error('Error loading parent subcategories:', error);
+                        parentWrapper.classList.add('hidden');
+                    }
+                } else {
+                    parentWrapper.classList.add('hidden');
+                }
+            });
+            
+            // Trigger on page load if category is pre-selected
+            if (categorySelect.value) {
+                categorySelect.dispatchEvent(new Event('change'));
+            }
         });
 
         async function loadIcons() {

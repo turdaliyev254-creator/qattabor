@@ -79,13 +79,27 @@ class PlaceController extends Controller
         
         // Get subcategories with place count filtered by location
         $subcategories = $category->subcategories()
+            ->parents()  // Only show parent subcategories
+            ->with(['children'])  // Load children to check if they exist
             ->withCount(['places' => function($query) use ($locationIds) {
                 if (!empty($locationIds)) {
                     $query->whereIn('location_id', $locationIds);
                 }
             }])
-            ->orderBy('name')
-            ->get();
+            ->ordered()
+            ->get()
+            ->map(function($subcategory) use ($locationIds) {
+                // If subcategory has children, count places from all children instead
+                if ($subcategory->children->count() > 0) {
+                    $childIds = $subcategory->children->pluck('id')->toArray();
+                    $childPlacesCount = \App\Models\Place::whereIn('subcategory_id', $childIds);
+                    if (!empty($locationIds)) {
+                        $childPlacesCount->whereIn('location_id', $locationIds);
+                    }
+                    $subcategory->places_count = $childPlacesCount->count();
+                }
+                return $subcategory;
+            });
         
         $placesQuery = $category->places()
             ->with(['subcategory', 'location'])
@@ -105,7 +119,47 @@ class PlaceController extends Controller
 
     public function bySubcategory(Request $request, Category $category, Subcategory $subcategory)
     {
-        // Load brands for this subcategory
+        // Check if subcategory has children (sub-subcategories)
+        $hasChildren = $subcategory->hasChildren();
+        
+        if ($hasChildren) {
+            // Show sub-subcategories instead of places
+            $regionName = $request->input('region');
+            
+            if (!$regionName) {
+                $defaultRegion = Region::where('is_active', true)->orderBy('order')->first();
+                if ($defaultRegion) {
+                    $regionName = $defaultRegion->localized_name;
+                }
+            }
+            
+            $locationIds = [];
+            if ($regionName) {
+                $region = Region::where('name', $regionName)
+                    ->orWhere('name_uz', $regionName)
+                    ->orWhere('name_ru', $regionName)
+                    ->orWhere('name_en', $regionName)
+                    ->first();
+                
+                if ($region) {
+                    $locationIds = Location::where('region_id', $region->id)->pluck('id')->toArray();
+                }
+            }
+            
+            // Get sub-subcategories with place count
+            $subSubcategories = $subcategory->children()
+                ->withCount(['places' => function($query) use ($locationIds) {
+                    if (!empty($locationIds)) {
+                        $query->whereIn('location_id', $locationIds);
+                    }
+                }])
+                ->ordered()
+                ->get();
+            
+            return view('places.by-subcategory-with-children', compact('category', 'subcategory', 'subSubcategories'));
+        }
+        
+        // Original logic - show places with brand filtering (only for sub-subcategories)
         $brands = $subcategory->brands()->ordered()->get();
         $selectedBrand = null;
         
@@ -115,10 +169,8 @@ class PlaceController extends Controller
                 $query->whereNotNull('rating');
             }]);
         
-        // Get region from request or use default (first region)
         $regionName = $request->input('region');
         
-        // If no region specified, use the first active region as default
         if (!$regionName) {
             $defaultRegion = Region::where('is_active', true)->orderBy('order')->first();
             if ($defaultRegion) {
@@ -126,7 +178,6 @@ class PlaceController extends Controller
             }
         }
         
-        // Filter by region name
         if ($regionName) {
             $region = Region::where('name', $regionName)
                 ->orWhere('name_uz', $regionName)
@@ -140,14 +191,12 @@ class PlaceController extends Controller
             }
         }
         
-        // Filter by brand if specified
         if ($request->has('brand') && $request->brand) {
             $selectedBrand = $brands->firstWhere('slug', $request->brand);
             if ($selectedBrand) {
                 $placesQuery->where('brand_id', $selectedBrand->id);
             }
         } else {
-            // Show only unbranded places in "All" view
             $placesQuery->whereNull('brand_id');
         }
         

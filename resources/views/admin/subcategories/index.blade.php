@@ -13,10 +13,16 @@
 
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Subcategories') }}</h2>
-        <a href="@if(isset($category) && $category){{ route('admin.categories.subcategories.create', $category) }}@else{{ route('admin.subcategories.create') }}@endif" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            {{ __('Add Subcategory') }}
-        </a>
+        <div class="flex gap-3">
+            <a href="{{ route('admin.subcategories.create-child') }}" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                {{ __('Add Child Subcategory') }}
+            </a>
+            <a href="@if(isset($category) && $category){{ route('admin.categories.subcategories.create', $category) }}@else{{ route('admin.subcategories.create') }}@endif" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                {{ __('Add Subcategory') }}
+            </a>
+        </div>
     </div>
 
     @if(session('success'))
@@ -70,11 +76,13 @@
                         <th class="px-6 py-4 w-20">{{ __('Order') }}</th>
                         <th class="px-6 py-4">{{ __('Icon') }}</th>
                         <th class="px-6 py-4">{{ __('Name') }}</th>
+                        <th class="px-6 py-4">{{ __('Type') }}</th>
                         <th class="px-6 py-4 text-right">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                     @forelse($subcategories as $subcategory)
+                        <!-- Parent Subcategory Row -->
                         <tr class="sortable-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-id="{{ $subcategory->id }}">
                             @if(request('sort', 'manual') === 'manual')
                                 <td class="px-6 py-4 handle" style="cursor: grab;">
@@ -97,10 +105,37 @@
                                     <span class="text-gray-400">-</span>
                                 @endif
                             </td>
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                <div class="flex items-center gap-2">
+                                    {{ $subcategory->name }}
+                                    @if($subcategory->children_count > 0)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                                            {{ $subcategory->children_count }} child{{ $subcategory->children_count > 1 ? 'ren' : '' }}
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                            {{ $subcategory->places_count }} place{{ $subcategory->places_count != 1 ? 's' : '' }}
+                                        </span>
+                                    @endif
+                                </div>
                             </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $subcategory->name }}</td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                    Parent
+                                </span>
+                            </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
+                                    @if($subcategory->children_count > 0)
+                                        <a href="{{ route('admin.subcategories.show', $subcategory) }}" 
+                                           class="inline-flex items-center p-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors" 
+                                           title="{{ __('View Child Subcategories') }}">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                                            </svg>
+                                            <span class="hidden md:inline-flex ml-1 px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 rounded-full text-xs">({{ $subcategory->children_count }})</span>
+                                        </a>
+                                    @endif
                                     <a href="{{ route('admin.subcategories.places.index', $subcategory) }}" 
                                        class="inline-flex items-center p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors" 
                                        title="{{ __('Manage Places') }}">
@@ -123,9 +158,64 @@
                                 </div>
                             </td>
                         </tr>
+                        
+                        <!-- Child Subcategories (Nested and Indented) -->
+                        @foreach($subcategory->children as $child)
+                            <tr class="bg-gray-50/50 dark:bg-gray-900/20 hover:bg-gray-100 dark:hover:bg-gray-900/40 transition-colors border-l-4 border-indigo-300 dark:border-indigo-700">
+                                @if(request('sort', 'manual') === 'manual')
+                                    <td class="px-6 py-3"></td>
+                                @endif
+                                <td class="px-6 py-3 text-gray-500 dark:text-gray-400 text-sm">
+                                    {{ $child->order }}
+                                </td>
+                                <td class="px-6 py-3">
+                                    @if($child->icon)
+                                        <img src="/size-512/images/{{ $child->icon }}" alt="{{ $child->name }}" class="w-7 h-7 object-contain opacity-90">
+                                    @else
+                                        <span class="text-gray-400 text-sm">-</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-3 text-gray-700 dark:text-gray-300">
+                                    <div class="flex items-center gap-2 pl-8">
+                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                        <span>{{ $child->name }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-3">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                                        Child
+                                    </span>
+                                </td>
+                                <td class="px-6 py-3 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <a href="{{ route('admin.subcategories.places.index', $child) }}" 
+                                           class="inline-flex items-center p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors" 
+                                           title="{{ __('Manage Places') }}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            </svg>
+                                            <span class="ml-1 text-xs">({{ $child->places_count }})</span>
+                                        </a>
+                                        <a href="{{ route('admin.subcategories.edit', $child) }}" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 00 2 2h11a2 2 0 00 2-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                        </a>
+                                        <form action="{{ route('admin.subcategories.destroy', $child) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure?') }}');" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     @empty
                         <tr>
-                            <td colspan="{{ request('sort', 'manual') === 'manual' ? '8' : '7' }}" class="px-6 py-8 text-center text-gray-500">
+                            <td colspan="{{ request('sort', 'manual') === 'manual' ? '9' : '8' }}" class="px-6 py-8 text-center text-gray-500">
                                 @if(request('search'))
                                     {{ __('No subcategories found matching') }} "{{ request('search') }}".
                                 @else

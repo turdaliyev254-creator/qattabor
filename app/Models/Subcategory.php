@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subcategory extends Model
 {
-    protected $fillable = ['category_id', 'name', 'slug', 'icon', 'order', 'name_uz', 'name_ru', 'name_en'];
+    protected $fillable = ['category_id', 'parent_id', 'name', 'slug', 'icon', 'order', 'name_uz', 'name_ru', 'name_en'];
 
     protected static function boot()
     {
@@ -80,5 +80,53 @@ class Subcategory extends Model
         $fieldName = "name_{$locale}";
         
         return $this->$fieldName ?? $this->name;
+    }
+
+    /**
+     * Parent subcategory relationship
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Subcategory::class, 'parent_id');
+    }
+
+    /**
+     * Child subcategories relationship
+     */
+    public function children()
+    {
+        return $this->hasMany(Subcategory::class, 'parent_id')->ordered();
+    }
+
+    /**
+     * Scope for parent subcategories only (no parent_id)
+     */
+    public function scopeParents($query)
+    {
+        return $query->whereNull('parent_id');
+    }
+
+    /**
+     * Scope for child subcategories (has parent_id)
+     */
+    public function scopeChildren($query)
+    {
+        return $query->whereNotNull('parent_id');
+    }
+
+    /**
+     * Check if this subcategory is a parent (has children)
+     */
+    public function isParent()
+    {
+        return $this->children()->exists();
+    }
+
+    /**
+     * Check if this subcategory has children
+     */
+    public function hasChildren()
+    {
+        return $this->children()->count() > 0;
     }
 }

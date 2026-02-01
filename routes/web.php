@@ -156,6 +156,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         ]);
     
     // Keep flat routes for backward compatibility
+    // Define custom routes BEFORE resource route to prevent conflicts
+    Route::get('subcategories/create-child', [\App\Http\Controllers\Admin\SubcategoryController::class, 'createChild'])->name('admin.subcategories.create-child');
+    Route::get('subcategories/get-parents', [\App\Http\Controllers\Admin\SubcategoryController::class, 'getParents'])->name('admin.subcategories.get-parents');
     Route::resource('subcategories', \App\Http\Controllers\Admin\SubcategoryController::class)->names('admin.subcategories');
     Route::resource('places', \App\Http\Controllers\Admin\PlaceController::class)->names('admin.places');
     Route::delete('place-images/{image}', [\App\Http\Controllers\Admin\PlaceController::class, 'deleteImage'])->name('admin.place-images.delete');

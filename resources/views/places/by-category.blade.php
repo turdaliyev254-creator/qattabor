@@ -15,39 +15,30 @@
             <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('subcategories') }}</h2>
             
             <!-- Grid Layout Subcategories -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                 @foreach($subcategories as $subcategory)
                     <a href="{{ route('places.by-subcategory', [$category->slug, $subcategory->slug]) }}{{ request('region') ? '?region=' . urlencode(request('region')) : '' }}" 
-                       class="group">
-                        <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 p-3">
-                            <!-- Subcategory Icon -->
-                            <div class="flex justify-center mb-2">
-                                <div class="w-12 h-12 flex items-center justify-center drop-shadow-lg group-hover:scale-110 transition-transform">
-                                    @if($subcategory->icon)
-                                        @if(Str::endsWith($subcategory->icon, '.png'))
-                                            <img src="{{ asset('size-512/images/' . $subcategory->icon) }}" 
-                                                 alt="{{ $subcategory->name }}" 
-                                                 class="w-full h-full object-contain">
-                                        @else
-                                            <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-2xl">
-                                                {{ $subcategory->icon }}
-                                            </div>
-                                        @endif
-                                    @else
-                                        <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
-                                            {{ substr($subcategory->name, 0, 1) }}
-                                        </div>
-                                    @endif
+                       class="flex flex-col items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+                        <div class="w-14 h-14 flex items-center justify-center drop-shadow-lg hover:drop-shadow-xl transition-all">
+                            @if($subcategory->icon)
+                                @if(Str::endsWith($subcategory->icon, '.png'))
+                                    <img src="{{ asset('size-512/images/' . $subcategory->icon) }}" 
+                                         alt="{{ $subcategory->name }}" 
+                                         class="w-full h-full object-contain">
+                                @else
+                                    <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-2xl">
+                                        {{ $subcategory->icon }}
+                                    </div>
+                                @endif
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
+                                    {{ substr($subcategory->name, 0, 1) }}
                                 </div>
-                            </div>
-                            
-                            <!-- Text -->
-                            <div class="text-center">
-                                <h3 class="font-medium text-xs text-gray-900 dark:text-white mb-2 line-clamp-2 leading-tight">{{ __($subcategory->name) }}</h3>
-                                <div class="inline-flex items-center justify-center px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 rounded-full">
-                                    <span class="text-xs font-medium text-blue-600 dark:text-blue-400">{{ $subcategory->places_count }} {{ __('places') }}</span>
-                                </div>
-                            </div>
+                            @endif
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 text-center line-clamp-2">{{ __($subcategory->name) }}</span>
+                        <div class="inline-flex items-center justify-center px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 rounded-full">
+                            <span class="text-xs font-medium text-blue-600 dark:text-blue-400">{{ $subcategory->places_count }} {{ __('places') }}</span>
                         </div>
                     </a>
                 @endforeach

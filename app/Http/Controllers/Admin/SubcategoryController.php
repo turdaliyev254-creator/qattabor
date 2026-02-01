@@ -19,7 +19,9 @@ class SubcategoryController extends Controller
         try {
             $sort = $request->get('sort', 'manual');
             
-            $query = Subcategory::with(['category'])->withCount('places');
+            $query = Subcategory::with(['category', 'children' => function($q) {
+                $q->withCount('places')->ordered();
+            }])->withCount(['places', 'children']);
             
             // Filter by category if provided (nested route)
             if ($category && $category->id) {
@@ -28,6 +30,9 @@ class SubcategoryController extends Controller
                 }]);
                 $query->where('category_id', $category->id);
             }
+            
+            // Only show parent subcategories (not children) - children are shown nested within their parent
+            $query->whereNull('parent_id');
             
             // Search functionality (context-aware)
             if ($request->has('search') && $request->search) {
@@ -140,7 +145,27 @@ class SubcategoryController extends Controller
     {
         $category->load('subcategories');
         $categories = Category::orderBy('name')->get();
-        return view('admin.subcategories.create', compact('category', 'categories'));
+        
+        // Get parent subcategories (only parents, not sub-subcategories)
+        $parentSubcategories = collect();
+        if ($category && $category->id) {
+            $parentSubcategories = Subcategory::where('category_id', $category->id)
+                ->parents()
+                ->orderBy('name')
+                ->get();
+        }
+        
+        return view('admin.subcategories.create', compact('category', 'categories', 'parentSubcategories'));
+    }
+
+    /**
+     * Show the form for creating a child subcategory.
+     */
+    public function createChild()
+    {
+        $categories = Category::orderBy('name')->get();
+        
+        return view('admin.subcategories.create-child', compact('categories'));
     }
 
     /**
@@ -149,19 +174,60 @@ class SubcategoryController extends Controller
     public function store(Request $request, Category $category = null)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'name_uz' => 'nullable|string|max:255',
             'name_ru' => 'nullable|string|max:255',
             'name_en' => 'nullable|string|max:255',
             'icon' => 'nullable|string|max:255',
             'category_id' => $category ? 'nullable' : 'required|exists:categories,id',
+            'parent_id' => 'nullable|exists:subcategories,id',
         ]);
 
+        // Use first available language for name if main name not provided
+        if (empty($validated['name'])) {
+            $validated['name'] = $validated['name_uz'] ?? $validated['name_ru'] ?? $validated['name_en'] ?? 'Unnamed';
+        }
+
         $validated['slug'] = Str::slug($validated['name']);
+        
+        // If parent_id is provided, validate it
+        if ($request->parent_id) {
+            $parent = Subcategory::findOrFail($request->parent_id);
+            $categoryId = $category ? $category->id : $request->category_id;
+            
+            // Must belong to same category
+            if ($parent->category_id != $categoryId) {
+                return back()->withErrors(['parent_id' => 'Parent subcategory must belong to the same category.'])->withInput();
+            }
+            
+            // Ensure parent doesn't already have a parent (limit to 2 levels)
+            if ($parent->parent_id) {
+                return back()->withErrors(['parent_id' => 'Cannot create more than 2 levels of subcategories.'])->withInput();
+            }
+        }
         
         // Use category from route parameter if available, otherwise from form
         $categoryId = $category ? $category->id : $validated['category_id'];
         $validated['category_id'] = $categoryId;
+        
+        // Generate unique slug
+        $baseSlug = \Illuminate\Support\Str::slug($validated['name']);
+        if ($validated['parent_id'] ?? null) {
+            // For nested subcategories, append parent slug to make it unique
+            $parent = Subcategory::find($validated['parent_id']);
+            $slug = $parent->slug . '-' . $baseSlug;
+        } else {
+            $slug = $baseSlug;
+        }
+        
+        // Ensure uniqueness by appending number if needed
+        $originalSlug = $slug;
+        $count = 1;
+        while (Subcategory::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+        $validated['slug'] = $slug;
         
         $validated['order'] = (Subcategory::where('category_id', $categoryId)->max('order') ?? 0) + 1;
 
@@ -180,9 +246,14 @@ class SubcategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Subcategory $subcategory)
     {
-        //
+        // Load children with places count
+        $subcategory->load(['children' => function($query) {
+            $query->withCount('places')->ordered();
+        }, 'category']);
+        
+        return view('admin.subcategories.show', compact('subcategory'));
     }
 
     /**
@@ -191,7 +262,15 @@ class SubcategoryController extends Controller
     public function edit(Subcategory $subcategory)
     {
         $categories = Category::all();
-        return view('admin.subcategories.edit', compact('subcategory', 'categories'));
+        
+        // Get parent subcategories (only parents, not sub-subcategories)
+        $parentSubcategories = Subcategory::where('category_id', $subcategory->category_id)
+            ->where('id', '!=', $subcategory->id)  // Exclude current subcategory
+            ->parents()
+            ->orderBy('name')
+            ->get();
+        
+        return view('admin.subcategories.edit', compact('subcategory', 'categories', 'parentSubcategories'));
     }
     /**
      * Update the specified resource in storage.
@@ -205,7 +284,33 @@ class SubcategoryController extends Controller
             'name_en' => 'nullable|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'icon' => 'nullable|string|max:255',
+            'parent_id' => 'nullable|exists:subcategories,id',
         ]);
+
+        // If parent_id is provided, validate it
+        if ($request->parent_id) {
+            // Can't set itself as parent
+            if ($request->parent_id == $subcategory->id) {
+                return back()->withErrors(['parent_id' => 'A subcategory cannot be its own parent.'])->withInput();
+            }
+            
+            $parent = Subcategory::findOrFail($request->parent_id);
+            
+            // Must belong to same category
+            if ($parent->category_id != $request->category_id) {
+                return back()->withErrors(['parent_id' => 'Parent subcategory must belong to the same category.'])->withInput();
+            }
+            
+            // Ensure parent doesn't already have a parent (limit to 2 levels)
+            if ($parent->parent_id) {
+                return back()->withErrors(['parent_id' => 'Cannot create more than 2 levels of subcategories.'])->withInput();
+            }
+            
+            // Can't set a child as parent (prevent circular reference)
+            if ($parent->parent_id == $subcategory->id) {
+                return back()->withErrors(['parent_id' => 'Cannot set a child subcategory as parent.'])->withInput();
+            }
+        }
 
         if ($subcategory->name !== $validated['name']) {
             $validated['slug'] = Str::slug($validated['name']);
@@ -231,5 +336,26 @@ class SubcategoryController extends Controller
             return redirect()->route('admin.subcategories.index')
                 ->with('error', 'Cannot delete subcategory: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Get parent subcategories for a category (AJAX endpoint)
+     */
+    public function getParents(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $excludeId = $request->input('exclude_id'); // To exclude current subcategory when editing
+        
+        $query = Subcategory::where('category_id', $categoryId)
+            ->parents()  // Only parent subcategories
+            ->orderBy('name');
+        
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+        
+        $subcategories = $query->get(['id', 'name']);
+        
+        return response()->json($subcategories);
     }
 }
