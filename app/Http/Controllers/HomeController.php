@@ -15,6 +15,7 @@ class HomeController extends Controller
     {
         // Show all categories
         $categories = Category::withCount('subcategories')
+            ->ordered()
             ->take(8)
             ->get();
         
@@ -63,6 +64,7 @@ class HomeController extends Controller
     {
         // Show all categories
         $categories = Category::withCount('subcategories')
+            ->ordered()
             ->get();
         
         return view('categories', compact('categories'));
