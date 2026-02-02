@@ -32,7 +32,7 @@
                         </div>
                     @endif
                 </div>
-                <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 text-center line-clamp-2">{{ __($category->name) }}</span>
+                <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 text-center line-clamp-2">{{ $category->localized_name }}</span>
             </a>
             @endforeach
         </div>

@@ -6,7 +6,7 @@
             </svg>
             {{ __('back') }}
         </a>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ __($category->name) }}</h1>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $category->localized_name }}</h1>
     </div>
 
     <!-- Subcategories Section -->
