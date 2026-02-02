@@ -59,11 +59,11 @@
                                 <form action="{{ route('admin.categories.update-order', $category) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('PATCH')
+                                    <input type="hidden" name="sort" value="{{ $sort }}">
                                     <input type="number" name="order" value="{{ $category->order }}" 
                                            class="w-20 px-2 py-1 text-center border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                            min="1" onchange="this.form.submit()">
                                 </form>
-                            </td>
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $category->name }}</td>
                             <td class="px-6 py-4">

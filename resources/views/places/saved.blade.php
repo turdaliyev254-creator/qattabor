@@ -41,7 +41,7 @@
                         <h3 class="font-semibold text-base text-gray-900 dark:text-white mb-1 line-clamp-1">{{ $place->name }}</h3>
                         
                         @if($place->subcategory)
-                            <p class="text-xs text-blue-600 dark:text-blue-400 mb-1">{{ __($place->subcategory->name) }}</p>
+                            <p class="text-xs text-blue-600 dark:text-blue-400 mb-1">{{ $place->subcategory->localized_name }}</p>
                         @endif
                         
                         @if($place->location)

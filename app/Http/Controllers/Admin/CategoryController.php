@@ -90,7 +90,8 @@ class CategoryController extends Controller
             Category::renumberOrders();
         }
 
-        return redirect()->route('admin.categories.index')
+        $sort = $request->input('sort', 'manual');
+        return redirect()->route('admin.categories.index', ['sort' => $sort])
             ->with('success', 'Category order updated successfully.');
     }
 

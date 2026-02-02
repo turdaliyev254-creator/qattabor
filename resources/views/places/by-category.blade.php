@@ -23,7 +23,7 @@
                             @if($subcategory->icon)
                                 @if(Str::endsWith($subcategory->icon, '.png'))
                                     <img src="{{ asset('size-512/images/' . $subcategory->icon) }}" 
-                                         alt="{{ $subcategory->name }}" 
+                                         alt="{{ $subcategory->localized_name }}" 
                                          class="w-full h-full object-contain">
                                 @else
                                     <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-2xl">
@@ -32,11 +32,11 @@
                                 @endif
                             @else
                                 <div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
-                                    {{ substr($subcategory->name, 0, 1) }}
+                                    {{ substr($subcategory->localized_name, 0, 1) }}
                                 </div>
                             @endif
                         </div>
-                        <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 text-center line-clamp-2">{{ __($subcategory->name) }}</span>
+                        <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 text-center line-clamp-2">{{ $subcategory->localized_name }}</span>
                         <div class="inline-flex items-center justify-center px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 rounded-full">
                             <span class="text-xs font-medium text-blue-600 dark:text-blue-400">{{ $subcategory->places_count }} {{ __('places') }}</span>
                         </div>
