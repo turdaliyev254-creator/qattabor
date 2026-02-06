@@ -8,7 +8,7 @@
                 </svg>
             </div>
             <h1 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4">
-                {{ __('Contact') }} <span class="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Us</span>
+                <span class="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{{ __('Contact') }}</span>
             </h1>
             <p class="text-lg text-gray-600 dark:text-gray-400">{{ __('We\'d love to hear from you') }}</p>
         </div>
@@ -87,35 +87,6 @@
                     @endif
                 </div>
             </div>
-        </div>
-
-        <!-- Contact Form -->
-        <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8 fade-in-up">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">{{ __('Send us a message') }}</h2>
-            <form action="#" method="POST" class="space-y-6">
-                @csrf
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Name') }}</label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required>
-                    </div>
-                    <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Email') }}</label>
-                        <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required>
-                    </div>
-                </div>
-                <div>
-                    <label for="subject" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Subject') }}</label>
-                    <input type="text" id="subject" name="subject" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required>
-                </div>
-                <div>
-                    <label for="message" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Message') }}</label>
-                    <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required></textarea>
-                </div>
-                <button type="submit" class="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    {{ __('Send Message') }}
-                </button>
-            </form>
         </div>
     </div>
 </x-glass-layout>

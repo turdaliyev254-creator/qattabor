@@ -1,6 +1,92 @@
 <x-glass-layout>
     <!-- Page Transition Wrapper -->
     <div class="page-transition">
+    <!-- Banners Section -->
+    @if(isset($banners) && $banners->count() > 0)
+    <div class="mb-8 fade-in-up" x-data="{
+        currentIndex: 0,
+        autoScroll: true,
+        bannerCount: {{ $banners->count() }},
+        init() {
+            this.$nextTick(() => {
+                // Auto-scroll to next banner every 3 seconds
+                setInterval(() => {
+                    if (this.autoScroll) {
+                        this.nextBanner();
+                    }
+                }, 3000);
+            });
+        },
+        nextBanner() {
+            this.currentIndex = (this.currentIndex + 1) % this.bannerCount;
+            this.scrollToIndex(this.currentIndex);
+        },
+        scrollToIndex(index) {
+            const container = this.$refs.bannerContainer;
+            const cardWidth = container.offsetWidth;
+            container.scrollTo({
+                left: index * (cardWidth + 16), // 16px is gap-4
+                behavior: 'smooth'
+            });
+        },
+        handleScroll() {
+            const container = this.$refs.bannerContainer;
+            const cardWidth = container.offsetWidth;
+            const scrolled = container.scrollLeft;
+            this.currentIndex = Math.round(scrolled / (cardWidth + 16));
+        },
+        pauseScroll() {
+            this.autoScroll = false;
+        },
+        resumeScroll() {
+            this.autoScroll = true;
+        }
+    }">
+        <!-- Banner Cards Container -->
+        <div 
+            x-ref="bannerContainer"
+            @scroll.debounce.100ms="handleScroll()"
+            @mouseenter="pauseScroll()"
+            @mouseleave="resumeScroll()"
+            @touchstart="pauseScroll()"
+            @touchend="setTimeout(() => resumeScroll(), 2000)"
+            class="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-1"
+        >
+            @foreach($banners as $index => $banner)
+            <div class="flex-shrink-0 w-full snap-start">
+                <div class="relative overflow-hidden rounded-3xl backdrop-blur-xl bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/5 h-48 md:h-56 lg:h-72 transform transition-all duration-300 hover:scale-[1.02] hover:border-white/30 dark:hover:border-white/10">
+                    @if($banner->link)
+                    <a href="{{ $banner->link }}" target="_blank" rel="noopener noreferrer" class="block w-full h-full group">
+                        <img src="{{ asset('storage/' . $banner->image) }}" 
+                             alt="{{ $banner->title }}" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </a>
+                    @else
+                    <img src="{{ asset('storage/' . $banner->image) }}" 
+                         alt="{{ $banner->title }}" 
+                         class="w-full h-full object-cover">
+                    @endif
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Dots Indicator - Below Banner Cards -->
+        @if($banners->count() > 1)
+        <div class="flex justify-center gap-2 mt-4">
+            @foreach($banners as $index => $banner)
+            <button 
+                @click="scrollToIndex({{ $index }}); currentIndex = {{ $index }}; autoScroll = false; setTimeout(() => autoScroll = true, 5000)"
+                class="h-2 rounded-full transition-all duration-300 hover:bg-blue-600 dark:hover:bg-blue-400"
+                :class="currentIndex === {{ $index }} ? 'bg-blue-600 dark:bg-blue-400 w-8' : 'bg-gray-300 dark:bg-gray-600 w-2'">
+            </button>
+            @endforeach
+        </div>
+        @endif
+    </div>
+    @endif
+
     <!-- Search Bar with Beautiful Glass Design -->
     <div class="mb-6 relative fade-in-down" x-data="{
         showAiModal: false,
@@ -309,92 +395,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Banners Section -->
-    @if(isset($banners) && $banners->count() > 0)
-    <div class="mb-8 fade-in-up" x-data="{
-        currentIndex: 0,
-        autoScroll: true,
-        bannerCount: {{ $banners->count() }},
-        init() {
-            this.$nextTick(() => {
-                // Auto-scroll to next banner every 3 seconds
-                setInterval(() => {
-                    if (this.autoScroll) {
-                        this.nextBanner();
-                    }
-                }, 3000);
-            });
-        },
-        nextBanner() {
-            this.currentIndex = (this.currentIndex + 1) % this.bannerCount;
-            this.scrollToIndex(this.currentIndex);
-        },
-        scrollToIndex(index) {
-            const container = this.$refs.bannerContainer;
-            const cardWidth = container.offsetWidth;
-            container.scrollTo({
-                left: index * (cardWidth + 16), // 16px is gap-4
-                behavior: 'smooth'
-            });
-        },
-        handleScroll() {
-            const container = this.$refs.bannerContainer;
-            const cardWidth = container.offsetWidth;
-            const scrolled = container.scrollLeft;
-            this.currentIndex = Math.round(scrolled / (cardWidth + 16));
-        },
-        pauseScroll() {
-            this.autoScroll = false;
-        },
-        resumeScroll() {
-            this.autoScroll = true;
-        }
-    }">
-        <!-- Banner Cards Container -->
-        <div 
-            x-ref="bannerContainer"
-            @scroll.debounce.100ms="handleScroll()"
-            @mouseenter="pauseScroll()"
-            @mouseleave="resumeScroll()"
-            @touchstart="pauseScroll()"
-            @touchend="setTimeout(() => resumeScroll(), 2000)"
-            class="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-1"
-        >
-            @foreach($banners as $index => $banner)
-            <div class="flex-shrink-0 w-full snap-start">
-                <div class="relative overflow-hidden rounded-3xl backdrop-blur-xl bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/5 h-48 md:h-56 lg:h-72 transform transition-all duration-300 hover:scale-[1.02] hover:border-white/30 dark:hover:border-white/10">
-                    @if($banner->link)
-                    <a href="{{ $banner->link }}" target="_blank" rel="noopener noreferrer" class="block w-full h-full group">
-                        <img src="{{ asset('storage/' . $banner->image) }}" 
-                             alt="{{ $banner->title }}" 
-                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </a>
-                    @else
-                    <img src="{{ asset('storage/' . $banner->image) }}" 
-                         alt="{{ $banner->title }}" 
-                         class="w-full h-full object-cover">
-                    @endif
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        <!-- Dots Indicator - Below Banner Cards -->
-        @if($banners->count() > 1)
-        <div class="flex justify-center gap-2 mt-4">
-            @foreach($banners as $index => $banner)
-            <button 
-                @click="scrollToIndex({{ $index }}); currentIndex = {{ $index }}; autoScroll = false; setTimeout(() => autoScroll = true, 5000)"
-                class="h-2 rounded-full transition-all duration-300 hover:bg-blue-600 dark:hover:bg-blue-400"
-                :class="currentIndex === {{ $index }} ? 'bg-blue-600 dark:bg-blue-400 w-8' : 'bg-gray-300 dark:bg-gray-600 w-2'">
-            </button>
-            @endforeach
-        </div>
-        @endif
-    </div>
-    @endif
 
     <!-- Categories Section -->
     <div class="mb-8">

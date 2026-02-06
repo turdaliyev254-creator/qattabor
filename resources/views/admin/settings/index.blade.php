@@ -166,6 +166,27 @@
                 </div>
             </div>
 
+            <!-- Telegram Bot Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">{{ __('Telegram Bot') }}</h2>
+                
+                <div>
+                    <label for="telegram_bot" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Telegram Bot Username') }}
+                    </label>
+                    <div class="flex">
+                        <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                            @
+                        </span>
+                        <input type="text" name="telegram_bot" id="telegram_bot" 
+                            value="{{ old('telegram_bot', $telegramBot ?? 'qattabor_bot') }}"
+                            placeholder="qattabor_bot"
+                            class="rounded-none rounded-r-lg flex-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('Enter your Telegram bot username without @') }}</p>
+                </div>
+            </div>
+
             <!-- Submit Button -->
             <div class="flex justify-end">
                 <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors duration-200">

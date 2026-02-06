@@ -33,7 +33,9 @@ class SettingController extends Controller
             'ru' => ''
         ]);
 
-        return view('admin.settings.index', compact('aboutUs', 'contact', 'news'));
+        $telegramBot = Setting::where('key', 'telegram_bot')->value('value') ?? 'qattabor_bot';
+
+        return view('admin.settings.index', compact('aboutUs', 'contact', 'news', 'telegramBot'));
     }
 
     public function update(Request $request)
@@ -53,6 +55,7 @@ class SettingController extends Controller
             'news_en' => 'nullable|string',
             'news_uz' => 'nullable|string',
             'news_ru' => 'nullable|string',
+            'telegram_bot' => 'nullable|string',
         ]);
 
         // Save About Us
@@ -80,6 +83,12 @@ class SettingController extends Controller
             'uz' => $request->news_uz,
             'ru' => $request->news_ru,
         ]);
+
+        // Save Telegram Bot
+        Setting::updateOrCreate(
+            ['key' => 'telegram_bot'],
+            ['value' => $request->telegram_bot ?? 'qattabor_bot']
+        );
 
         return redirect()->route('admin.settings.index')
             ->with('success', __('Settings updated successfully'));

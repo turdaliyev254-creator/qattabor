@@ -8,7 +8,7 @@
                 </svg>
             </div>
             <h1 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4">
-                {{ __('About') }} <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">QattaBor</span>
+                {{ __('About') }}
             </h1>
             <p class="text-lg text-gray-600 dark:text-gray-400">{{ __('Discover amazing places in Uzbekistan') }}</p>
         </div>
@@ -18,30 +18,6 @@
             <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8">
                 <div class="prose prose-lg dark:prose-invert max-w-none">
                     {!! nl2br(e($content ?? __('Welcome to QattaBor - your guide to discovering amazing places!'))) !!}
-                </div>
-            </div>
-                                <span>{{ __('Comprehensive database of places across Uzbekistan') }}</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span>{{ __('AI-powered search to find exactly what you need') }}</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span>{{ __('User reviews and ratings for informed decisions') }}</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span>{{ __('Save your favorite places and access them anytime') }}</span>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
 
