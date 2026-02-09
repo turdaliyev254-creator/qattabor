@@ -211,6 +211,16 @@ class PlaceController extends Controller
             $query->orderBy('order');
         }]);
         
+        // Prepare media data for frontend
+        $mediaData = $place->images->map(function($img) {
+            return [
+                'type' => $img->media_type,
+                'url' => $img->media_type === 'video' ? asset('storage/' . $img->image_path) : asset('storage/' . $img->image_path),
+                'thumbnail' => $img->thumbnail_url ? asset('storage/' . $img->thumbnail_path) : asset('storage/' . $img->image_path),
+                'duration' => $img->formatted_duration
+            ];
+        })->toArray();
+        
         // Track recently viewed places in session
         $recentlyViewed = session()->get('recently_viewed', []);
         $recentlyViewed = array_diff($recentlyViewed, [$place->id]);
@@ -238,7 +248,7 @@ class PlaceController extends Controller
         // Check if place is saved by current user
         $isSaved = auth()->check() && auth()->user()->savedPlaces()->where('place_id', $place->id)->exists();
 
-        return view('places.show', compact('place', 'relatedPlaces', 'isSaved'));
+        return view('places.show', compact('place', 'relatedPlaces', 'isSaved', 'mediaData'));
     }
 
     public function map(Request $request)
