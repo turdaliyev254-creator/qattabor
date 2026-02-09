@@ -2,14 +2,14 @@
     <!-- Hero Section with Media Gallery (2GIS Style) -->
     <div class="relative -mx-4 -mt-6 mb-8" x-data="{ 
         currentMedia: 0,
-        media: {{ Js::from($place->images->map(function($img) {
+        media: @json($place->images->map(function($img) {
             return [
                 'type' => $img->media_type,
                 'url' => $img->media_type === 'video' ? asset('storage/' . $img->image_path) : asset('storage/' . $img->image_path),
                 'thumbnail' => $img->thumbnail_url ? asset('storage/' . $img->thumbnail_path) : asset('storage/' . $img->image_path),
                 'duration' => $img->formatted_duration
             ];
-        })->toArray()) }},
+        })->toArray()),
         showFullscreen: false,
         showThumbnails: false,
         isPlaying: false,
