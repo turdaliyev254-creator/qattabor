@@ -158,7 +158,7 @@ class PlaceController extends Controller
             'telegram' => 'nullable|url|max:255',
             'facebook' => 'nullable|url|max:255',
             'youtube' => 'nullable|url|max:255',
-            'image_url' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
             'images.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
             'videos.*' => 'nullable|file|mimes:mp4,mov,avi,wmv|max:51200',
             'is_popular' => 'boolean',
@@ -176,6 +176,12 @@ class PlaceController extends Controller
         // Decode working_hours JSON string
         if (isset($validated['working_hours'])) {
             $validated['working_hours'] = json_decode($validated['working_hours'], true);
+        }
+
+        // Handle main image upload
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('places', 'public');
+            $validated['image_url'] = $imagePath;
         }
 
         $place = Place::create($validated);
