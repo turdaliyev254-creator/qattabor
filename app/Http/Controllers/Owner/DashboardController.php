@@ -21,7 +21,10 @@ class DashboardController extends Controller
         }
 
         // Get all owned places with statistics
-        $ownedPlaces = $user->ownedPlaces()->with(['category', 'location', 'comments'])->get();
+        $ownedPlaces = $user->ownedPlaces()
+            ->with(['category', 'location', 'comments'])
+            ->withCount(['savedByUsers', 'comments'])
+            ->get();
         
         // Calculate total statistics
         $stats = [
@@ -30,9 +33,11 @@ class DashboardController extends Controller
             'total_phone_clicks' => $ownedPlaces->sum('phone_clicks'),
             'total_website_clicks' => $ownedPlaces->sum('website_clicks'),
             'total_social_clicks' => $ownedPlaces->sum('social_clicks'),
-            'total_saves' => $ownedPlaces->sum(fn($place) => $place->savedByUsers()->count()),
-            'total_comments' => $ownedPlaces->sum(fn($place) => $place->comments()->count()),
-            'pending_comments' => $ownedPlaces->sum(fn($place) => $place->comments()->where('is_approved', false)->count()),
+            'total_saves' => $ownedPlaces->sum('saved_by_users_count'),
+            'total_comments' => $ownedPlaces->sum('comments_count'),
+            'pending_comments' => \App\Models\Comment::whereIn('place_id', $ownedPlaces->pluck('id'))
+                ->where('is_approved', false)
+                ->count(),
         ];
 
         // Get recent comments on owned places
@@ -58,7 +63,10 @@ class DashboardController extends Controller
         }
 
         // Get all owned places with statistics
-        $ownedPlaces = $user->ownedPlaces()->with(['category', 'location'])->get();
+        $ownedPlaces = $user->ownedPlaces()
+            ->with(['category', 'location'])
+            ->withCount(['savedByUsers', 'comments'])
+            ->get();
         
         // Prepare CSV headers
         $headers = [
@@ -98,8 +106,8 @@ class DashboardController extends Controller
                     $place->phone_clicks,
                     $place->website_clicks,
                     $place->social_clicks,
-                    $place->savedByUsers()->count(),
-                    $place->comments()->count(),
+                    $place->saved_by_users_count,
+                    $place->comments_count,
                     $place->created_at->format('Y-m-d H:i:s')
                 ]);
             }

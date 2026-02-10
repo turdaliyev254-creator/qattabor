@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ $stats['total_places'] }}</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Total Places</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('Total Places') }}</div>
         </div>
 
         <div class="backdrop-blur-xl bg-white/60 dark:bg-black/30 rounded-2xl border border-white/50 dark:border-white/10 shadow-xl p-6">
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ number_format($stats['total_views']) }}</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Total Views</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('Total Views') }}</div>
         </div>
 
         <div class="backdrop-blur-xl bg-white/60 dark:bg-black/30 rounded-2xl border border-white/50 dark:border-white/10 shadow-xl p-6">
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ $stats['total_saves'] }}</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Total Saves</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('Total Saves') }}</div>
         </div>
 
         <div class="backdrop-blur-xl bg-white/60 dark:bg-black/30 rounded-2xl border border-white/50 dark:border-white/10 shadow-xl p-6">
@@ -61,13 +61,13 @@
                 </div>
             </div>
             <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ $stats['total_comments'] }}</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Total Comments</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('Total Comments') }}</div>
         </div>
     </div>
 
     <!-- Clicks Breakdown -->
     <div class="backdrop-blur-xl bg-white/60 dark:bg-black/30 rounded-2xl border border-white/50 dark:border-white/10 shadow-xl p-6 mb-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Clicks Breakdown</h2>
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('Clicks Breakdown') }}</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
@@ -77,7 +77,7 @@
                 </div>
                 <div>
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($stats['total_phone_clicks']) }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Phone Clicks</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('Phone Clicks') }}</div>
                 </div>
             </div>
 
@@ -89,7 +89,7 @@
                 </div>
                 <div>
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($stats['total_website_clicks']) }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Website Clicks</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('Website Clicks') }}</div>
                 </div>
             </div>
 
@@ -101,7 +101,7 @@
                 </div>
                 <div>
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($stats['total_social_clicks']) }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Social Clicks</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('Social Clicks') }}</div>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
 
     <!-- My Places -->
     <div class="backdrop-blur-xl bg-white/60 dark:bg-black/30 rounded-2xl border border-white/50 dark:border-white/10 shadow-xl p-6 mb-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">My Places</h2>
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ __('My Places') }}</h2>
         <div class="space-y-4">
             @foreach($ownedPlaces as $place)
                 <div class="backdrop-blur-md bg-white/40 dark:bg-black/20 rounded-xl border border-white/30 dark:border-white/10 p-4">
@@ -120,29 +120,29 @@
                             
                             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                                 <div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">Views</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('Views') }}</div>
                                     <div class="text-lg font-bold text-gray-900 dark:text-white">{{ number_format($place->views_count) }}</div>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">Comments</div>
-                                    <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $place->comments->count() }}</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('Comments') }}</div>
+                                    <div class="text-lg font-bold text-gray-900 dark:text-white">{{ number_format($place->comments_count) }}</div>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">Saves</div>
-                                    <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $place->savedByUsers()->count() }}</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('Saves') }}</div>
+                                    <div class="text-lg font-bold text-gray-900 dark:text-white">{{ number_format($place->saved_by_users_count) }}</div>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">Phone Clicks</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('Phone Clicks') }}</div>
                                     <div class="text-lg font-bold text-gray-900 dark:text-white">{{ number_format($place->phone_clicks) }}</div>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">Website Clicks</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('Website Clicks') }}</div>
                                     <div class="text-lg font-bold text-gray-900 dark:text-white">{{ number_format($place->website_clicks) }}</div>
                                 </div>
                             </div>
                         </div>
                         <a href="{{ route('places.show', $place->slug) }}" class="ml-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition-colors">
-                            View Place
+                            {{ __('View Place') }}
                         </a>
                     </div>
                 </div>
@@ -153,10 +153,10 @@
     <!-- Recent Comments -->
     <div class="backdrop-blur-xl bg-white/60 dark:bg-black/30 rounded-2xl border border-white/50 dark:border-white/10 shadow-xl p-6">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Recent Comments</h2>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('Recent Comments') }}</h2>
             @if($stats['pending_comments'] > 0)
                 <span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 rounded-full text-sm font-semibold">
-                    {{ $stats['pending_comments'] }} Pending Admin Approval
+                    {{ $stats['pending_comments'] }} {{ __('Pending Admin Approval') }}
                 </span>
             @endif
         </div>
@@ -172,11 +172,11 @@
                                     <span class="text-sm text-gray-500 dark:text-gray-400">•</span>
                                     <span class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
                                 </div>
-                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">On: <a href="{{ route('places.show', $comment->place->slug) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline">{{ $comment->place->name }}</a></p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ __('On') }}: <a href="{{ route('places.show', $comment->place->slug) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline">{{ $comment->place->name }}</a></p>
                                 <p class="text-gray-700 dark:text-gray-300">{{ $comment->content }}</p>
                             </div>
                             <span class="ml-4 px-3 py-1 rounded-full text-xs font-semibold {{ $comment->is_approved ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' }}">
-                                {{ $comment->is_approved ? 'Approved' : 'Pending' }}
+                                {{ $comment->is_approved ? __('Approved') : __('Pending') }}
                             </span>
                         </div>
                         
@@ -184,8 +184,8 @@
                             <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
                                 <form action="{{ route('owner.comments.reply', $comment) }}" method="POST" class="flex gap-2">
                                     @csrf
-                                    <input type="text" name="content" placeholder="Reply to this comment..." class="flex-1 px-4 py-2 bg-white/60 dark:bg-black/30 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
-                                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors">Reply</button>
+                                    <input type="text" name="content" placeholder="{{ __('Reply to this comment...') }}" class="flex-1 px-4 py-2 bg-white/60 dark:bg-black/30 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+                                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors">{{ __('Reply') }}</button>
                                 </form>
                             </div>
                         @endif
@@ -196,7 +196,7 @@
                                     <div class="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border-l-4 border-indigo-500">
                                         <div class="flex items-center gap-2 mb-1">
                                             <span class="font-semibold text-indigo-900 dark:text-indigo-300">{{ $reply->user->name }}</span>
-                                            <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 rounded text-xs font-semibold">Owner</span>
+                                            <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 rounded text-xs font-semibold">{{ __('Owner') }}</span>
                                         </div>
                                         <p class="text-sm text-gray-700 dark:text-gray-300">{{ $reply->content }}</p>
                                     </div>
@@ -207,7 +207,7 @@
                 @endforeach
             </div>
         @else
-            <p class="text-center text-gray-500 dark:text-gray-400 py-8">No comments yet.</p>
+            <p class="text-center text-gray-500 dark:text-gray-400 py-8">{{ __('No comments yet.') }}</p>
         @endif
     </div>
 </x-glass-layout>

@@ -680,6 +680,21 @@
                             </div>
                             <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ $comment->content }}</p>
                             
+                            <!-- Owner Reply Form -->
+                            @auth
+                                @if(auth()->user()->id === $place->owner_id && !$comment->replies->where('user_id', $place->owner_id)->count())
+                                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                        <form action="{{ route('owner.comments.reply', $comment) }}" method="POST" class="flex gap-2">
+                                            @csrf
+                                            <input type="text" name="content" placeholder="{{ __('Reply to this comment...') }}" class="flex-1 px-4 py-2 bg-white/60 dark:bg-gray-800/60 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required>
+                                            <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-sm hover:shadow-md">
+                                                {{ __('Reply') }}
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endif
+                            @endauth
+                            
                             <!-- Replies -->
                             @if($comment->replies->count() > 0)
                                 <div class="mt-5 space-y-3">
