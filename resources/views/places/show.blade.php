@@ -309,13 +309,13 @@
                     @endif
                 </div>
                 
-                <!-- Image Thumbnails -->
-                <template x-if="images.length > 1">
+                <!-- Media Thumbnails -->
+                <template x-if="media.length > 1">
                     <div class="flex gap-2 mt-4">
-                        <template x-for="(image, index) in images" :key="index">
-                            <button @click="currentImage = index" 
+                        <template x-for="(item, index) in media" :key="index">
+                            <button @click="currentMedia = index" 
                                     class="h-1.5 rounded-full transition-all duration-300"
-                                    :class="currentImage === index ? 'bg-white w-8' : 'bg-white/40 w-1.5 hover:bg-white/60'">
+                                    :class="currentMedia === index ? 'bg-white w-8' : 'bg-white/40 w-1.5 hover:bg-white/60'">
                             </button>
                         </template>
                     </div>
