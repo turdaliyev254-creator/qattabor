@@ -15,6 +15,15 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
+        <script>
+            // Fix for back button not loading content (bfcache issue in production)
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    console.log('Page loaded from bfcache, reloading...');
+                    window.location.reload();
+                }
+            });
+        </script>
         <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
             @include('layouts.navigation')
 

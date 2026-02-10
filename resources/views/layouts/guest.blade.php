@@ -15,6 +15,15 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
+        <script>
+            // Fix for back button not loading content (bfcache issue in production)
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    console.log('Page loaded from bfcache, reloading...');
+                    window.location.reload();
+                }
+            });
+        </script>
         <div class="min-h-screen flex items-center justify-center relative overflow-hidden p-4">
             <!-- Animated Background -->
             <div class="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 dark:from-blue-900 dark:via-purple-900 dark:to-pink-900"></div>

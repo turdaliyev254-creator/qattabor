@@ -51,6 +51,22 @@
         window.addEventListener('load', function() {
             document.body.classList.add('loaded');
         });
+
+        // Fix for back button not loading content (bfcache issue in production)
+        window.addEventListener('pageshow', function(event) {
+            // Check if the page was loaded from bfcache (browser back/forward cache)
+            if (event.persisted) {
+                console.log('Page loaded from bfcache, reloading...');
+                // Force reload to ensure fresh content
+                window.location.reload();
+            }
+        });
+
+        // Prevent page from being cached in bfcache
+        window.addEventListener('beforeunload', function() {
+            // This helps prevent bfcache issues
+            document.body.style.display = 'none';
+        });
     </script>
     <div x-data="{ open: false }" class="min-h-screen flex flex-col relative overflow-hidden">
         <!-- Subtle Background Pattern -->
