@@ -215,13 +215,13 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             @click="showFullscreen = false"
+             @click="if(!isVideo(currentMedia)) showFullscreen = false"
              @keydown.escape.window="showFullscreen = false"
-             class="fixed inset-0 z-[9999] bg-black"
+             class="fixed inset-0 z-[100] bg-black"
              style="display: none;">
             
             <!-- Close Button -->
-            <button @click.stop="showFullscreen = false" 
+            <button @click="showFullscreen = false" 
                     class="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-all z-20">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
