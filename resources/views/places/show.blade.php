@@ -1,49 +1,56 @@
+
 <x-glass-layout>
-    <!-- Hero Section with Media Gallery (2GIS Style) -->
-    <div class="relative -mx-4 -mt-6 mb-8" x-data="{ 
-        currentMedia: 0,
-        media: @json($mediaData ?? []),
-        showFullscreen: false,
-        showThumbnails: false,
-        isPlaying: false,
-        init() {
-            this.$watch('showFullscreen', value => {
-                if (value) {
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    document.body.style.overflow = '';
-                    this.pauseVideo();
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('mediaGallery', () => ({
+                currentMedia: 0,
+                media: @json($mediaData ?? []),
+                showFullscreen: false,
+                showThumbnails: false,
+                isPlaying: false,
+                init() {
+                    this.$watch('showFullscreen', value => {
+                        if (value) {
+                            document.body.style.overflow = 'hidden';
+                        } else {
+                            document.body.style.overflow = '';
+                            this.pauseVideo();
+                        }
+                    });
+                    this.$watch('currentMedia', () => {
+                        this.pauseVideo();
+                    });
+                },
+                isVideo(index) {
+                    return this.media[index] && this.media[index].type === 'video';
+                },
+                pauseVideo() {
+                    const videos = document.querySelectorAll('video');
+                    videos.forEach(v => {
+                        v.pause();
+                        v.currentTime = 0;
+                    });
+                    this.isPlaying = false;
+                },
+                playVideo() {
+                    const video = this.$refs.currentVideo;
+                    if (video) {
+                        video.play();
+                        this.isPlaying = true;
+                    }
+                },
+                prevMedia() {
+                    this.currentMedia = this.currentMedia > 0 ? this.currentMedia - 1 : this.media.length - 1;
+                },
+                nextMedia() {
+                    this.currentMedia = this.currentMedia < this.media.length - 1 ? this.currentMedia + 1 : 0;
                 }
-            });
-            this.$watch('currentMedia', () => {
-                this.pauseVideo();
-            });
-        },
-        isVideo(index) {
-            return this.media[index] && this.media[index].type === 'video';
-        },
-        pauseVideo() {
-            const videos = document.querySelectorAll('video');
-            videos.forEach(v => {
-                v.pause();
-                v.currentTime = 0;
-            });
-            this.isPlaying = false;
-        },
-        playVideo() {
-            const video = this.$refs.currentVideo;
-            if (video) {
-                video.play();
-                this.isPlaying = true;
-            }
-        },
-        prevMedia() {
-            this.currentMedia = this.currentMedia > 0 ? this.currentMedia - 1 : this.media.length - 1;
-        },
-        nextMedia() {
-            this.currentMedia = this.currentMedia < this.media.length - 1 ? this.currentMedia + 1 : 0;
-        }
-    }">
+            }));
+        });
+    </script>
+
+    <!-- Hero Section with Media Gallery (2GIS Style) -->
+    <div class="relative -mx-4 -mt-6 mb-8" x-data="mediaGallery">
         <!-- Main Media Display -->
         <div class="relative h-[50vh] min-h-[400px] overflow-hidden bg-black">
             <template x-if="media.length > 0">
