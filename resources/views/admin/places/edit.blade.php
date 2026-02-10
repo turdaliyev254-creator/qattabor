@@ -215,6 +215,20 @@
                     @endphp
                     <div class="col-span-2" x-data="workingHoursEdit({{ json_encode($hours) }})">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Working Hours</h3>
+                        
+                        <!-- Apply to All Days -->
+                        <div class="mb-4 p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border-2 border-indigo-200 dark:border-indigo-800">
+                            <h4 class="text-sm font-semibold text-indigo-900 dark:text-indigo-300 mb-3">Quick Set - Apply to All Days</h4>
+                            <div class="flex items-center gap-3">
+                                <input type="time" x-model="bulkTime.open" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">to</span>
+                                <input type="time" x-model="bulkTime.close" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
+                                <button type="button" @click="applyToAll()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+                                    Apply to All
+                                </button>
+                            </div>
+                        </div>
+                        
                         <div class="space-y-3">
                             <div class="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                                 <div class="flex items-center w-32">
@@ -303,6 +317,7 @@
                     <script>
                         function workingHoursEdit(data) {
                             return {
+                                bulkTime: { open: '09:00', close: '18:00' },
                                 monday: data.monday || { enabled: false, open: '09:00', close: '18:00' },
                                 tuesday: data.tuesday || { enabled: false, open: '09:00', close: '18:00' },
                                 wednesday: data.wednesday || { enabled: false, open: '09:00', close: '18:00' },
@@ -310,6 +325,14 @@
                                 friday: data.friday || { enabled: false, open: '09:00', close: '18:00' },
                                 saturday: data.saturday || { enabled: false, open: '09:00', close: '18:00' },
                                 sunday: data.sunday || { enabled: false, open: '09:00', close: '18:00' },
+                                applyToAll() {
+                                    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                                    days.forEach(day => {
+                                        this[day].enabled = true;
+                                        this[day].open = this.bulkTime.open;
+                                        this[day].close = this.bulkTime.close;
+                                    });
+                                },
                                 getHoursJson() {
                                     return JSON.stringify({
                                         monday: this.monday,
