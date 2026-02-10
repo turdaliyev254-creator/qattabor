@@ -370,47 +370,60 @@
             
             @if($place->working_hours && is_array($place->working_hours) && count($place->working_hours) > 0)
                 @php
-                    // Check if there's at least one enabled day
-                    $hasEnabledDays = false;
-                    foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day) {
-                        if (isset($place->working_hours[$day]) && isset($place->working_hours[$day]['enabled']) && $place->working_hours[$day]['enabled']) {
-                            $hasEnabledDays = true;
-                            break;
+                    // Get today's day name
+                    $today = strtolower(date('l'));
+                    $currentTime = date('H:i');
+                    
+                    // Check if today is enabled
+                    $todayEnabled = isset($place->working_hours[$today]) && 
+                                    isset($place->working_hours[$today]['enabled']) && 
+                                    $place->working_hours[$today]['enabled'];
+                    
+                    $isOpen = false;
+                    $statusText = __('Closed');
+                    $statusColor = 'text-red-600 dark:text-red-400';
+                    $bgColor = 'bg-red-100 dark:bg-red-900/30';
+                    
+                    if ($todayEnabled) {
+                        $openTime = $place->working_hours[$today]['open'] ?? '00:00';
+                        $closeTime = $place->working_hours[$today]['close'] ?? '00:00';
+                        
+                        // Check if currently open
+                        if ($currentTime >= $openTime && $currentTime <= $closeTime) {
+                            $isOpen = true;
+                            $statusText = __('Open Now');
+                            $statusColor = 'text-green-600 dark:text-green-400';
+                            $bgColor = 'bg-green-100 dark:bg-green-900/30';
                         }
                     }
+                    
+                    $dayNames = [
+                        'monday' => __('Monday'),
+                        'tuesday' => __('Tuesday'),
+                        'wednesday' => __('Wednesday'),
+                        'thursday' => __('Thursday'),
+                        'friday' => __('Friday'),
+                        'saturday' => __('Saturday'),
+                        'sunday' => __('Sunday')
+                    ];
                 @endphp
                 
-                @if($hasEnabledDays)
+                @if($todayEnabled)
                 <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-2xl p-5 border border-white/20 dark:border-gray-700/50 shadow-lg">
                     <div class="flex items-start gap-3">
-                        <div class="p-2.5 bg-green-100 dark:bg-green-900/30 rounded-xl">
-                            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2.5 {{ $bgColor }} rounded-xl">
+                            <svg class="w-5 h-5 {{ $statusColor }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{{ __('Working Hours') }}</div>
-                            <div class="space-y-1.5">
-                                @php
-                                    $dayNames = [
-                                        'monday' => __('Monday'),
-                                        'tuesday' => __('Tuesday'),
-                                        'wednesday' => __('Wednesday'),
-                                        'thursday' => __('Thursday'),
-                                        'friday' => __('Friday'),
-                                        'saturday' => __('Saturday'),
-                                        'sunday' => __('Sunday')
-                                    ];
-                                    $today = strtolower(date('l'));
-                                @endphp
-                                @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
-                                    @if(isset($place->working_hours[$day]) && isset($place->working_hours[$day]['enabled']) && $place->working_hours[$day]['enabled'])
-                                        <div class="flex items-center justify-between text-sm {{ $today === $day ? 'font-bold text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300' }}">
-                                            <span>{{ $dayNames[$day] }}:</span>
-                                            <span>{{ $place->working_hours[$day]['open'] ?? '00:00' }} - {{ $place->working_hours[$day]['close'] ?? '00:00' }}</span>
-                                        </div>
-                                    @endif
-                                @endforeach
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ __('Working Hours') }}</div>
+                                <span class="text-sm font-bold {{ $statusColor }}">{{ $statusText }}</span>
+                            </div>
+                            <div class="text-sm text-gray-700 dark:text-gray-300">
+                                <span class="font-semibold">{{ $dayNames[$today] }}:</span>
+                                <span class="ml-2">{{ $place->working_hours[$today]['open'] ?? '00:00' }} - {{ $place->working_hours[$today]['close'] ?? '00:00' }}</span>
                             </div>
                         </div>
                     </div>
