@@ -305,7 +305,7 @@ Provide your recommendation now in {$detectedLanguage}:";
 
         $searchTerm = '%' . $query . '%';
         
-        $places = Place::select('id', 'name', 'slug', 'category_id', 'address')
+        $places = Place::select('id', 'name', 'slug', 'category_id', 'address', 'image_url')
             ->with('category:id,name')
             ->where(function($q) use ($searchTerm) {
                 $q->where('name', 'like', $searchTerm)
@@ -319,6 +319,7 @@ Provide your recommendation now in {$detectedLanguage}:";
                     'id' => $place->id,
                     'name' => $place->name,
                     'category' => $place->category->name ?? '',
+                    'image_url' => $place->image_url,
                     'url' => route('places.show', $place->slug)
                 ];
             });
