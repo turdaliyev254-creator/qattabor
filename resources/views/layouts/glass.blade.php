@@ -45,7 +45,7 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased h-full bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body class="font-sans antialiased h-full bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
     <script>
         // Remove loading state when page is fully loaded
         window.addEventListener('load', function() {
@@ -167,7 +167,7 @@
              x-transition:leave="transition ease-in duration-200 transform"
              x-transition:leave-start="translate-x-0"
              x-transition:leave-end="translate-x-full"
-             class="fixed top-0 right-0 h-full w-80 bg-gradient-to-b from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 shadow-2xl z-50 overflow-y-auto overscroll-contain backdrop-blur-xl"
+             class="fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-800 shadow-2xl z-50 overflow-y-auto overscroll-contain backdrop-blur-xl"
              style="-webkit-overflow-scrolling: touch;">
             
             <div class="p-6 h-full flex flex-col">

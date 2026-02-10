@@ -14,7 +14,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased bg-gray-100 dark:bg-gray-900">
         <script>
             // Fix for back button not loading content (bfcache issue in production)
             (function() {
@@ -29,8 +29,8 @@
             })();
         </script>
         <div class="min-h-screen flex items-center justify-center relative overflow-hidden p-4">
-            <!-- Animated Background -->
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 dark:from-blue-900 dark:via-purple-900 dark:to-pink-900"></div>
+            <!-- Background -->
+            <div class="absolute inset-0 bg-blue-500 dark:bg-blue-900"></div>
             <div class="absolute inset-0 backdrop-blur-3xl bg-white/30 dark:bg-black/30"></div>
             
             <!-- Floating Elements -->
