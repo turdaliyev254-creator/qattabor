@@ -2,9 +2,9 @@
     <div class="mb-6">
         <a href="{{ route('admin.places.index') }}" class="text-gray-500 hover:text-gray-700 flex items-center gap-2 mb-4">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Back to Places
+            {{ __('Back to Places') }}
         </a>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Place: {{ $place->name }}</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Edit Place') }}: {{ $place->name }}</h2>
     </div>
 
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 max-w-4xl">
@@ -15,7 +15,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-6">
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Name') }}</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $place->name) }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required>
                         @error('name')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -23,9 +23,9 @@
                     </div>
 
                     <div>
-                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
+                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Category') }}</label>
                         <select name="category_id" id="category_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required onchange="loadSubcategories(this.value)">
-                            <option value="">Select Category</option>
+                            <option value="">{{ __('Select Category') }}</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id', $place->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
@@ -36,9 +36,9 @@
                     </div>
 
                     <div id="subcategory-container" style="display: none;">
-                        <label for="subcategory_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subcategory (Optional)</label>
+                        <label for="subcategory_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Subcategory (Optional)') }}</label>
                         <select name="subcategory_id" id="subcategory_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" onchange="loadBrands(this.value)">
-                            <option value="">Select Subcategory</option>
+                            <option value="">{{ __('Select Subcategory') }}</option>
                         </select>
                         @error('subcategory_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -46,9 +46,9 @@
                     </div>
 
                     <div id="brand-container" style="display: none;">
-                        <label for="brand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Brand (Optional)</label>
+                        <label for="brand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Brand (Optional)') }}</label>
                         <select name="brand_id" id="brand_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
-                            <option value="">No Brand</option>
+                            <option value="">{{ __('No Brand') }}</option>
                         </select>
                         @error('brand_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -56,9 +56,9 @@
                     </div>
 
                     <div>
-                        <label for="location_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+                        <label for="location_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Location') }}</label>
                         <select name="location_id" id="location_id" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required>
-                            <option value="">Select Location</option>
+                            <option value="">{{ __('Select Location') }}</option>
                             @foreach($locations as $location)
                                 <option value="{{ $location->id }}" {{ old('location_id', $place->location_id) == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
                             @endforeach
@@ -94,7 +94,7 @@
                             this.search = '';
                         }
                     }" class="relative">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Place Owner (Optional)</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Place Owner (Optional)') }}</label>
                         
                         <input type="hidden" name="owner_id" :value="selected">
                         
@@ -110,13 +110,13 @@
                                 <input 
                                     type="text" 
                                     x-model="search" 
-                                    placeholder="Search by ID, name, or phone..."
+                                    placeholder="{{ __('Search by ID, name, or phone...') }}"
                                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
                                 >
                             </div>
                             <div class="max-h-60 overflow-y-auto">
                                 <button type="button" @click="selectUser(null)" class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm">
-                                    <span class="font-medium">No Owner</span>
+                                    <span class="font-medium">{{ __('No Owner') }}</span>
                                 </button>
                                 <template x-for="user in filteredUsers" :key="user.id">
                                     <button type="button" @click="selectUser(user)" class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white text-sm flex items-center justify-between" :class="{ 'bg-indigo-50 dark:bg-indigo-900/20': selected === user.id }">
@@ -142,7 +142,7 @@
                     </div>
 
                     <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
+                        <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Address') }}</label>
                         <input type="text" name="address" id="address" value="{{ old('address', $place->address) }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
                         @error('address')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -178,7 +178,7 @@
                     </div>
 
                     <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Phone') }}</label>
                         <input type="text" name="phone" id="phone" value="{{ old('phone', $place->phone) }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
                         @error('phone')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -186,7 +186,7 @@
                     </div>
 
                     <div>
-                        <label for="website" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Website</label>
+                        <label for="website" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Website') }}</label>
                         <input type="url" name="website" id="website" value="{{ old('website', $place->website) }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
                         @error('website')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -216,15 +216,15 @@
                     <div class="col-span-2" x-data="workingHoursEdit({{ json_encode($hours) }})">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Working Hours</h3>
                         
-                        <!-- Apply to All Days -->
+                        <!-- {{ __('Apply to All') }} Days -->
                         <div class="mb-4 p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border-2 border-indigo-200 dark:border-indigo-800">
-                            <h4 class="text-sm font-semibold text-indigo-900 dark:text-indigo-300 mb-3">Quick Set - Apply to All Days</h4>
+                            <h4 class="text-sm font-semibold text-indigo-900 dark:text-indigo-300 mb-3">{{ __('Quick Set - {{ __('Apply to All') }} Days') }}</h4>
                             <div class="flex items-center gap-3">
                                 <input type="time" x-model="bulkTime.open" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
                                 <span class="text-gray-500 dark:text-gray-400">to</span>
                                 <input type="time" x-model="bulkTime.close" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
                                 <button type="button" @click="applyToAll()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
-                                    Apply to All
+                                    {{ __('Apply to All') }}
                                 </button>
                             </div>
                         </div>
@@ -385,7 +385,7 @@
 
                     <!-- Multiple Images Upload -->
                     <div class="col-span-2">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Gallery Media (Images & Videos)</h3>
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">{{ __('Gallery Media (Images Gallery Media (Images & Videos) Videos)') }}</h3>
                         
                         <!-- Existing Media -->
                         @if($place->images->count() > 0)
@@ -394,7 +394,7 @@
                                     <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
                                     </svg>
-                                    Drag to reorder media
+                                    {{ __('Drag to reorder media') }}
                                 </p>
                             </div>
                             <div id="sortable-gallery" class="grid grid-cols-4 gap-4 mb-4">
@@ -438,16 +438,16 @@
 
                         <!-- New Images Upload -->
                         <div class="mb-4">
-                            <label for="images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Add More Images</label>
+                            <label for="images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Add More Images') }}</label>
                             <input type="file" name="images[]" id="images" accept="image/*" multiple onchange="previewMultipleImages(event)" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
-                            <p class="mt-1 text-xs text-gray-500">You can select multiple images (Max 5MB each)</p>
+                            <p class="mt-1 text-xs text-gray-500">{{ __('You can select multiple images (Max 5MB each)') }}</p>
                         </div>
                         
                         <!-- New Videos Upload -->
                         <div>
-                            <label for="videos" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Add Videos</label>
+                            <label for="videos" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Add Videos') }}</label>
                             <input type="file" name="videos[]" id="videos" accept="video/*" multiple onchange="previewMultipleVideos(event)" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
-                            <p class="mt-1 text-xs text-gray-500">You can select multiple videos (Max 50MB each, MP4, MOV, AVI, WMV)</p>
+                            <p class="mt-1 text-xs text-gray-500">{{ __('You can select multiple videos (Max 50MB each, MP4, MOV, AVI, WMV)') }}</p>
                         </div>
                         
                         <!-- Preview Multiple Images -->
@@ -459,19 +459,19 @@
 
                     <!-- Location Picker -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Coordinates (Latitude, Longitude)</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Coordinates ({{ __('Latitude') }}, {{ __('Longitude') }})') }}</label>
                         <div class="flex gap-2">
-                            <input type="text" name="latitude" id="latitude" value="{{ old('latitude', $place->latitude) }}" placeholder="Latitude" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" readonly>
-                            <input type="text" name="longitude" id="longitude" value="{{ old('longitude', $place->longitude) }}" placeholder="Longitude" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" readonly>
+                            <input type="text" name="latitude" id="latitude" value="{{ old('latitude', $place->latitude) }}" placeholder="{{ __('Latitude') }}" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" readonly>
+                            <input type="text" name="longitude" id="longitude" value="{{ old('longitude', $place->longitude) }}" placeholder="{{ __('Longitude') }}" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" readonly>
                             <button type="button" onclick="openMapPicker()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
-                                Pick Location
+                                {{ __('Pick Location') }}
                             </button>
                         </div>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Click "Pick Location" to select coordinates on the map</p>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Click "{{ __('Pick Location') }}" to select coordinates on the map</p>
                     </div>
 
                     <div class="flex gap-6 pt-4">
@@ -527,11 +527,11 @@
             const brandContainer = document.getElementById('brand-container');
             
             // Clear existing options
-            subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+            subcategorySelect.innerHTML = '<option value="">{{ __('Select Subcategory') }}</option>';
             
             // Hide and clear brands
             brandContainer.style.display = 'none';
-            document.getElementById('brand_id').innerHTML = '<option value="">No Brand</option>';
+            document.getElementById('brand_id').innerHTML = '<option value="">{{ __('No Brand') }}</option>';
             
             if (!categoryId) {
                 subcategoryContainer.style.display = 'none';
@@ -561,7 +561,7 @@
             const brandSelect = document.getElementById('brand_id');
             
             // Clear existing options
-            brandSelect.innerHTML = '<option value="">No Brand</option>';
+            brandSelect.innerHTML = '<option value="">{{ __('No Brand') }}</option>';
             
             if (!subcategoryId) {
                 brandContainer.style.display = 'none';
@@ -768,7 +768,7 @@
     <div id="mapPickerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
             <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Pick Location on Map</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('Pick Location') }} on Map</h3>
                 <button type="button" onclick="closeMapPicker()" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -782,7 +782,7 @@
                 <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-4">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Selected Coordinates:</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Selected Coordinates') }}:</p>
                             <p class="text-lg font-semibold text-gray-900 dark:text-white">
                                 <span id="modal-latitude">{{ old('latitude', $place->latitude ?? '41.2995') }}</span>, 
                                 <span id="modal-longitude">{{ old('longitude', $place->longitude ?? '69.2401') }}</span>
@@ -802,7 +802,7 @@
                         Cancel
                     </button>
                     <button type="button" onclick="confirmLocation()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors duration-200">
-                        Confirm Location
+                        {{ __('Confirm Location') }}
                     </button>
                 </div>
             </div>

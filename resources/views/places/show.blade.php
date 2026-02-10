@@ -177,30 +177,33 @@
                 </a>
 
                 <!-- Save Button -->
-                @auth
-                    <div x-data="{ 
-                        isSaved: {{ $isSaved ? 'true' : 'false' }},
-                        async toggleSave() {
-                            try {
-                                if (this.isSaved) {
-                                    await axios.delete('{{ route('places.unsave', $place) }}');
-                                } else {
-                                    await axios.post('{{ route('places.save', $place) }}');
-                                }
-                                this.isSaved = !this.isSaved;
-                            } catch (error) {
-                                console.error('Error toggling save:', error);
-                            }
+                <div x-data="{ 
+                    isSaved: {{ auth()->check() && $isSaved ? 'true' : 'false' }},
+                    isAuthenticated: {{ auth()->check() ? 'true' : 'false' }},
+                    async toggleSave() {
+                        if (!this.isAuthenticated) {
+                            window.location.href = '{{ route('register') }}';
+                            return;
                         }
-                    }">
-                        <button @click="toggleSave()" 
-                                class="p-3 backdrop-blur-md bg-black/30 hover:bg-black/50 rounded-xl shadow-lg transition-all">
-                            <svg class="w-6 h-6" :class="isSaved ? 'text-red-500' : 'text-white'" :fill="isSaved ? 'currentColor' : 'none'" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                            </svg>
-                        </button>
-                    </div>
-                @endauth
+                        try {
+                            if (this.isSaved) {
+                                await axios.delete('{{ route('places.unsave', $place) }}');
+                            } else {
+                                await axios.post('{{ route('places.save', $place) }}');
+                            }
+                            this.isSaved = !this.isSaved;
+                        } catch (error) {
+                            console.error('Error toggling save:', error);
+                        }
+                    }
+                }">
+                    <button @click="toggleSave()" 
+                            class="p-3 backdrop-blur-md bg-black/30 hover:bg-black/50 rounded-xl shadow-lg transition-all">
+                        <svg class="w-6 h-6" :class="isSaved ? 'text-red-500' : 'text-white'" :fill="isSaved ? 'currentColor' : 'none'" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
 
