@@ -17,12 +17,16 @@
 <body class="font-sans antialiased bg-gray-100 dark:bg-gray-900">
     <script>
         // Fix for back button not loading content (bfcache issue in production)
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
-                console.log('Page loaded from bfcache, reloading...');
-                window.location.reload();
-            }
-        });
+        (function() {
+            let isInitialLoad = true;
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted && !isInitialLoad) {
+                    console.log('Page restored from bfcache, reloading...');
+                    window.location.reload();
+                }
+                isInitialLoad = false;
+            });
+        })();
     </script>
     <div class="min-h-screen flex" x-data="{ sidebarOpen: false }">
         <!-- Mobile Overlay -->

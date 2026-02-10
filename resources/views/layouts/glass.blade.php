@@ -53,20 +53,23 @@
         });
 
         // Fix for back button not loading content (bfcache issue in production)
-        window.addEventListener('pageshow', function(event) {
-            // Check if the page was loaded from bfcache (browser back/forward cache)
-            if (event.persisted) {
-                console.log('Page loaded from bfcache, reloading...');
-                // Force reload to ensure fresh content
-                window.location.reload();
-            }
-        });
-
-        // Prevent page from being cached in bfcache
-        window.addEventListener('beforeunload', function() {
-            // This helps prevent bfcache issues
-            document.body.style.display = 'none';
-        });
+        (function() {
+            let isInitialLoad = true;
+            
+            window.addEventListener('pageshow', function(event) {
+                // Only reload if coming from bfcache AND it's not the initial page load
+                if (event.persisted && !isInitialLoad) {
+                    console.log('Page restored from bfcache, reloading...');
+                    window.location.reload();
+                }
+                isInitialLoad = false;
+            });
+            
+            // Mark page as not fresh when leaving
+            window.addEventListener('pagehide', function() {
+                // This runs when navigating away
+            });
+        })();
     </script>
     <div x-data="{ open: false }" class="min-h-screen flex flex-col relative overflow-hidden">
         <!-- Subtle Background Pattern -->
