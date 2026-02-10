@@ -5,7 +5,7 @@
                 <!-- Place Image -->
                 <div class="relative h-48 overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600">
                     @if($place->image_url)
-                        <img src="{{ $place->image_url }}" 
+                        <img src="{{ asset('storage/' . $place->image_url) }}" 
                              alt="{{ $place->name }}" 
                              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
                     @else

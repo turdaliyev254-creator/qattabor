@@ -445,8 +445,8 @@
                     <div class="backdrop-blur-xl bg-white/40 dark:bg-black/20 rounded-2xl overflow-hidden border border-white/30 dark:border-white/10 shadow-lg card-hover">
                         <!-- Place Image -->
                         <div class="relative h-28 sm:h-32 overflow-hidden">
-                            @if($place->image)
-                            <img src="{{ asset('storage/' . $place->image) }}" 
+                            @if($place->image_url)
+                            <img src="{{ asset('storage/' . $place->image_url) }}" 
                                  alt="{{ $place->name }}" 
                                  class="w-full h-full object-cover">
                             @else

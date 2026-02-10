@@ -305,7 +305,7 @@
                             <a href="{{ route('places.show', $place->slug) }}" class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all transform hover:-translate-y-1">
                                 <div class="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 relative">
                                     @if($place->image_url)
-                                        <img src="{{ $place->image_url }}" alt="{{ $place->name }}" class="w-full h-full object-cover">
+                                        <img src="{{ asset('storage/' . $place->image_url) }}" alt="{{ $place->name }}" class="w-full h-full object-cover">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center">
                                             <svg class="w-16 h-16 text-white/50" fill="currentColor" viewBox="0 0 20 20">

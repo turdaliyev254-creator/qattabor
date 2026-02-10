@@ -17,7 +17,7 @@
                     <!-- Place Image -->
                     <div class="relative h-40 overflow-hidden bg-gray-200 dark:bg-gray-700">
                         @if($place->image_url)
-                            <img src="{{ $place->image_url }}" 
+                            <img src="{{ asset('storage/' . $place->image_url) }}" 
                                  alt="{{ $place->name }}" 
                                  class="w-full h-full object-cover">
                         @else
