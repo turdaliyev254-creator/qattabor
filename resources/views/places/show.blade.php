@@ -368,7 +368,19 @@
                 </div>
             @endif
             
-            @if($place->working_hours && is_array($place->working_hours))
+            @if($place->working_hours && is_array($place->working_hours) && count($place->working_hours) > 0)
+                @php
+                    // Check if there's at least one enabled day
+                    $hasEnabledDays = false;
+                    foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day) {
+                        if (isset($place->working_hours[$day]) && isset($place->working_hours[$day]['enabled']) && $place->working_hours[$day]['enabled']) {
+                            $hasEnabledDays = true;
+                            break;
+                        }
+                    }
+                @endphp
+                
+                @if($hasEnabledDays)
                 <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-2xl p-5 border border-white/20 dark:border-gray-700/50 shadow-lg">
                     <div class="flex items-start gap-3">
                         <div class="p-2.5 bg-green-100 dark:bg-green-900/30 rounded-xl">
@@ -392,10 +404,10 @@
                                     $today = strtolower(date('l'));
                                 @endphp
                                 @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
-                                    @if(isset($place->working_hours[$day]) && $place->working_hours[$day]['enabled'])
+                                    @if(isset($place->working_hours[$day]) && isset($place->working_hours[$day]['enabled']) && $place->working_hours[$day]['enabled'])
                                         <div class="flex items-center justify-between text-sm {{ $today === $day ? 'font-bold text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300' }}">
                                             <span>{{ $dayNames[$day] }}:</span>
-                                            <span>{{ $place->working_hours[$day]['open'] }} - {{ $place->working_hours[$day]['close'] }}</span>
+                                            <span>{{ $place->working_hours[$day]['open'] ?? '00:00' }} - {{ $place->working_hours[$day]['close'] ?? '00:00' }}</span>
                                         </div>
                                     @endif
                                 @endforeach
@@ -403,6 +415,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
             @endif
         </div>
 

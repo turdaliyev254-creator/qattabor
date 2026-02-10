@@ -176,6 +176,11 @@ class PlaceController extends Controller
         // Decode working_hours JSON string
         if (isset($validated['working_hours'])) {
             $validated['working_hours'] = json_decode($validated['working_hours'], true);
+            
+            // If working_hours is empty array or has no enabled days, set to null
+            if (empty($validated['working_hours']) || !$this->hasEnabledDays($validated['working_hours'])) {
+                $validated['working_hours'] = null;
+            }
         }
 
         // Handle main image upload
@@ -278,6 +283,11 @@ class PlaceController extends Controller
         // Decode working_hours JSON string
         if (isset($validated['working_hours'])) {
             $validated['working_hours'] = json_decode($validated['working_hours'], true);
+            
+            // If working_hours is empty array or has no enabled days, set to null
+            if (empty($validated['working_hours']) || !$this->hasEnabledDays($validated['working_hours'])) {
+                $validated['working_hours'] = null;
+            }
         }
         
         // Handle image upload
@@ -353,5 +363,23 @@ class PlaceController extends Controller
         $image->delete();
 
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Check if working hours has at least one enabled day
+     */
+    private function hasEnabledDays($workingHours)
+    {
+        if (!is_array($workingHours)) {
+            return false;
+        }
+
+        foreach ($workingHours as $day => $hours) {
+            if (isset($hours['enabled']) && $hours['enabled'] === true) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
