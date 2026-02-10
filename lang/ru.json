@@ -642,5 +642,13 @@
     "Order": "Порядок",
     "Only system owners can change user roles.": "Только владельцы системы могут изменять роли пользователей.",
     "Cannot delete system owner users.": "Невозможно удалить владельцев системы.",
-    "Only super administrators can change user roles.": "Только суперадминистраторы могут изменять роли пользователей."
+    "Only super administrators can change user roles.": "Только суперадминистраторы могут изменять роли пользователей.",
+    "Working Hours": "Часы работы",
+    "Monday": "Понедельник",
+    "Tuesday": "Вторник",
+    "Wednesday": "Среда",
+    "Thursday": "Четверг",
+    "Friday": "Пятница",
+    "Saturday": "Суббота",
+    "Sunday": "Воскресенье"
 }

@@ -614,6 +614,14 @@
     "Order": "Order",
     "Only system owners can change user roles.": "Only system owners can change user roles.",
     "Cannot delete system owner users.": "Cannot delete system owner users.",
-    "Only super administrators can change user roles.": "Only super administrators can change user roles."
+    "Only super administrators can change user roles.": "Only super administrators can change user roles.",
+    "Working Hours": "Working Hours",
+    "Monday": "Monday",
+    "Tuesday": "Tuesday",
+    "Wednesday": "Wednesday",
+    "Thursday": "Thursday",
+    "Friday": "Friday",
+    "Saturday": "Saturday",
+    "Sunday": "Sunday"
 }
 
