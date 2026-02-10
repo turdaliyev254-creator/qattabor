@@ -173,6 +173,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::patch('subcategories/{subcategory}/update-order', [\App\Http\Controllers\Admin\SubcategoryController::class, 'updateOrder'])->name('admin.subcategories.update-order');
     Route::post('places/reorder', [\App\Http\Controllers\Admin\PlaceController::class, 'reorder'])->name('admin.places.reorder');
     Route::patch('places/{place}/update-order', [\App\Http\Controllers\Admin\PlaceController::class, 'updateOrder'])->name('admin.places.update-order');
+    Route::post('places/{place}/reorder-images', [\App\Http\Controllers\Admin\PlaceController::class, 'reorderImages'])->name('admin.places.reorder-images');
     
     // Brand ordering routes
     Route::post('subcategories/{subcategory}/brands/reorder', [\App\Http\Controllers\Admin\BrandController::class, 'reorder'])->name('admin.brands.reorder');

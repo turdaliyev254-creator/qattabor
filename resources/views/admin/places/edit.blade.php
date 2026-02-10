@@ -389,9 +389,17 @@
                         
                         <!-- Existing Media -->
                         @if($place->images->count() > 0)
-                            <div class="grid grid-cols-4 gap-4 mb-4">
-                                @foreach($place->images as $image)
-                                    <div class="relative group">
+                            <div class="mb-3">
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                    </svg>
+                                    Drag to reorder media
+                                </p>
+                            </div>
+                            <div id="sortable-gallery" class="grid grid-cols-4 gap-4 mb-4">
+                                @foreach($place->images->sortBy('order') as $image)
+                                    <div class="relative group cursor-move" data-id="{{ $image->id }}">
                                         @if($image->isVideo())
                                             <!-- Video Thumbnail -->
                                             <div class="relative w-full h-32 bg-gray-900 rounded-lg flex items-center justify-center">
@@ -399,10 +407,24 @@
                                                     <path d="M8 5v14l11-7z"/>
                                                 </svg>
                                                 <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black/70 text-white text-xs rounded">VIDEO</span>
+                                                <!-- Drag Handle -->
+                                                <div class="absolute top-2 left-2 p-1 bg-black/50 text-white rounded cursor-move">
+                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M9 3h2v2H9V3zm0 4h2v2H9V7zm0 4h2v2H9v-2zm0 4h2v2H9v-2zm0 4h2v2H9v-2zm4-16h2v2h-2V3zm0 4h2v2h-2V7zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2z"/>
+                                                    </svg>
+                                                </div>
                                             </div>
                                         @else
                                             <!-- Image -->
-                                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="Gallery image" class="w-full h-32 object-cover rounded-lg">
+                                            <div class="relative">
+                                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Gallery image" class="w-full h-32 object-cover rounded-lg">
+                                                <!-- Drag Handle -->
+                                                <div class="absolute top-2 left-2 p-1 bg-black/50 text-white rounded cursor-move">
+                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M9 3h2v2H9V3zm0 4h2v2H9V7zm0 4h2v2H9v-2zm0 4h2v2H9v-2zm0 4h2v2H9v-2zm4-16h2v2h-2V3zm0 4h2v2h-2V7zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2z"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
                                         @endif
                                         <button type="button" onclick="deleteImage({{ $image->id }})" class="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -789,4 +811,47 @@
 
     <!-- Yandex Maps API -->
     <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=en_US" type="text/javascript"></script>
+    
+    <!-- SortableJS for drag and drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        // Initialize SortableJS for gallery reordering
+        document.addEventListener('DOMContentLoaded', function() {
+            const sortableGallery = document.getElementById('sortable-gallery');
+            if (sortableGallery) {
+                new Sortable(sortableGallery, {
+                    animation: 150,
+                    ghostClass: 'opacity-50',
+                    handle: '.cursor-move',
+                    onEnd: function(evt) {
+                        // Get the new order of image IDs
+                        const items = sortableGallery.querySelectorAll('[data-id]');
+                        const order = Array.from(items).map((item, index) => ({
+                            id: item.dataset.id,
+                            order: index + 1
+                        }));
+                        
+                        // Send AJAX request to update order
+                        fetch('{{ route("admin.places.reorder-images", $place) }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({ order: order })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log('Order updated successfully');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error updating order:', error);
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 </x-admin-layout>

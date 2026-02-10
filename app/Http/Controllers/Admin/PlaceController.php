@@ -366,6 +366,22 @@ class PlaceController extends Controller
     }
 
     /**
+     * Reorder place images
+     */
+    public function reorderImages(Request $request, Place $place)
+    {
+        $order = $request->input('order', []);
+        
+        foreach ($order as $item) {
+            \App\Models\PlaceImage::where('id', $item['id'])
+                ->where('place_id', $place->id)
+                ->update(['order' => $item['order']]);
+        }
+        
+        return response()->json(['success' => true]);
+    }
+
+    /**
      * Check if working hours has at least one enabled day
      */
     private function hasEnabledDays($workingHours)
