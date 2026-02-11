@@ -392,7 +392,7 @@
                         $closeTime = $place->working_hours[$today]['close'] ?? '00:00';
                         
                         // Check if currently open
-                        if ($currentTime >= $openTime && $currentTime <= $closeTime) {
+                        if ($currentTime >= $openTime && $currentTime < $closeTime) {
                             $isOpen = true;
                             $statusText = __('Open Now');
                             $statusColor = 'text-green-600 dark:text-green-400';
