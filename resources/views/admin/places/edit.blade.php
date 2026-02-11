@@ -218,7 +218,7 @@
                         
                         <!-- {{ __('Apply to All') }} Days -->
                         <div class="mb-4 p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border-2 border-indigo-200 dark:border-indigo-800">
-                            <h4 class="text-sm font-semibold text-indigo-900 dark:text-indigo-300 mb-3">{{ __('Quick Set - {{ __('Apply to All') }} Days') }}</h4>
+                            <h4 class="text-sm font-semibold text-indigo-900 dark:text-indigo-300 mb-3">{{ __('Quick Set - Apply to All Days') }}</h4>
                             <div class="flex items-center gap-3">
                                 <input type="time" x-model="bulkTime.open" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
                                 <span class="text-gray-500 dark:text-gray-400">to</span>
