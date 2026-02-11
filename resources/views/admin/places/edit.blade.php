@@ -459,7 +459,7 @@
 
                     <!-- Location Picker -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Coordinates ({{ __('Latitude') }}, {{ __('Longitude') }})') }}</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Coordinates (Latitude, Longitude)') }}</label>
                         <div class="flex gap-2">
                             <input type="text" name="latitude" id="latitude" value="{{ old('latitude', $place->latitude) }}" placeholder="{{ __('Latitude') }}" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" readonly>
                             <input type="text" name="longitude" id="longitude" value="{{ old('longitude', $place->longitude) }}" placeholder="{{ __('Longitude') }}" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" readonly>
